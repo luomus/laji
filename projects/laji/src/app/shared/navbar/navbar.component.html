@@ -24,60 +24,58 @@
           </div>
         </div>
         <div id="navbar" class="collapse navbar-collapse" [class.in]="openMenu">
-          @if (navbarService.navbarVisible$ | async) {
-            <ul class="nav navbar-nav">
-              <ng-container *lajiForTypes="['iucn']">
-                <li [routerLinkActive]="['active']">
-                  <a [routerLink]="['/results'] | localize">{{ 'iucn.taxon.title' | translate }}</a>
+          <ul class="nav navbar-nav">
+            <ng-container *lajiForTypes="['iucn']">
+              <li [routerLinkActive]="['active']">
+                <a [routerLink]="['/results'] | localize">{{ 'iucn.taxon.title' | translate }}</a>
+              </li>
+              <li [routerLinkActive]="['active']">
+                <a [routerLink]="['/regional'] | localize">{{ 'iucn.regional.title' | translate }}</a>
+              </li>
+              <li [routerLinkActive]="['active']">
+                <a [routerLink]="['/publications'] | localize">{{ 'iucn.publications.title' | translate }}</a>
+              </li>
+              <li [routerLinkActive]="['active']">
+                <a [routerLink]="['/about'] | localize">{{ 'iucn.about.title' | translate }}</a>
+              </li>
+            </ng-container>
+            <li *lajiForTypes="['dev', 'prod', 'beta']">
+              <a luDropdownToggle class="link user">
+                {{ 'navigation.taxonomy' | translate }}
+                <span class="glyphicon glyphicon-triangle-bottom"></span>
+              </a>
+              <laji-taxon-dropdown luDropdownMenu></laji-taxon-dropdown>
+            </li>
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
+              <a [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>
+            </li>
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
+              <a [routerLink]="['/save-observations'] | localize">{{ 'navigation.saveObservations' | translate }}</a>
+            </li>
+            <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
+              <a [routerLink]="['/vihko'] | localize">{{ 'navigation.vihko' | translate }}</a>
+            </li>
+            <li *lajiForTypes="['dev', 'prod', 'beta']">
+              <a luDropdownToggle class="link">
+                {{ 'navigation.more' | translate }}
+                <span class="glyphicon glyphicon-triangle-bottom"></span>
+              </a>
+              <ul luDropdownMenu class="user-dropdown">
+                <li role="menuitem">
+                  <a [href]="'infoLinks.base' | translate" target="_blank" class="navbar-link link">{{ 'navigation.more.help' | translate }} <span class="glyphicon glyphicon-link"></span></a>
                 </li>
-                <li [routerLinkActive]="['active']">
-                  <a [routerLink]="['/regional'] | localize">{{ 'iucn.regional.title' | translate }}</a>
+                <li role="menuitem">
+                  <a [routerLink]="['/theme'] | localize" class="navbar-link link">{{ 'navigation.more.services' | translate }}</a>
                 </li>
-                <li [routerLinkActive]="['active']">
-                  <a [routerLink]="['/publications'] | localize">{{ 'iucn.publications.title' | translate }}</a>
+                <li role="menuitem">
+                  <a href="http://foorumi.laji.fi/" target="_blank" class="navbar-link link">{{ 'navigation.more.forum' | translate }} <span class="glyphicon glyphicon-link"></span></a>
                 </li>
-                <li [routerLinkActive]="['active']">
-                  <a [routerLink]="['/about'] | localize">{{ 'iucn.about.title' | translate }}</a>
+                <li role="menuitem" class="feedback">
+                  <laji-feedback></laji-feedback>
                 </li>
-              </ng-container>
-              <li *lajiForTypes="['dev', 'prod', 'beta']">
-                <a luDropdownToggle class="link user">
-                  {{ 'navigation.taxonomy' | translate }}
-                  <span class="glyphicon glyphicon-triangle-bottom"></span>
-                </a>
-                <laji-taxon-dropdown luDropdownMenu></laji-taxon-dropdown>
-              </li>
-              <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
-                <a [routerLink]="['/observation'] | localize">{{ 'navigation.observation' | translate }}</a>
-              </li>
-              <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
-                <a [routerLink]="['/save-observations'] | localize">{{ 'navigation.saveObservations' | translate }}</a>
-              </li>
-              <li [routerLinkActive]="['active']" *lajiForTypes="['dev', 'prod', 'beta']">
-                <a [routerLink]="['/vihko'] | localize">{{ 'navigation.vihko' | translate }}</a>
-              </li>
-              <li *lajiForTypes="['dev', 'prod', 'beta']">
-                <a luDropdownToggle class="link">
-                  {{ 'navigation.more' | translate }}
-                  <span class="glyphicon glyphicon-triangle-bottom"></span>
-                </a>
-                <ul luDropdownMenu class="user-dropdown">
-                  <li role="menuitem">
-                    <a [href]="'infoLinks.base' | translate" target="_blank" class="navbar-link link">{{ 'navigation.more.help' | translate }} <span class="glyphicon glyphicon-link"></span></a>
-                  </li>
-                  <li role="menuitem">
-                    <a [routerLink]="['/theme'] | localize" class="navbar-link link">{{ 'navigation.more.services' | translate }}</a>
-                  </li>
-                  <li role="menuitem">
-                    <a href="http://foorumi.laji.fi/" target="_blank" class="navbar-link link">{{ 'navigation.more.forum' | translate }} <span class="glyphicon glyphicon-link"></span></a>
-                  </li>
-                  <li role="menuitem" class="feedback">
-                    <laji-feedback></laji-feedback>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          }
+              </ul>
+            </li>
+          </ul>
           <ul class="nav navbar-nav pull-right">
             <li class="hidden-xs search" *lajiForTypes="['dev', 'prod', 'beta']">
               <laji-omni-search

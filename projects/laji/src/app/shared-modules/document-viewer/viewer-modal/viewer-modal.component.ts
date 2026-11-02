@@ -7,6 +7,7 @@ import {ModalComponent} from 'projects/laji-ui/src/lib/modal/modal/modal.compone
 @Component({
     selector: 'laji-viewer-modal',
     templateUrl: './viewer-modal.component.html',
+    styleUrls: ['./viewer-modal.component.scss'],
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })

@@ -1,4 +1,4 @@
-<div class='form-footer'>
+<div class='form-footer row' [class.form-footer-sticky]="!_form.options?.openForm" lajiFormOption="options.openForm">
   @if (isAdmin && locked !== undefined) {
     <div class="lock-button">
       @if (locked) {

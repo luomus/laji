@@ -111,6 +111,7 @@ const HOME_QUERY = gql`
     ) {
       results {
         media {
+          fullURL
           thumbnailURL
         }
       }

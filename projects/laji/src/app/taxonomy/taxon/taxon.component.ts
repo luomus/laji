@@ -10,6 +10,7 @@ import { getDescription, HeaderService } from '../../shared/service/header.servi
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
 import { components } from 'projects/laji-api-client/generated/api.d';
 import { PlatformService } from '../../root/platform.service';
+import { Meta } from '@angular/platform-browser';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
@@ -43,7 +44,8 @@ export class TaxonComponent implements OnInit, OnDestroy {
     private footerService: FooterService,
     private cdr: ChangeDetectorRef,
     private headerService: HeaderService,
-    private platformService: PlatformService
+    private platformService: PlatformService,
+    private meta: Meta,
   ) { }
 
   ngOnInit() {
@@ -147,6 +149,12 @@ export class TaxonComponent implements OnInit, OnDestroy {
       description: d ? getDescription(d) : undefined,
       image: taxon?.multimedia?.[0]?.thumbnailURL
     });
+    if (taxon.nameAccordingTo === 'MR.1' || taxon.nameAccordingTo === 'MR.2') {
+      // eslint-disable-next-line @typescript-eslint/quotes
+      this.meta.removeTag("name='robots'");
+    } else {
+      this.meta.updateTag({ name: 'robots', content: 'noindex' });
+    }
   }
 
   private getTaxon(id: string): Observable<Taxon> {

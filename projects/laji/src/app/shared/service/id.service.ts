@@ -15,7 +15,7 @@ export class IdService {
     'herbo:': 'http://id.herb.oulu.fi/',
     'utu:': 'http://mus.utu.fi/',
     'gbif-dataset:': 'https://www.gbif.org/dataset/',
-    'gbif:': 'https://www.gbif.org/species/',
+    'gbif:': 'https://www.gbif.org/taxon/',
   };
 
    static getId(value: string): string;

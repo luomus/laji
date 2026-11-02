@@ -28,7 +28,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** Get a page of forms */
+        /** Get all forms */
         get: operations["FormsController_getListing"];
         put?: never;
         /** Create a new form */
@@ -2782,10 +2782,12 @@ export interface paths {
                     useIdentificationAnnotations?: boolean;
                     /** @description By default, all taxon linking related filters return all entries that belong to the filtered taxa. To return only exact matches (no subtaxa), set this to false. */
                     includeSubTaxa?: boolean;
-                    /** @description Set to false if you want to include only those entries where reported target name can be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    includeNonValidTaxa?: boolean;
-                    /** @description Set to true if you want to include only those entries where reported target name can not be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    onlyNonValidTaxa?: boolean;
+                    /** @description True: occurrence is linked to a taxon concept that exactly matches the taxonomic information provided in the occurrence. False: occurrence is not linked to an exact taxon concept, including occurrences linked only to higher taxonomy based on a partial name. */
+                    hasTaxon?: boolean;
+                    /** @description Filter occurrences by how their taxonomic information is linked: EXACT: linked to a taxon concept that exactly matches the information provided in the occurrence; NON_EXACT: linked only to higher taxonomy based on a partial name; NONE: not linked to taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. */
+                    taxonLinking?: "EXACT" | "NON_EXACT" | "NO_LINKING";
+                    /** @description Filter by the checklist to which the taxon concept linked to the occurrence belongs. The checklist is identified by its URI or Qname, for example MR.1 for the FinBIF Master Checklist or MR.2 for the GBIF Backbone Taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /checklist */
+                    checklist?: string;
                     /** @description Filter based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
                     informalTaxonGroupId?: string;
                     /** @description Exclude based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will exclude entries that have been linked with taxa that belong to any of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
@@ -3110,7 +3112,7 @@ export interface paths {
             parameters: {
                 query?: {
                     /** @description Define what fields to include to the result. Defaults to [document.collectionId, document.documentId, document.licenseId, document.secureLevel, document.secureReasons, document.sourceId, gathering.conversions.wgs84CenterPoint.lat, gathering.conversions.wgs84CenterPoint.lon, gathering.displayDateTime, gathering.gatheringId, gathering.interpretations.coordinateAccuracy, gathering.interpretations.municipalityDisplayname, gathering.interpretations.sourceOfCoordinates, gathering.locality, gathering.team, unit.abundanceString, unit.linkings.taxon.id, unit.linkings.taxon.qname, unit.linkings.taxon.scientificName, unit.linkings.taxon.vernacularName, unit.notes, unit.recordBasis, unit.taxonVerbatim, unit.unitId] Multiple values are seperated by ','. */
-                    selected?: ("document.annotations.addedTags" | "document.annotations.annotationByPerson" | "document.annotations.annotationByPersonName" | "document.annotations.annotationBySystem" | "document.annotations.annotationBySystemName" | "document.annotations.atlasCode" | "document.annotations.byRole" | "document.annotations.created" | "document.annotations.deleted" | "document.annotations.deletedByPerson" | "document.annotations.deletedByPersonName" | "document.annotations.deletedDateTime" | "document.annotations.id" | "document.annotations.notes" | "document.annotations.removedTags" | "document.annotations.valid" | "document.collectionId" | "document.completeListTaxonId" | "document.completeListType" | "document.createdDate" | "document.dataSource" | "document.documentId" | "document.editorUserIds" | "document.facts.decimalValue" | "document.facts.fact" | "document.facts.integerValue" | "document.facts.value" | "document.firstLoadDate" | "document.formId" | "document.keywords" | "document.licenseId" | "document.linkings.collectionQuality" | "document.linkings.editors.fullName" | "document.linkings.editors.id" | "document.linkings.editors.userId" | "document.loadDate" | "document.media.author" | "document.media.caption" | "document.media.copyrightOwner" | "document.media.fullResolutionMediaAvailable" | "document.media.fullURL" | "document.media.highDetailModelURL" | "document.media.licenseId" | "document.media.lowDetailModelURL" | "document.media.mediaType" | "document.media.mp3URL" | "document.media.squareThumbnailURL" | "document.media.thumbnailURL" | "document.media.type" | "document.media.videoURL" | "document.media.wavURL" | "document.mediaCount" | "document.modifiedDate" | "document.namedPlace.alternativeId" | "document.namedPlace.alternativeIds" | "document.namedPlace.birdAssociationAreaDisplayName" | "document.namedPlace.birdAssociationAreaId" | "document.namedPlace.collectionId" | "document.namedPlace.id" | "document.namedPlace.municipalityDisplayName" | "document.namedPlace.municipalityId" | "document.namedPlace.name" | "document.namedPlace.tags" | "document.namedPlace.wgs84CenterPoint.lat" | "document.namedPlace.wgs84CenterPoint.lon" | "document.namedPlace.ykj10km.lat" | "document.namedPlace.ykj10km.lon" | "document.namedPlaceId" | "document.notes" | "document.partial" | "document.prefix" | "document.quality.issue.issue" | "document.quality.issue.message" | "document.quality.issue.source" | "document.referenceURL" | "document.secureLevel" | "document.secureReasons" | "document.secured" | "document.siteDead" | "document.siteStatus" | "document.siteType" | "document.sourceId" | "document.sourceTags" | "gathering.accurateArea" | "gathering.biogeographicalProvince" | "gathering.conversions.birdAssociationArea" | "gathering.conversions.boundingBoxAreaInSquareMeters" | "gathering.conversions.century" | "gathering.conversions.day" | "gathering.conversions.dayOfYearBegin" | "gathering.conversions.dayOfYearEnd" | "gathering.conversions.decade" | "gathering.conversions.euref.latMax" | "gathering.conversions.euref.latMin" | "gathering.conversions.euref.lonMax" | "gathering.conversions.euref.lonMin" | "gathering.conversions.eurefCenterPoint.lat" | "gathering.conversions.eurefCenterPoint.lon" | "gathering.conversions.eurefWKT" | "gathering.conversions.linelengthInMeters" | "gathering.conversions.month" | "gathering.conversions.seasonBegin" | "gathering.conversions.seasonEnd" | "gathering.conversions.wgs84.latMax" | "gathering.conversions.wgs84.latMin" | "gathering.conversions.wgs84.lonMax" | "gathering.conversions.wgs84.lonMin" | "gathering.conversions.wgs84CenterPoint.lat" | "gathering.conversions.wgs84CenterPoint.lon" | "gathering.conversions.wgs84Grid005.lat" | "gathering.conversions.wgs84Grid005.lon" | "gathering.conversions.wgs84Grid01.lat" | "gathering.conversions.wgs84Grid01.lon" | "gathering.conversions.wgs84Grid05.lat" | "gathering.conversions.wgs84Grid05.lon" | "gathering.conversions.wgs84Grid1.lat" | "gathering.conversions.wgs84Grid1.lon" | "gathering.conversions.wgs84WKT" | "gathering.conversions.year" | "gathering.conversions.ykj.latMax" | "gathering.conversions.ykj.latMin" | "gathering.conversions.ykj.lonMax" | "gathering.conversions.ykj.lonMin" | "gathering.conversions.ykj100km.lat" | "gathering.conversions.ykj100km.lon" | "gathering.conversions.ykj100kmCenter.lat" | "gathering.conversions.ykj100kmCenter.lon" | "gathering.conversions.ykj10km.lat" | "gathering.conversions.ykj10km.lon" | "gathering.conversions.ykj10kmCenter.lat" | "gathering.conversions.ykj10kmCenter.lon" | "gathering.conversions.ykj1km.lat" | "gathering.conversions.ykj1km.lon" | "gathering.conversions.ykj1kmCenter.lat" | "gathering.conversions.ykj1kmCenter.lon" | "gathering.conversions.ykj50km.lat" | "gathering.conversions.ykj50km.lon" | "gathering.conversions.ykj50kmCenter.lat" | "gathering.conversions.ykj50kmCenter.lon" | "gathering.conversions.ykjWKT" | "gathering.coordinatesVerbatim" | "gathering.country" | "gathering.displayDateTime" | "gathering.eventDate.begin" | "gathering.eventDate.end" | "gathering.facts.decimalValue" | "gathering.facts.fact" | "gathering.facts.integerValue" | "gathering.facts.value" | "gathering.gatheringId" | "gathering.gatheringOrder" | "gathering.gatheringSection" | "gathering.higherGeography" | "gathering.hourBegin" | "gathering.hourEnd" | "gathering.interpretations.biogeographicalProvince" | "gathering.interpretations.biogeographicalProvinceDisplayname" | "gathering.interpretations.biogeographicalProvinces" | "gathering.interpretations.coordinateAccuracy" | "gathering.interpretations.country" | "gathering.interpretations.countryDisplayname" | "gathering.interpretations.finnishMunicipalities" | "gathering.interpretations.finnishMunicipality" | "gathering.interpretations.municipalityDisplayname" | "gathering.interpretations.sourceOfBiogeographicalProvince" | "gathering.interpretations.sourceOfCoordinates" | "gathering.interpretations.sourceOfCountry" | "gathering.interpretations.sourceOfFinnishMunicipality" | "gathering.linkings.observers.fullName" | "gathering.linkings.observers.id" | "gathering.linkings.observers.userId" | "gathering.locality" | "gathering.media.author" | "gathering.media.caption" | "gathering.media.copyrightOwner" | "gathering.media.fullResolutionMediaAvailable" | "gathering.media.fullURL" | "gathering.media.highDetailModelURL" | "gathering.media.licenseId" | "gathering.media.lowDetailModelURL" | "gathering.media.mediaType" | "gathering.media.mp3URL" | "gathering.media.squareThumbnailURL" | "gathering.media.thumbnailURL" | "gathering.media.type" | "gathering.media.videoURL" | "gathering.media.wavURL" | "gathering.mediaCount" | "gathering.minutesBegin" | "gathering.minutesEnd" | "gathering.municipality" | "gathering.notes" | "gathering.observerUserIds" | "gathering.province" | "gathering.quality.issue.issue" | "gathering.quality.issue.message" | "gathering.quality.issue.source" | "gathering.quality.locationIssue.issue" | "gathering.quality.locationIssue.message" | "gathering.quality.locationIssue.source" | "gathering.quality.timeIssue.issue" | "gathering.quality.timeIssue.message" | "gathering.quality.timeIssue.source" | "gathering.stateLand" | "gathering.taxonCensus.taxonId" | "gathering.taxonCensus.type" | "gathering.team" | "unit.abundanceString" | "unit.abundanceUnit" | "unit.alive" | "unit.annotationCount" | "unit.annotations.addedTags" | "unit.annotations.annotationByPerson" | "unit.annotations.annotationByPersonName" | "unit.annotations.annotationBySystem" | "unit.annotations.annotationBySystemName" | "unit.annotations.atlasCode" | "unit.annotations.byRole" | "unit.annotations.created" | "unit.annotations.deleted" | "unit.annotations.deletedByPerson" | "unit.annotations.deletedByPersonName" | "unit.annotations.deletedDateTime" | "unit.annotations.id" | "unit.annotations.identification.author" | "unit.annotations.identification.facts.decimalValue" | "unit.annotations.identification.facts.fact" | "unit.annotations.identification.facts.integerValue" | "unit.annotations.identification.facts.value" | "unit.annotations.identification.id" | "unit.annotations.identification.linkings.taxon.administrativeStatuses" | "unit.annotations.identification.linkings.taxon.checklist" | "unit.annotations.identification.linkings.taxon.cursiveName" | "unit.annotations.identification.linkings.taxon.finnish" | "unit.annotations.identification.linkings.taxon.id" | "unit.annotations.identification.linkings.taxon.informalTaxonGroups" | "unit.annotations.identification.linkings.taxon.kingdomScientificName" | "unit.annotations.identification.linkings.taxon.latestRedListStatusFinland.status" | "unit.annotations.identification.linkings.taxon.latestRedListStatusFinland.year" | "unit.annotations.identification.linkings.taxon.nameEnglish" | "unit.annotations.identification.linkings.taxon.nameFinnish" | "unit.annotations.identification.linkings.taxon.nameSwedish" | "unit.annotations.identification.linkings.taxon.occurrenceCountFinland" | "unit.annotations.identification.linkings.taxon.primaryHabitat.habitat" | "unit.annotations.identification.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.annotations.identification.linkings.taxon.primaryHabitat.id" | "unit.annotations.identification.linkings.taxon.primaryHabitat.order" | "unit.annotations.identification.linkings.taxon.qname" | "unit.annotations.identification.linkings.taxon.scientificName" | "unit.annotations.identification.linkings.taxon.scientificNameAuthorship" | "unit.annotations.identification.linkings.taxon.scientificNameDisplayName" | "unit.annotations.identification.linkings.taxon.sensitive" | "unit.annotations.identification.linkings.taxon.taxonConceptIds" | "unit.annotations.identification.linkings.taxon.taxonRank" | "unit.annotations.identification.linkings.taxon.taxonomicOrder" | "unit.annotations.identification.linkings.taxon.threatenedStatus" | "unit.annotations.identification.linkings.taxon.vernacularName" | "unit.annotations.identification.notes" | "unit.annotations.identification.taxon" | "unit.annotations.identification.taxonID" | "unit.annotations.identification.taxonSpecifier" | "unit.annotations.identification.taxonSpecifierAuthor" | "unit.annotations.notes" | "unit.annotations.occurrenceAtTimeOfAnnotation.countryVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.dateBegin" | "unit.annotations.occurrenceAtTimeOfAnnotation.dateEnd" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.administrativeStatuses" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.checklist" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.cursiveName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.finnish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.id" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.informalTaxonGroups" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.kingdomScientificName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.status" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.year" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameEnglish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameFinnish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameSwedish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.occurrenceCountFinland" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitat" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.id" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.order" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.qname" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameAuthorship" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameDisplayName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.sensitive" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonConceptIds" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonRank" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonomicOrder" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.threatenedStatus" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.vernacularName" | "unit.annotations.occurrenceAtTimeOfAnnotation.locality" | "unit.annotations.occurrenceAtTimeOfAnnotation.municipalityVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.taxonId" | "unit.annotations.occurrenceAtTimeOfAnnotation.taxonVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.wgs84centerPointLat" | "unit.annotations.occurrenceAtTimeOfAnnotation.wgs84centerPointLon" | "unit.annotations.removedTags" | "unit.annotations.valid" | "unit.atlasClass" | "unit.atlasCode" | "unit.audioCount" | "unit.author" | "unit.breedingSite" | "unit.det" | "unit.externalMediaCount" | "unit.facts.decimalValue" | "unit.facts.fact" | "unit.facts.integerValue" | "unit.facts.value" | "unit.identificationBasis" | "unit.identifications.author" | "unit.identifications.det" | "unit.identifications.detDate" | "unit.identifications.facts.decimalValue" | "unit.identifications.facts.fact" | "unit.identifications.facts.integerValue" | "unit.identifications.facts.value" | "unit.identifications.id" | "unit.identifications.linkings.taxon.administrativeStatuses" | "unit.identifications.linkings.taxon.checklist" | "unit.identifications.linkings.taxon.cursiveName" | "unit.identifications.linkings.taxon.finnish" | "unit.identifications.linkings.taxon.id" | "unit.identifications.linkings.taxon.informalTaxonGroups" | "unit.identifications.linkings.taxon.kingdomScientificName" | "unit.identifications.linkings.taxon.latestRedListStatusFinland.status" | "unit.identifications.linkings.taxon.latestRedListStatusFinland.year" | "unit.identifications.linkings.taxon.nameEnglish" | "unit.identifications.linkings.taxon.nameFinnish" | "unit.identifications.linkings.taxon.nameSwedish" | "unit.identifications.linkings.taxon.occurrenceCountFinland" | "unit.identifications.linkings.taxon.primaryHabitat.habitat" | "unit.identifications.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.identifications.linkings.taxon.primaryHabitat.id" | "unit.identifications.linkings.taxon.primaryHabitat.order" | "unit.identifications.linkings.taxon.qname" | "unit.identifications.linkings.taxon.scientificName" | "unit.identifications.linkings.taxon.scientificNameAuthorship" | "unit.identifications.linkings.taxon.scientificNameDisplayName" | "unit.identifications.linkings.taxon.sensitive" | "unit.identifications.linkings.taxon.taxonConceptIds" | "unit.identifications.linkings.taxon.taxonRank" | "unit.identifications.linkings.taxon.taxonomicOrder" | "unit.identifications.linkings.taxon.threatenedStatus" | "unit.identifications.linkings.taxon.vernacularName" | "unit.identifications.notes" | "unit.identifications.preferred" | "unit.identifications.taxon" | "unit.identifications.taxonID" | "unit.identifications.taxonSpecifier" | "unit.identifications.taxonSpecifierAuthor" | "unit.imageCount" | "unit.individualCountFemale" | "unit.individualCountMale" | "unit.individualId" | "unit.interpretations.annotatedTaxonId" | "unit.interpretations.collectionAndRecordQuality" | "unit.interpretations.det" | "unit.interpretations.effectiveTags" | "unit.interpretations.individualCount" | "unit.interpretations.invasiveControlEffectiveness" | "unit.interpretations.invasiveControlled" | "unit.interpretations.needsCheck" | "unit.interpretations.needsIdentification" | "unit.interpretations.pairCount" | "unit.interpretations.recordQuality" | "unit.interpretations.recordQualityNumeric" | "unit.interpretations.reliability" | "unit.keywords" | "unit.lifeStage" | "unit.linkings.originalTaxon.administrativeStatuses" | "unit.linkings.originalTaxon.checklist" | "unit.linkings.originalTaxon.cursiveName" | "unit.linkings.originalTaxon.finnish" | "unit.linkings.originalTaxon.id" | "unit.linkings.originalTaxon.informalTaxonGroups" | "unit.linkings.originalTaxon.kingdomScientificName" | "unit.linkings.originalTaxon.latestRedListStatusFinland.status" | "unit.linkings.originalTaxon.latestRedListStatusFinland.year" | "unit.linkings.originalTaxon.nameEnglish" | "unit.linkings.originalTaxon.nameFinnish" | "unit.linkings.originalTaxon.nameSwedish" | "unit.linkings.originalTaxon.occurrenceCountFinland" | "unit.linkings.originalTaxon.primaryHabitat.habitat" | "unit.linkings.originalTaxon.primaryHabitat.habitatSpecificTypes" | "unit.linkings.originalTaxon.primaryHabitat.id" | "unit.linkings.originalTaxon.primaryHabitat.order" | "unit.linkings.originalTaxon.qname" | "unit.linkings.originalTaxon.scientificName" | "unit.linkings.originalTaxon.scientificNameAuthorship" | "unit.linkings.originalTaxon.scientificNameDisplayName" | "unit.linkings.originalTaxon.sensitive" | "unit.linkings.originalTaxon.taxonConceptIds" | "unit.linkings.originalTaxon.taxonRank" | "unit.linkings.originalTaxon.taxonomicOrder" | "unit.linkings.originalTaxon.threatenedStatus" | "unit.linkings.originalTaxon.vernacularName" | "unit.linkings.taxon.administrativeStatuses" | "unit.linkings.taxon.checklist" | "unit.linkings.taxon.cursiveName" | "unit.linkings.taxon.finnish" | "unit.linkings.taxon.id" | "unit.linkings.taxon.informalTaxonGroups" | "unit.linkings.taxon.kingdomScientificName" | "unit.linkings.taxon.latestRedListStatusFinland.status" | "unit.linkings.taxon.latestRedListStatusFinland.year" | "unit.linkings.taxon.nameEnglish" | "unit.linkings.taxon.nameFinnish" | "unit.linkings.taxon.nameSwedish" | "unit.linkings.taxon.occurrenceCountFinland" | "unit.linkings.taxon.primaryHabitat.habitat" | "unit.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.linkings.taxon.primaryHabitat.id" | "unit.linkings.taxon.primaryHabitat.order" | "unit.linkings.taxon.qname" | "unit.linkings.taxon.scientificName" | "unit.linkings.taxon.scientificNameAuthorship" | "unit.linkings.taxon.scientificNameDisplayName" | "unit.linkings.taxon.sensitive" | "unit.linkings.taxon.taxonConceptIds" | "unit.linkings.taxon.taxonRank" | "unit.linkings.taxon.taxonomicOrder" | "unit.linkings.taxon.threatenedStatus" | "unit.linkings.taxon.vernacularName" | "unit.local" | "unit.media.author" | "unit.media.caption" | "unit.media.copyrightOwner" | "unit.media.fullResolutionMediaAvailable" | "unit.media.fullURL" | "unit.media.highDetailModelURL" | "unit.media.licenseId" | "unit.media.lowDetailModelURL" | "unit.media.mediaType" | "unit.media.mp3URL" | "unit.media.squareThumbnailURL" | "unit.media.thumbnailURL" | "unit.media.type" | "unit.media.videoURL" | "unit.media.wavURL" | "unit.mediaCount" | "unit.modelCount" | "unit.notes" | "unit.plantStatusCode" | "unit.primarySpecimen" | "unit.quality.documentGatheringUnitQualityIssues" | "unit.quality.issue.issue" | "unit.quality.issue.message" | "unit.quality.issue.source" | "unit.recordBasis" | "unit.reportedInformalTaxonGroup" | "unit.reportedTaxonConfidence" | "unit.reportedTaxonId" | "unit.sampleCount" | "unit.samples.collectionId" | "unit.samples.facts.decimalValue" | "unit.samples.facts.fact" | "unit.samples.facts.integerValue" | "unit.samples.facts.value" | "unit.samples.keywords" | "unit.samples.material" | "unit.samples.multiple" | "unit.samples.notes" | "unit.samples.quality" | "unit.samples.sampleId" | "unit.samples.sampleOrder" | "unit.samples.status" | "unit.samples.type" | "unit.samplingMethod" | "unit.sequenceText" | "unit.sex" | "unit.sourceTags" | "unit.superRecordBasis" | "unit.taxonVerbatim" | "unit.typeSpecimen" | "unit.types.author" | "unit.types.basionymePublication" | "unit.types.facts.decimalValue" | "unit.types.facts.fact" | "unit.types.facts.integerValue" | "unit.types.facts.value" | "unit.types.id" | "unit.types.linkings.taxon.administrativeStatuses" | "unit.types.linkings.taxon.checklist" | "unit.types.linkings.taxon.cursiveName" | "unit.types.linkings.taxon.finnish" | "unit.types.linkings.taxon.id" | "unit.types.linkings.taxon.informalTaxonGroups" | "unit.types.linkings.taxon.kingdomScientificName" | "unit.types.linkings.taxon.latestRedListStatusFinland.status" | "unit.types.linkings.taxon.latestRedListStatusFinland.year" | "unit.types.linkings.taxon.nameEnglish" | "unit.types.linkings.taxon.nameFinnish" | "unit.types.linkings.taxon.nameSwedish" | "unit.types.linkings.taxon.occurrenceCountFinland" | "unit.types.linkings.taxon.primaryHabitat.habitat" | "unit.types.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.types.linkings.taxon.primaryHabitat.id" | "unit.types.linkings.taxon.primaryHabitat.order" | "unit.types.linkings.taxon.qname" | "unit.types.linkings.taxon.scientificName" | "unit.types.linkings.taxon.scientificNameAuthorship" | "unit.types.linkings.taxon.scientificNameDisplayName" | "unit.types.linkings.taxon.sensitive" | "unit.types.linkings.taxon.taxonConceptIds" | "unit.types.linkings.taxon.taxonRank" | "unit.types.linkings.taxon.taxonomicOrder" | "unit.types.linkings.taxon.threatenedStatus" | "unit.types.linkings.taxon.vernacularName" | "unit.types.notes" | "unit.types.publication" | "unit.types.status" | "unit.types.taxon" | "unit.types.taxonID" | "unit.types.taxonSpecifier" | "unit.types.taxonSpecifierAuthor" | "unit.types.typif" | "unit.types.typifDate" | "unit.types.verification" | "unit.unitId" | "unit.unitOrder" | "unit.videoCount" | "unit.wild")[];
+                    selected?: ("document.annotations.addedTags" | "document.annotations.annotationByPerson" | "document.annotations.annotationByPersonName" | "document.annotations.annotationBySystem" | "document.annotations.annotationBySystemName" | "document.annotations.atlasCode" | "document.annotations.byRole" | "document.annotations.created" | "document.annotations.deleted" | "document.annotations.deletedByPerson" | "document.annotations.deletedByPersonName" | "document.annotations.deletedDateTime" | "document.annotations.id" | "document.annotations.notes" | "document.annotations.removedTags" | "document.annotations.valid" | "document.collectionId" | "document.completeListTaxonId" | "document.completeListType" | "document.createdDate" | "document.dataSource" | "document.documentId" | "document.editorUserIds" | "document.facts.decimalValue" | "document.facts.fact" | "document.facts.integerValue" | "document.facts.value" | "document.firstLoadDate" | "document.formId" | "document.keywords" | "document.licenseId" | "document.linkings.collectionQuality" | "document.linkings.editors.fullName" | "document.linkings.editors.id" | "document.linkings.editors.userId" | "document.loadDate" | "document.media.author" | "document.media.caption" | "document.media.copyrightOwner" | "document.media.fullResolutionMediaAvailable" | "document.media.fullURL" | "document.media.highDetailModelURL" | "document.media.licenseId" | "document.media.lowDetailModelURL" | "document.media.mediaType" | "document.media.mp3URL" | "document.media.squareThumbnailURL" | "document.media.thumbnailURL" | "document.media.type" | "document.media.videoURL" | "document.media.wavURL" | "document.mediaCount" | "document.modifiedDate" | "document.namedPlace.alternativeId" | "document.namedPlace.alternativeIds" | "document.namedPlace.birdAssociationAreaDisplayName" | "document.namedPlace.birdAssociationAreaId" | "document.namedPlace.collectionId" | "document.namedPlace.id" | "document.namedPlace.municipalityDisplayName" | "document.namedPlace.municipalityId" | "document.namedPlace.name" | "document.namedPlace.tags" | "document.namedPlace.wgs84CenterPoint.lat" | "document.namedPlace.wgs84CenterPoint.lon" | "document.namedPlace.ykj10km.lat" | "document.namedPlace.ykj10km.lon" | "document.namedPlaceId" | "document.notes" | "document.partial" | "document.prefix" | "document.quality.issue.issue" | "document.quality.issue.message" | "document.quality.issue.source" | "document.referenceURL" | "document.secureLevel" | "document.secureReasons" | "document.secured" | "document.siteDead" | "document.siteStatus" | "document.siteType" | "document.sourceId" | "document.sourceTags" | "gathering.accurateArea" | "gathering.biogeographicalProvince" | "gathering.conversions.birdAssociationArea" | "gathering.conversions.boundingBoxAreaInSquareMeters" | "gathering.conversions.century" | "gathering.conversions.day" | "gathering.conversions.dayOfYearBegin" | "gathering.conversions.dayOfYearEnd" | "gathering.conversions.decade" | "gathering.conversions.euref.latMax" | "gathering.conversions.euref.latMin" | "gathering.conversions.euref.lonMax" | "gathering.conversions.euref.lonMin" | "gathering.conversions.eurefCenterPoint.lat" | "gathering.conversions.eurefCenterPoint.lon" | "gathering.conversions.eurefWKT" | "gathering.conversions.linelengthInMeters" | "gathering.conversions.month" | "gathering.conversions.seasonBegin" | "gathering.conversions.seasonEnd" | "gathering.conversions.wgs84.latMax" | "gathering.conversions.wgs84.latMin" | "gathering.conversions.wgs84.lonMax" | "gathering.conversions.wgs84.lonMin" | "gathering.conversions.wgs84CenterPoint.lat" | "gathering.conversions.wgs84CenterPoint.lon" | "gathering.conversions.wgs84Grid005.lat" | "gathering.conversions.wgs84Grid005.lon" | "gathering.conversions.wgs84Grid01.lat" | "gathering.conversions.wgs84Grid01.lon" | "gathering.conversions.wgs84Grid05.lat" | "gathering.conversions.wgs84Grid05.lon" | "gathering.conversions.wgs84Grid1.lat" | "gathering.conversions.wgs84Grid1.lon" | "gathering.conversions.wgs84WKT" | "gathering.conversions.year" | "gathering.conversions.ykj.latMax" | "gathering.conversions.ykj.latMin" | "gathering.conversions.ykj.lonMax" | "gathering.conversions.ykj.lonMin" | "gathering.conversions.ykj100km.lat" | "gathering.conversions.ykj100km.lon" | "gathering.conversions.ykj100kmCenter.lat" | "gathering.conversions.ykj100kmCenter.lon" | "gathering.conversions.ykj10km.lat" | "gathering.conversions.ykj10km.lon" | "gathering.conversions.ykj10kmCenter.lat" | "gathering.conversions.ykj10kmCenter.lon" | "gathering.conversions.ykj1km.lat" | "gathering.conversions.ykj1km.lon" | "gathering.conversions.ykj1kmCenter.lat" | "gathering.conversions.ykj1kmCenter.lon" | "gathering.conversions.ykj50km.lat" | "gathering.conversions.ykj50km.lon" | "gathering.conversions.ykj50kmCenter.lat" | "gathering.conversions.ykj50kmCenter.lon" | "gathering.conversions.ykjWKT" | "gathering.coordinatesVerbatim" | "gathering.country" | "gathering.displayDateTime" | "gathering.eventDate.begin" | "gathering.eventDate.end" | "gathering.facts.decimalValue" | "gathering.facts.fact" | "gathering.facts.integerValue" | "gathering.facts.value" | "gathering.gatheringId" | "gathering.gatheringOrder" | "gathering.gatheringSection" | "gathering.higherGeography" | "gathering.hourBegin" | "gathering.hourEnd" | "gathering.interpretations.biogeographicalProvince" | "gathering.interpretations.biogeographicalProvinceDisplayname" | "gathering.interpretations.biogeographicalProvinces" | "gathering.interpretations.coordinateAccuracy" | "gathering.interpretations.country" | "gathering.interpretations.countryDisplayname" | "gathering.interpretations.finnishMunicipalities" | "gathering.interpretations.finnishMunicipality" | "gathering.interpretations.municipalityDisplayname" | "gathering.interpretations.sourceOfBiogeographicalProvince" | "gathering.interpretations.sourceOfCoordinates" | "gathering.interpretations.sourceOfCountry" | "gathering.interpretations.sourceOfFinnishMunicipality" | "gathering.linkings.observers.fullName" | "gathering.linkings.observers.id" | "gathering.linkings.observers.userId" | "gathering.locality" | "gathering.media.author" | "gathering.media.caption" | "gathering.media.copyrightOwner" | "gathering.media.fullResolutionMediaAvailable" | "gathering.media.fullURL" | "gathering.media.highDetailModelURL" | "gathering.media.licenseId" | "gathering.media.lowDetailModelURL" | "gathering.media.mediaType" | "gathering.media.mp3URL" | "gathering.media.squareThumbnailURL" | "gathering.media.thumbnailURL" | "gathering.media.type" | "gathering.media.videoURL" | "gathering.media.wavURL" | "gathering.mediaCount" | "gathering.minutesBegin" | "gathering.minutesEnd" | "gathering.municipality" | "gathering.notes" | "gathering.observerUserIds" | "gathering.province" | "gathering.quality.issue.issue" | "gathering.quality.issue.message" | "gathering.quality.issue.source" | "gathering.quality.locationIssue.issue" | "gathering.quality.locationIssue.message" | "gathering.quality.locationIssue.source" | "gathering.quality.timeIssue.issue" | "gathering.quality.timeIssue.message" | "gathering.quality.timeIssue.source" | "gathering.stateLand" | "gathering.taxonCensus.taxonId" | "gathering.taxonCensus.type" | "gathering.team" | "unit.abundanceString" | "unit.abundanceUnit" | "unit.alive" | "unit.annotationCount" | "unit.annotations.addedTags" | "unit.annotations.annotationByPerson" | "unit.annotations.annotationByPersonName" | "unit.annotations.annotationBySystem" | "unit.annotations.annotationBySystemName" | "unit.annotations.atlasCode" | "unit.annotations.byRole" | "unit.annotations.created" | "unit.annotations.deleted" | "unit.annotations.deletedByPerson" | "unit.annotations.deletedByPersonName" | "unit.annotations.deletedDateTime" | "unit.annotations.id" | "unit.annotations.identification.author" | "unit.annotations.identification.facts.decimalValue" | "unit.annotations.identification.facts.fact" | "unit.annotations.identification.facts.integerValue" | "unit.annotations.identification.facts.value" | "unit.annotations.identification.id" | "unit.annotations.identification.linkings.taxon.administrativeStatuses" | "unit.annotations.identification.linkings.taxon.checklist" | "unit.annotations.identification.linkings.taxon.cursiveName" | "unit.annotations.identification.linkings.taxon.finnish" | "unit.annotations.identification.linkings.taxon.id" | "unit.annotations.identification.linkings.taxon.informalTaxonGroups" | "unit.annotations.identification.linkings.taxon.kingdomScientificName" | "unit.annotations.identification.linkings.taxon.latestRedListStatusFinland.status" | "unit.annotations.identification.linkings.taxon.latestRedListStatusFinland.year" | "unit.annotations.identification.linkings.taxon.nameEnglish" | "unit.annotations.identification.linkings.taxon.nameFinnish" | "unit.annotations.identification.linkings.taxon.nameSwedish" | "unit.annotations.identification.linkings.taxon.occurrenceCountFinland" | "unit.annotations.identification.linkings.taxon.primaryHabitat.habitat" | "unit.annotations.identification.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.annotations.identification.linkings.taxon.primaryHabitat.id" | "unit.annotations.identification.linkings.taxon.primaryHabitat.order" | "unit.annotations.identification.linkings.taxon.qname" | "unit.annotations.identification.linkings.taxon.scientificName" | "unit.annotations.identification.linkings.taxon.scientificNameAuthorship" | "unit.annotations.identification.linkings.taxon.scientificNameDisplayName" | "unit.annotations.identification.linkings.taxon.sensitive" | "unit.annotations.identification.linkings.taxon.taxonConceptIds" | "unit.annotations.identification.linkings.taxon.taxonRank" | "unit.annotations.identification.linkings.taxon.taxonomicOrder" | "unit.annotations.identification.linkings.taxon.threatenedStatus" | "unit.annotations.identification.linkings.taxon.vernacularName" | "unit.annotations.identification.notes" | "unit.annotations.identification.taxon" | "unit.annotations.identification.taxonID" | "unit.annotations.identification.taxonRank" | "unit.annotations.identification.taxonSpecifier" | "unit.annotations.identification.taxonSpecifierAuthor" | "unit.annotations.notes" | "unit.annotations.occurrenceAtTimeOfAnnotation.countryVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.dateBegin" | "unit.annotations.occurrenceAtTimeOfAnnotation.dateEnd" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.administrativeStatuses" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.checklist" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.cursiveName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.finnish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.id" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.informalTaxonGroups" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.kingdomScientificName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.status" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.year" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameEnglish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameFinnish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameSwedish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.occurrenceCountFinland" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitat" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.id" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.order" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.qname" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameAuthorship" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameDisplayName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.sensitive" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonConceptIds" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonRank" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonomicOrder" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.threatenedStatus" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.vernacularName" | "unit.annotations.occurrenceAtTimeOfAnnotation.locality" | "unit.annotations.occurrenceAtTimeOfAnnotation.municipalityVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.taxonId" | "unit.annotations.occurrenceAtTimeOfAnnotation.taxonVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.wgs84centerPointLat" | "unit.annotations.occurrenceAtTimeOfAnnotation.wgs84centerPointLon" | "unit.annotations.removedTags" | "unit.annotations.valid" | "unit.atlasClass" | "unit.atlasCode" | "unit.audioCount" | "unit.author" | "unit.breedingSite" | "unit.det" | "unit.externalMediaCount" | "unit.facts.decimalValue" | "unit.facts.fact" | "unit.facts.integerValue" | "unit.facts.value" | "unit.identificationBasis" | "unit.identifications.author" | "unit.identifications.det" | "unit.identifications.detDate" | "unit.identifications.facts.decimalValue" | "unit.identifications.facts.fact" | "unit.identifications.facts.integerValue" | "unit.identifications.facts.value" | "unit.identifications.id" | "unit.identifications.linkings.taxon.administrativeStatuses" | "unit.identifications.linkings.taxon.checklist" | "unit.identifications.linkings.taxon.cursiveName" | "unit.identifications.linkings.taxon.finnish" | "unit.identifications.linkings.taxon.id" | "unit.identifications.linkings.taxon.informalTaxonGroups" | "unit.identifications.linkings.taxon.kingdomScientificName" | "unit.identifications.linkings.taxon.latestRedListStatusFinland.status" | "unit.identifications.linkings.taxon.latestRedListStatusFinland.year" | "unit.identifications.linkings.taxon.nameEnglish" | "unit.identifications.linkings.taxon.nameFinnish" | "unit.identifications.linkings.taxon.nameSwedish" | "unit.identifications.linkings.taxon.occurrenceCountFinland" | "unit.identifications.linkings.taxon.primaryHabitat.habitat" | "unit.identifications.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.identifications.linkings.taxon.primaryHabitat.id" | "unit.identifications.linkings.taxon.primaryHabitat.order" | "unit.identifications.linkings.taxon.qname" | "unit.identifications.linkings.taxon.scientificName" | "unit.identifications.linkings.taxon.scientificNameAuthorship" | "unit.identifications.linkings.taxon.scientificNameDisplayName" | "unit.identifications.linkings.taxon.sensitive" | "unit.identifications.linkings.taxon.taxonConceptIds" | "unit.identifications.linkings.taxon.taxonRank" | "unit.identifications.linkings.taxon.taxonomicOrder" | "unit.identifications.linkings.taxon.threatenedStatus" | "unit.identifications.linkings.taxon.vernacularName" | "unit.identifications.notes" | "unit.identifications.preferred" | "unit.identifications.taxon" | "unit.identifications.taxonID" | "unit.identifications.taxonRank" | "unit.identifications.taxonSpecifier" | "unit.identifications.taxonSpecifierAuthor" | "unit.imageCount" | "unit.individualCountFemale" | "unit.individualCountMale" | "unit.individualId" | "unit.interpretations.annotatedTaxonId" | "unit.interpretations.collectionAndRecordQuality" | "unit.interpretations.det" | "unit.interpretations.effectiveTags" | "unit.interpretations.individualCount" | "unit.interpretations.invasiveControlEffectiveness" | "unit.interpretations.invasiveControlled" | "unit.interpretations.needsCheck" | "unit.interpretations.needsIdentification" | "unit.interpretations.pairCount" | "unit.interpretations.recordQuality" | "unit.interpretations.recordQualityNumeric" | "unit.interpretations.reliability" | "unit.keywords" | "unit.lifeStage" | "unit.linkings.originalTaxon.administrativeStatuses" | "unit.linkings.originalTaxon.checklist" | "unit.linkings.originalTaxon.cursiveName" | "unit.linkings.originalTaxon.finnish" | "unit.linkings.originalTaxon.id" | "unit.linkings.originalTaxon.informalTaxonGroups" | "unit.linkings.originalTaxon.kingdomScientificName" | "unit.linkings.originalTaxon.latestRedListStatusFinland.status" | "unit.linkings.originalTaxon.latestRedListStatusFinland.year" | "unit.linkings.originalTaxon.nameEnglish" | "unit.linkings.originalTaxon.nameFinnish" | "unit.linkings.originalTaxon.nameSwedish" | "unit.linkings.originalTaxon.occurrenceCountFinland" | "unit.linkings.originalTaxon.primaryHabitat.habitat" | "unit.linkings.originalTaxon.primaryHabitat.habitatSpecificTypes" | "unit.linkings.originalTaxon.primaryHabitat.id" | "unit.linkings.originalTaxon.primaryHabitat.order" | "unit.linkings.originalTaxon.qname" | "unit.linkings.originalTaxon.scientificName" | "unit.linkings.originalTaxon.scientificNameAuthorship" | "unit.linkings.originalTaxon.scientificNameDisplayName" | "unit.linkings.originalTaxon.sensitive" | "unit.linkings.originalTaxon.taxonConceptIds" | "unit.linkings.originalTaxon.taxonRank" | "unit.linkings.originalTaxon.taxonomicOrder" | "unit.linkings.originalTaxon.threatenedStatus" | "unit.linkings.originalTaxon.vernacularName" | "unit.linkings.taxon.administrativeStatuses" | "unit.linkings.taxon.checklist" | "unit.linkings.taxon.cursiveName" | "unit.linkings.taxon.finnish" | "unit.linkings.taxon.id" | "unit.linkings.taxon.informalTaxonGroups" | "unit.linkings.taxon.kingdomScientificName" | "unit.linkings.taxon.latestRedListStatusFinland.status" | "unit.linkings.taxon.latestRedListStatusFinland.year" | "unit.linkings.taxon.nameEnglish" | "unit.linkings.taxon.nameFinnish" | "unit.linkings.taxon.nameSwedish" | "unit.linkings.taxon.occurrenceCountFinland" | "unit.linkings.taxon.primaryHabitat.habitat" | "unit.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.linkings.taxon.primaryHabitat.id" | "unit.linkings.taxon.primaryHabitat.order" | "unit.linkings.taxon.qname" | "unit.linkings.taxon.scientificName" | "unit.linkings.taxon.scientificNameAuthorship" | "unit.linkings.taxon.scientificNameDisplayName" | "unit.linkings.taxon.sensitive" | "unit.linkings.taxon.taxonConceptIds" | "unit.linkings.taxon.taxonRank" | "unit.linkings.taxon.taxonomicOrder" | "unit.linkings.taxon.threatenedStatus" | "unit.linkings.taxon.vernacularName" | "unit.local" | "unit.media.author" | "unit.media.caption" | "unit.media.copyrightOwner" | "unit.media.fullResolutionMediaAvailable" | "unit.media.fullURL" | "unit.media.highDetailModelURL" | "unit.media.licenseId" | "unit.media.lowDetailModelURL" | "unit.media.mediaType" | "unit.media.mp3URL" | "unit.media.squareThumbnailURL" | "unit.media.thumbnailURL" | "unit.media.type" | "unit.media.videoURL" | "unit.media.wavURL" | "unit.mediaCount" | "unit.modelCount" | "unit.notes" | "unit.plantStatusCode" | "unit.primarySpecimen" | "unit.quality.documentGatheringUnitQualityIssues" | "unit.quality.issue.issue" | "unit.quality.issue.message" | "unit.quality.issue.source" | "unit.recordBasis" | "unit.reportedInformalTaxonGroup" | "unit.reportedKingdom" | "unit.reportedTaxonConfidence" | "unit.reportedTaxonId" | "unit.reportedTaxonRank" | "unit.sampleCount" | "unit.samples.collectionId" | "unit.samples.facts.decimalValue" | "unit.samples.facts.fact" | "unit.samples.facts.integerValue" | "unit.samples.facts.value" | "unit.samples.keywords" | "unit.samples.material" | "unit.samples.multiple" | "unit.samples.notes" | "unit.samples.quality" | "unit.samples.sampleId" | "unit.samples.sampleOrder" | "unit.samples.status" | "unit.samples.type" | "unit.samplingMethod" | "unit.sequenceText" | "unit.sex" | "unit.sourceTags" | "unit.superRecordBasis" | "unit.taxonVerbatim" | "unit.typeSpecimen" | "unit.types.author" | "unit.types.basionymePublication" | "unit.types.facts.decimalValue" | "unit.types.facts.fact" | "unit.types.facts.integerValue" | "unit.types.facts.value" | "unit.types.id" | "unit.types.linkings.taxon.administrativeStatuses" | "unit.types.linkings.taxon.checklist" | "unit.types.linkings.taxon.cursiveName" | "unit.types.linkings.taxon.finnish" | "unit.types.linkings.taxon.id" | "unit.types.linkings.taxon.informalTaxonGroups" | "unit.types.linkings.taxon.kingdomScientificName" | "unit.types.linkings.taxon.latestRedListStatusFinland.status" | "unit.types.linkings.taxon.latestRedListStatusFinland.year" | "unit.types.linkings.taxon.nameEnglish" | "unit.types.linkings.taxon.nameFinnish" | "unit.types.linkings.taxon.nameSwedish" | "unit.types.linkings.taxon.occurrenceCountFinland" | "unit.types.linkings.taxon.primaryHabitat.habitat" | "unit.types.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.types.linkings.taxon.primaryHabitat.id" | "unit.types.linkings.taxon.primaryHabitat.order" | "unit.types.linkings.taxon.qname" | "unit.types.linkings.taxon.scientificName" | "unit.types.linkings.taxon.scientificNameAuthorship" | "unit.types.linkings.taxon.scientificNameDisplayName" | "unit.types.linkings.taxon.sensitive" | "unit.types.linkings.taxon.taxonConceptIds" | "unit.types.linkings.taxon.taxonRank" | "unit.types.linkings.taxon.taxonomicOrder" | "unit.types.linkings.taxon.threatenedStatus" | "unit.types.linkings.taxon.vernacularName" | "unit.types.notes" | "unit.types.publication" | "unit.types.status" | "unit.types.taxon" | "unit.types.taxonID" | "unit.types.taxonRank" | "unit.types.taxonSpecifier" | "unit.types.taxonSpecifierAuthor" | "unit.types.typif" | "unit.types.typifDate" | "unit.types.verification" | "unit.unitId" | "unit.unitOrder" | "unit.videoCount" | "unit.wild")[];
                     /** @description Define what fields to use when sorting results. Defaults to [unit.unitId ASC]. Unit key is always added as a last parameter to ensure correct paging. You can include ASC or DESC after the name of the field (defaults to ASC).Multiple values are seperated by ','. */
                     orderBy?: ("RANDOM" | "RANDOM:seed" | "document.collectionId" | "document.createdDate" | "document.dataSource" | "document.documentId" | "document.firstLoadDate" | "document.linkings.collectionQuality" | "document.loadDate" | "document.mediaCount" | "document.modifiedDate" | "document.namedPlace.birdAssociationAreaDisplayName" | "document.namedPlace.municipalityDisplayName" | "document.namedPlace.name" | "document.quality.issue.issue" | "document.quality.issue.source" | "document.secureLevel" | "document.secured" | "document.siteStatus" | "document.siteType" | "document.sourceId" | "gathering.biogeographicalProvince" | "gathering.conversions.boundingBoxAreaInSquareMeters" | "gathering.conversions.century" | "gathering.conversions.day" | "gathering.conversions.dayOfYearBegin" | "gathering.conversions.dayOfYearEnd" | "gathering.conversions.decade" | "gathering.conversions.euref.latMax" | "gathering.conversions.euref.latMin" | "gathering.conversions.euref.lonMax" | "gathering.conversions.euref.lonMin" | "gathering.conversions.month" | "gathering.conversions.seasonBegin" | "gathering.conversions.seasonEnd" | "gathering.conversions.wgs84.latMax" | "gathering.conversions.wgs84.latMin" | "gathering.conversions.wgs84.lonMax" | "gathering.conversions.wgs84.lonMin" | "gathering.conversions.wgs84CenterPoint.lat" | "gathering.conversions.wgs84CenterPoint.lon" | "gathering.conversions.wgs84Grid005.lat" | "gathering.conversions.wgs84Grid005.lon" | "gathering.conversions.wgs84Grid01.lat" | "gathering.conversions.wgs84Grid01.lon" | "gathering.conversions.wgs84Grid05.lat" | "gathering.conversions.wgs84Grid05.lon" | "gathering.conversions.wgs84Grid1.lat" | "gathering.conversions.wgs84Grid1.lon" | "gathering.conversions.year" | "gathering.conversions.ykj.latMax" | "gathering.conversions.ykj.latMin" | "gathering.conversions.ykj.lonMax" | "gathering.conversions.ykj.lonMin" | "gathering.conversions.ykj100km.lat" | "gathering.conversions.ykj100km.lon" | "gathering.conversions.ykj100kmCenter.lat" | "gathering.conversions.ykj100kmCenter.lon" | "gathering.conversions.ykj10km.lat" | "gathering.conversions.ykj10km.lon" | "gathering.conversions.ykj10kmCenter.lat" | "gathering.conversions.ykj10kmCenter.lon" | "gathering.conversions.ykj1km.lat" | "gathering.conversions.ykj1km.lon" | "gathering.conversions.ykj1kmCenter.lat" | "gathering.conversions.ykj1kmCenter.lon" | "gathering.conversions.ykj50km.lat" | "gathering.conversions.ykj50km.lon" | "gathering.conversions.ykj50kmCenter.lat" | "gathering.conversions.ykj50kmCenter.lon" | "gathering.coordinatesVerbatim" | "gathering.country" | "gathering.displayDateTime" | "gathering.eventDate.begin" | "gathering.eventDate.end" | "gathering.gatheringId" | "gathering.gatheringOrder" | "gathering.gatheringSection" | "gathering.higherGeography" | "gathering.hourBegin" | "gathering.hourEnd" | "gathering.interpretations.biogeographicalProvince" | "gathering.interpretations.biogeographicalProvinceDisplayname" | "gathering.interpretations.coordinateAccuracy" | "gathering.interpretations.country" | "gathering.interpretations.countryDisplayname" | "gathering.interpretations.finnishMunicipality" | "gathering.interpretations.municipalityDisplayname" | "gathering.interpretations.sourceOfBiogeographicalProvince" | "gathering.interpretations.sourceOfCoordinates" | "gathering.interpretations.sourceOfCountry" | "gathering.interpretations.sourceOfFinnishMunicipality" | "gathering.locality" | "gathering.mediaCount" | "gathering.minutesBegin" | "gathering.minutesEnd" | "gathering.municipality" | "gathering.province" | "gathering.quality.issue.issue" | "gathering.quality.issue.source" | "gathering.quality.locationIssue.issue" | "gathering.quality.locationIssue.source" | "gathering.quality.timeIssue.issue" | "gathering.quality.timeIssue.source" | "gathering.stateLand" | "gathering.team" | "unit.abundanceString" | "unit.alive" | "unit.author" | "unit.breedingSite" | "unit.det" | "unit.individualId" | "unit.interpretations.annotatedTaxonId" | "unit.interpretations.individualCount" | "unit.interpretations.invasiveControlEffectiveness" | "unit.interpretations.invasiveControlled" | "unit.interpretations.recordQuality" | "unit.interpretations.recordQualityNumeric" | "unit.interpretations.reliability" | "unit.lifeStage" | "unit.linkings.originalTaxon.author" | "unit.linkings.originalTaxon.finnish" | "unit.linkings.originalTaxon.invasive" | "unit.linkings.originalTaxon.nameEnglish" | "unit.linkings.originalTaxon.nameFinnish" | "unit.linkings.originalTaxon.nameSwedish" | "unit.linkings.originalTaxon.occurrenceCount" | "unit.linkings.originalTaxon.occurrenceCountFinland" | "unit.linkings.originalTaxon.redListStatus" | "unit.linkings.originalTaxon.scientificName" | "unit.linkings.originalTaxon.scientificNameDisplayName" | "unit.linkings.originalTaxon.species" | "unit.linkings.originalTaxon.speciesNameEnglish" | "unit.linkings.originalTaxon.speciesNameFinnish" | "unit.linkings.originalTaxon.speciesNameSwedish" | "unit.linkings.originalTaxon.speciesScientificName" | "unit.linkings.originalTaxon.taxonRank" | "unit.linkings.originalTaxon.taxonomicOrder" | "unit.linkings.taxon.author" | "unit.linkings.taxon.finnish" | "unit.linkings.taxon.invasive" | "unit.linkings.taxon.nameEnglish" | "unit.linkings.taxon.nameFinnish" | "unit.linkings.taxon.nameSwedish" | "unit.linkings.taxon.occurrenceCount" | "unit.linkings.taxon.occurrenceCountFinland" | "unit.linkings.taxon.redListStatus" | "unit.linkings.taxon.scientificName" | "unit.linkings.taxon.scientificNameDisplayName" | "unit.linkings.taxon.species" | "unit.linkings.taxon.speciesNameEnglish" | "unit.linkings.taxon.speciesNameFinnish" | "unit.linkings.taxon.speciesNameSwedish" | "unit.linkings.taxon.speciesScientificName" | "unit.linkings.taxon.taxonRank" | "unit.linkings.taxon.taxonomicOrder" | "unit.local" | "unit.mediaCount" | "unit.notes" | "unit.quality.documentGatheringUnitQualityIssues" | "unit.quality.issue.issue" | "unit.quality.issue.source" | "unit.recordBasis" | "unit.reportedTaxonConfidence" | "unit.sex" | "unit.superRecordBasis" | "unit.taxonVerbatim" | "unit.typeSpecimen" | "unit.unitId" | "unit.unitOrder" | "unit.wild")[];
                     /** @description For GeoJSON requests there are two additional parameters: crs and featureType. This controls the coordinate reference system used in the returned GeoJSON features. (WGS84 = EPSG:4326; EUREF = ETRS-TM35FIN EPSG:3067; YKJ = EPSG:2393) */
@@ -3131,10 +3133,12 @@ export interface paths {
                     useIdentificationAnnotations?: boolean;
                     /** @description By default, all taxon linking related filters return all entries that belong to the filtered taxa. To return only exact matches (no subtaxa), set this to false. */
                     includeSubTaxa?: boolean;
-                    /** @description Set to false if you want to include only those entries where reported target name can be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    includeNonValidTaxa?: boolean;
-                    /** @description Set to true if you want to include only those entries where reported target name can not be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    onlyNonValidTaxa?: boolean;
+                    /** @description True: occurrence is linked to a taxon concept that exactly matches the taxonomic information provided in the occurrence. False: occurrence is not linked to an exact taxon concept, including occurrences linked only to higher taxonomy based on a partial name. */
+                    hasTaxon?: boolean;
+                    /** @description Filter occurrences by how their taxonomic information is linked: EXACT: linked to a taxon concept that exactly matches the information provided in the occurrence; NON_EXACT: linked only to higher taxonomy based on a partial name; NONE: not linked to taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. */
+                    taxonLinking?: "EXACT" | "NON_EXACT" | "NO_LINKING";
+                    /** @description Filter by the checklist to which the taxon concept linked to the occurrence belongs. The checklist is identified by its URI or Qname, for example MR.1 for the FinBIF Master Checklist or MR.2 for the GBIF Backbone Taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /checklist */
+                    checklist?: string;
                     /** @description Filter based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
                     informalTaxonGroupId?: string;
                     /** @description Exclude based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will exclude entries that have been linked with taxa that belong to any of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
@@ -3497,10 +3501,12 @@ export interface paths {
                     useIdentificationAnnotations?: boolean;
                     /** @description By default, all taxon linking related filters return all entries that belong to the filtered taxa. To return only exact matches (no subtaxa), set this to false. */
                     includeSubTaxa?: boolean;
-                    /** @description Set to false if you want to include only those entries where reported target name can be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    includeNonValidTaxa?: boolean;
-                    /** @description Set to true if you want to include only those entries where reported target name can not be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    onlyNonValidTaxa?: boolean;
+                    /** @description True: occurrence is linked to a taxon concept that exactly matches the taxonomic information provided in the occurrence. False: occurrence is not linked to an exact taxon concept, including occurrences linked only to higher taxonomy based on a partial name. */
+                    hasTaxon?: boolean;
+                    /** @description Filter occurrences by how their taxonomic information is linked: EXACT: linked to a taxon concept that exactly matches the information provided in the occurrence; NON_EXACT: linked only to higher taxonomy based on a partial name; NONE: not linked to taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. */
+                    taxonLinking?: "EXACT" | "NON_EXACT" | "NO_LINKING";
+                    /** @description Filter by the checklist to which the taxon concept linked to the occurrence belongs. The checklist is identified by its URI or Qname, for example MR.1 for the FinBIF Master Checklist or MR.2 for the GBIF Backbone Taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /checklist */
+                    checklist?: string;
                     /** @description Filter based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
                     informalTaxonGroupId?: string;
                     /** @description Exclude based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will exclude entries that have been linked with taxa that belong to any of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
@@ -3860,10 +3866,10 @@ export interface paths {
                     useIdentificationAnnotations?: boolean;
                     /** @description By default, all taxon linking related filters return all entries that belong to the filtered taxa. To return only exact matches (no subtaxa), set this to false. */
                     includeSubTaxa?: boolean;
-                    /** @description Set to false if you want to include only those entries where reported target name can be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    includeNonValidTaxa?: boolean;
-                    /** @description Set to true if you want to include only those entries where reported target name can not be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    onlyNonValidTaxa?: boolean;
+                    /** @description Filter occurrences by how their taxonomic information is linked: EXACT: linked to a taxon concept that exactly matches the information provided in the occurrence; NON_EXACT: linked only to higher taxonomy based on a partial name; NONE: not linked to taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. */
+                    taxonLinking?: "EXACT" | "NON_EXACT" | "NO_LINKING";
+                    /** @description Filter by the checklist to which the taxon concept linked to the occurrence belongs. The checklist is identified by its URI or Qname, for example MR.1 for the FinBIF Master Checklist or MR.2 for the GBIF Backbone Taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /checklist */
+                    checklist?: string;
                     /** @description Filter based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
                     informalTaxonGroupId?: string;
                     /** @description Exclude based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will exclude entries that have been linked with taxa that belong to any of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
@@ -3988,8 +3994,8 @@ export interface paths {
         get: {
             parameters: {
                 query?: {
-                    /** @description Define what fields to include to the result. Defaults to [annotation.addedTags, annotation.annotationByPerson, annotation.annotationByPersonName, annotation.annotationBySystem, annotation.annotationBySystemName, annotation.atlasCode, annotation.byRole, annotation.created, annotation.deleted, annotation.deletedByPerson, annotation.deletedByPersonName, annotation.deletedDateTime, annotation.id, annotation.identification.author, annotation.identification.facts.decimalValue, annotation.identification.facts.fact, annotation.identification.facts.integerValue, annotation.identification.facts.value, annotation.identification.id, annotation.identification.linkings.taxon.administrativeStatuses, annotation.identification.linkings.taxon.checklist, annotation.identification.linkings.taxon.cursiveName, annotation.identification.linkings.taxon.finnish, annotation.identification.linkings.taxon.id, annotation.identification.linkings.taxon.informalTaxonGroups, annotation.identification.linkings.taxon.kingdomScientificName, annotation.identification.linkings.taxon.latestRedListStatusFinland.status, annotation.identification.linkings.taxon.latestRedListStatusFinland.year, annotation.identification.linkings.taxon.nameEnglish, annotation.identification.linkings.taxon.nameFinnish, annotation.identification.linkings.taxon.nameSwedish, annotation.identification.linkings.taxon.occurrenceCountFinland, annotation.identification.linkings.taxon.primaryHabitat.habitat, annotation.identification.linkings.taxon.primaryHabitat.habitatSpecificTypes, annotation.identification.linkings.taxon.primaryHabitat.id, annotation.identification.linkings.taxon.primaryHabitat.order, annotation.identification.linkings.taxon.qname, annotation.identification.linkings.taxon.scientificName, annotation.identification.linkings.taxon.scientificNameAuthorship, annotation.identification.linkings.taxon.scientificNameDisplayName, annotation.identification.linkings.taxon.sensitive, annotation.identification.linkings.taxon.taxonConceptIds, annotation.identification.linkings.taxon.taxonRank, annotation.identification.linkings.taxon.taxonomicOrder, annotation.identification.linkings.taxon.threatenedStatus, annotation.identification.linkings.taxon.vernacularName, annotation.identification.notes, annotation.identification.taxon, annotation.identification.taxonID, annotation.identification.taxonSpecifier, annotation.identification.taxonSpecifierAuthor, annotation.notes, annotation.occurrenceAtTimeOfAnnotation.countryVerbatim, annotation.occurrenceAtTimeOfAnnotation.dateBegin, annotation.occurrenceAtTimeOfAnnotation.dateEnd, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.administrativeStatuses, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.checklist, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.cursiveName, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.finnish, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.id, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.informalTaxonGroups, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.kingdomScientificName, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.status, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.year, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.nameEnglish, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.nameFinnish, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.nameSwedish, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.occurrenceCountFinland, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitat, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitatSpecificTypes, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.id, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.order, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.qname, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificName, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameAuthorship, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameDisplayName, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.sensitive, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonConceptIds, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonRank, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonomicOrder, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.threatenedStatus, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.vernacularName, annotation.occurrenceAtTimeOfAnnotation.locality, annotation.occurrenceAtTimeOfAnnotation.municipalityVerbatim, annotation.occurrenceAtTimeOfAnnotation.taxonId, annotation.occurrenceAtTimeOfAnnotation.taxonVerbatim, annotation.occurrenceAtTimeOfAnnotation.wgs84centerPointLat, annotation.occurrenceAtTimeOfAnnotation.wgs84centerPointLon, annotation.removedTags, annotation.valid, document.collectionId, document.documentId, gathering.displayDateTime, gathering.team, unit.linkings.originalTaxon.id, unit.linkings.originalTaxon.scientificName, unit.linkings.originalTaxon.vernacularName, unit.linkings.taxon.id, unit.linkings.taxon.scientificName, unit.linkings.taxon.vernacularName, unit.taxonVerbatim, unit.unitId] Multiple values are seperated by ','. */
-                    selected?: ("annotation.addedTags" | "annotation.annotationByPerson" | "annotation.annotationByPersonName" | "annotation.annotationBySystem" | "annotation.annotationBySystemName" | "annotation.atlasCode" | "annotation.byRole" | "annotation.created" | "annotation.deleted" | "annotation.deletedByPerson" | "annotation.deletedByPersonName" | "annotation.deletedDateTime" | "annotation.id" | "annotation.identification.author" | "annotation.identification.facts.decimalValue" | "annotation.identification.facts.fact" | "annotation.identification.facts.integerValue" | "annotation.identification.facts.value" | "annotation.identification.id" | "annotation.identification.linkings.taxon.administrativeStatuses" | "annotation.identification.linkings.taxon.checklist" | "annotation.identification.linkings.taxon.cursiveName" | "annotation.identification.linkings.taxon.finnish" | "annotation.identification.linkings.taxon.id" | "annotation.identification.linkings.taxon.informalTaxonGroups" | "annotation.identification.linkings.taxon.kingdomScientificName" | "annotation.identification.linkings.taxon.latestRedListStatusFinland.status" | "annotation.identification.linkings.taxon.latestRedListStatusFinland.year" | "annotation.identification.linkings.taxon.nameEnglish" | "annotation.identification.linkings.taxon.nameFinnish" | "annotation.identification.linkings.taxon.nameSwedish" | "annotation.identification.linkings.taxon.occurrenceCountFinland" | "annotation.identification.linkings.taxon.primaryHabitat.habitat" | "annotation.identification.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "annotation.identification.linkings.taxon.primaryHabitat.id" | "annotation.identification.linkings.taxon.primaryHabitat.order" | "annotation.identification.linkings.taxon.qname" | "annotation.identification.linkings.taxon.scientificName" | "annotation.identification.linkings.taxon.scientificNameAuthorship" | "annotation.identification.linkings.taxon.scientificNameDisplayName" | "annotation.identification.linkings.taxon.sensitive" | "annotation.identification.linkings.taxon.taxonConceptIds" | "annotation.identification.linkings.taxon.taxonRank" | "annotation.identification.linkings.taxon.taxonomicOrder" | "annotation.identification.linkings.taxon.threatenedStatus" | "annotation.identification.linkings.taxon.vernacularName" | "annotation.identification.notes" | "annotation.identification.taxon" | "annotation.identification.taxonID" | "annotation.identification.taxonSpecifier" | "annotation.identification.taxonSpecifierAuthor" | "annotation.notes" | "annotation.occurrenceAtTimeOfAnnotation.countryVerbatim" | "annotation.occurrenceAtTimeOfAnnotation.dateBegin" | "annotation.occurrenceAtTimeOfAnnotation.dateEnd" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.administrativeStatuses" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.checklist" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.cursiveName" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.finnish" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.id" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.informalTaxonGroups" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.kingdomScientificName" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.status" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.year" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.nameEnglish" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.nameFinnish" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.nameSwedish" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.occurrenceCountFinland" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitat" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.id" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.order" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.qname" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificName" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameAuthorship" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameDisplayName" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.sensitive" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonConceptIds" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonRank" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonomicOrder" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.threatenedStatus" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.vernacularName" | "annotation.occurrenceAtTimeOfAnnotation.locality" | "annotation.occurrenceAtTimeOfAnnotation.municipalityVerbatim" | "annotation.occurrenceAtTimeOfAnnotation.taxonId" | "annotation.occurrenceAtTimeOfAnnotation.taxonVerbatim" | "annotation.occurrenceAtTimeOfAnnotation.wgs84centerPointLat" | "annotation.occurrenceAtTimeOfAnnotation.wgs84centerPointLon" | "annotation.removedTags" | "annotation.valid" | "document.annotations.addedTags" | "document.annotations.annotationByPerson" | "document.annotations.annotationByPersonName" | "document.annotations.annotationBySystem" | "document.annotations.annotationBySystemName" | "document.annotations.atlasCode" | "document.annotations.byRole" | "document.annotations.created" | "document.annotations.deleted" | "document.annotations.deletedByPerson" | "document.annotations.deletedByPersonName" | "document.annotations.deletedDateTime" | "document.annotations.id" | "document.annotations.notes" | "document.annotations.removedTags" | "document.annotations.valid" | "document.collectionId" | "document.completeListTaxonId" | "document.completeListType" | "document.createdDate" | "document.dataSource" | "document.documentId" | "document.editorUserIds" | "document.facts.decimalValue" | "document.facts.fact" | "document.facts.integerValue" | "document.facts.value" | "document.firstLoadDate" | "document.formId" | "document.keywords" | "document.licenseId" | "document.linkings.collectionQuality" | "document.linkings.editors.fullName" | "document.linkings.editors.id" | "document.linkings.editors.userId" | "document.loadDate" | "document.media.author" | "document.media.caption" | "document.media.copyrightOwner" | "document.media.fullResolutionMediaAvailable" | "document.media.fullURL" | "document.media.highDetailModelURL" | "document.media.licenseId" | "document.media.lowDetailModelURL" | "document.media.mediaType" | "document.media.mp3URL" | "document.media.squareThumbnailURL" | "document.media.thumbnailURL" | "document.media.type" | "document.media.videoURL" | "document.media.wavURL" | "document.mediaCount" | "document.modifiedDate" | "document.namedPlace.alternativeId" | "document.namedPlace.alternativeIds" | "document.namedPlace.birdAssociationAreaDisplayName" | "document.namedPlace.birdAssociationAreaId" | "document.namedPlace.collectionId" | "document.namedPlace.id" | "document.namedPlace.municipalityDisplayName" | "document.namedPlace.municipalityId" | "document.namedPlace.name" | "document.namedPlace.tags" | "document.namedPlace.wgs84CenterPoint.lat" | "document.namedPlace.wgs84CenterPoint.lon" | "document.namedPlace.ykj10km.lat" | "document.namedPlace.ykj10km.lon" | "document.namedPlaceId" | "document.notes" | "document.partial" | "document.prefix" | "document.quality.issue.issue" | "document.quality.issue.message" | "document.quality.issue.source" | "document.referenceURL" | "document.secureLevel" | "document.secureReasons" | "document.secured" | "document.siteDead" | "document.siteStatus" | "document.siteType" | "document.sourceId" | "document.sourceTags" | "gathering.accurateArea" | "gathering.biogeographicalProvince" | "gathering.conversions.birdAssociationArea" | "gathering.conversions.boundingBoxAreaInSquareMeters" | "gathering.conversions.century" | "gathering.conversions.day" | "gathering.conversions.dayOfYearBegin" | "gathering.conversions.dayOfYearEnd" | "gathering.conversions.decade" | "gathering.conversions.euref.latMax" | "gathering.conversions.euref.latMin" | "gathering.conversions.euref.lonMax" | "gathering.conversions.euref.lonMin" | "gathering.conversions.eurefCenterPoint.lat" | "gathering.conversions.eurefCenterPoint.lon" | "gathering.conversions.eurefWKT" | "gathering.conversions.linelengthInMeters" | "gathering.conversions.month" | "gathering.conversions.seasonBegin" | "gathering.conversions.seasonEnd" | "gathering.conversions.wgs84.latMax" | "gathering.conversions.wgs84.latMin" | "gathering.conversions.wgs84.lonMax" | "gathering.conversions.wgs84.lonMin" | "gathering.conversions.wgs84CenterPoint.lat" | "gathering.conversions.wgs84CenterPoint.lon" | "gathering.conversions.wgs84Grid005.lat" | "gathering.conversions.wgs84Grid005.lon" | "gathering.conversions.wgs84Grid01.lat" | "gathering.conversions.wgs84Grid01.lon" | "gathering.conversions.wgs84Grid05.lat" | "gathering.conversions.wgs84Grid05.lon" | "gathering.conversions.wgs84Grid1.lat" | "gathering.conversions.wgs84Grid1.lon" | "gathering.conversions.wgs84WKT" | "gathering.conversions.year" | "gathering.conversions.ykj.latMax" | "gathering.conversions.ykj.latMin" | "gathering.conversions.ykj.lonMax" | "gathering.conversions.ykj.lonMin" | "gathering.conversions.ykj100km.lat" | "gathering.conversions.ykj100km.lon" | "gathering.conversions.ykj100kmCenter.lat" | "gathering.conversions.ykj100kmCenter.lon" | "gathering.conversions.ykj10km.lat" | "gathering.conversions.ykj10km.lon" | "gathering.conversions.ykj10kmCenter.lat" | "gathering.conversions.ykj10kmCenter.lon" | "gathering.conversions.ykj1km.lat" | "gathering.conversions.ykj1km.lon" | "gathering.conversions.ykj1kmCenter.lat" | "gathering.conversions.ykj1kmCenter.lon" | "gathering.conversions.ykj50km.lat" | "gathering.conversions.ykj50km.lon" | "gathering.conversions.ykj50kmCenter.lat" | "gathering.conversions.ykj50kmCenter.lon" | "gathering.conversions.ykjWKT" | "gathering.coordinatesVerbatim" | "gathering.country" | "gathering.displayDateTime" | "gathering.eventDate.begin" | "gathering.eventDate.end" | "gathering.facts.decimalValue" | "gathering.facts.fact" | "gathering.facts.integerValue" | "gathering.facts.value" | "gathering.gatheringId" | "gathering.gatheringOrder" | "gathering.gatheringSection" | "gathering.higherGeography" | "gathering.hourBegin" | "gathering.hourEnd" | "gathering.interpretations.biogeographicalProvince" | "gathering.interpretations.biogeographicalProvinceDisplayname" | "gathering.interpretations.biogeographicalProvinces" | "gathering.interpretations.coordinateAccuracy" | "gathering.interpretations.country" | "gathering.interpretations.countryDisplayname" | "gathering.interpretations.finnishMunicipalities" | "gathering.interpretations.finnishMunicipality" | "gathering.interpretations.municipalityDisplayname" | "gathering.interpretations.sourceOfBiogeographicalProvince" | "gathering.interpretations.sourceOfCoordinates" | "gathering.interpretations.sourceOfCountry" | "gathering.interpretations.sourceOfFinnishMunicipality" | "gathering.linkings.observers.fullName" | "gathering.linkings.observers.id" | "gathering.linkings.observers.userId" | "gathering.locality" | "gathering.media.author" | "gathering.media.caption" | "gathering.media.copyrightOwner" | "gathering.media.fullResolutionMediaAvailable" | "gathering.media.fullURL" | "gathering.media.highDetailModelURL" | "gathering.media.licenseId" | "gathering.media.lowDetailModelURL" | "gathering.media.mediaType" | "gathering.media.mp3URL" | "gathering.media.squareThumbnailURL" | "gathering.media.thumbnailURL" | "gathering.media.type" | "gathering.media.videoURL" | "gathering.media.wavURL" | "gathering.mediaCount" | "gathering.minutesBegin" | "gathering.minutesEnd" | "gathering.municipality" | "gathering.notes" | "gathering.observerUserIds" | "gathering.province" | "gathering.quality.issue.issue" | "gathering.quality.issue.message" | "gathering.quality.issue.source" | "gathering.quality.locationIssue.issue" | "gathering.quality.locationIssue.message" | "gathering.quality.locationIssue.source" | "gathering.quality.timeIssue.issue" | "gathering.quality.timeIssue.message" | "gathering.quality.timeIssue.source" | "gathering.stateLand" | "gathering.taxonCensus.taxonId" | "gathering.taxonCensus.type" | "gathering.team" | "unit.abundanceString" | "unit.abundanceUnit" | "unit.alive" | "unit.annotationCount" | "unit.annotations.addedTags" | "unit.annotations.annotationByPerson" | "unit.annotations.annotationByPersonName" | "unit.annotations.annotationBySystem" | "unit.annotations.annotationBySystemName" | "unit.annotations.atlasCode" | "unit.annotations.byRole" | "unit.annotations.created" | "unit.annotations.deleted" | "unit.annotations.deletedByPerson" | "unit.annotations.deletedByPersonName" | "unit.annotations.deletedDateTime" | "unit.annotations.id" | "unit.annotations.identification.author" | "unit.annotations.identification.facts.decimalValue" | "unit.annotations.identification.facts.fact" | "unit.annotations.identification.facts.integerValue" | "unit.annotations.identification.facts.value" | "unit.annotations.identification.id" | "unit.annotations.identification.linkings.taxon.administrativeStatuses" | "unit.annotations.identification.linkings.taxon.checklist" | "unit.annotations.identification.linkings.taxon.cursiveName" | "unit.annotations.identification.linkings.taxon.finnish" | "unit.annotations.identification.linkings.taxon.id" | "unit.annotations.identification.linkings.taxon.informalTaxonGroups" | "unit.annotations.identification.linkings.taxon.kingdomScientificName" | "unit.annotations.identification.linkings.taxon.latestRedListStatusFinland.status" | "unit.annotations.identification.linkings.taxon.latestRedListStatusFinland.year" | "unit.annotations.identification.linkings.taxon.nameEnglish" | "unit.annotations.identification.linkings.taxon.nameFinnish" | "unit.annotations.identification.linkings.taxon.nameSwedish" | "unit.annotations.identification.linkings.taxon.occurrenceCountFinland" | "unit.annotations.identification.linkings.taxon.primaryHabitat.habitat" | "unit.annotations.identification.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.annotations.identification.linkings.taxon.primaryHabitat.id" | "unit.annotations.identification.linkings.taxon.primaryHabitat.order" | "unit.annotations.identification.linkings.taxon.qname" | "unit.annotations.identification.linkings.taxon.scientificName" | "unit.annotations.identification.linkings.taxon.scientificNameAuthorship" | "unit.annotations.identification.linkings.taxon.scientificNameDisplayName" | "unit.annotations.identification.linkings.taxon.sensitive" | "unit.annotations.identification.linkings.taxon.taxonConceptIds" | "unit.annotations.identification.linkings.taxon.taxonRank" | "unit.annotations.identification.linkings.taxon.taxonomicOrder" | "unit.annotations.identification.linkings.taxon.threatenedStatus" | "unit.annotations.identification.linkings.taxon.vernacularName" | "unit.annotations.identification.notes" | "unit.annotations.identification.taxon" | "unit.annotations.identification.taxonID" | "unit.annotations.identification.taxonSpecifier" | "unit.annotations.identification.taxonSpecifierAuthor" | "unit.annotations.notes" | "unit.annotations.occurrenceAtTimeOfAnnotation.countryVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.dateBegin" | "unit.annotations.occurrenceAtTimeOfAnnotation.dateEnd" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.administrativeStatuses" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.checklist" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.cursiveName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.finnish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.id" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.informalTaxonGroups" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.kingdomScientificName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.status" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.year" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameEnglish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameFinnish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameSwedish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.occurrenceCountFinland" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitat" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.id" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.order" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.qname" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameAuthorship" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameDisplayName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.sensitive" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonConceptIds" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonRank" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonomicOrder" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.threatenedStatus" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.vernacularName" | "unit.annotations.occurrenceAtTimeOfAnnotation.locality" | "unit.annotations.occurrenceAtTimeOfAnnotation.municipalityVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.taxonId" | "unit.annotations.occurrenceAtTimeOfAnnotation.taxonVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.wgs84centerPointLat" | "unit.annotations.occurrenceAtTimeOfAnnotation.wgs84centerPointLon" | "unit.annotations.removedTags" | "unit.annotations.valid" | "unit.atlasClass" | "unit.atlasCode" | "unit.audioCount" | "unit.author" | "unit.breedingSite" | "unit.det" | "unit.externalMediaCount" | "unit.facts.decimalValue" | "unit.facts.fact" | "unit.facts.integerValue" | "unit.facts.value" | "unit.identificationBasis" | "unit.identifications.author" | "unit.identifications.det" | "unit.identifications.detDate" | "unit.identifications.facts.decimalValue" | "unit.identifications.facts.fact" | "unit.identifications.facts.integerValue" | "unit.identifications.facts.value" | "unit.identifications.id" | "unit.identifications.linkings.taxon.administrativeStatuses" | "unit.identifications.linkings.taxon.checklist" | "unit.identifications.linkings.taxon.cursiveName" | "unit.identifications.linkings.taxon.finnish" | "unit.identifications.linkings.taxon.id" | "unit.identifications.linkings.taxon.informalTaxonGroups" | "unit.identifications.linkings.taxon.kingdomScientificName" | "unit.identifications.linkings.taxon.latestRedListStatusFinland.status" | "unit.identifications.linkings.taxon.latestRedListStatusFinland.year" | "unit.identifications.linkings.taxon.nameEnglish" | "unit.identifications.linkings.taxon.nameFinnish" | "unit.identifications.linkings.taxon.nameSwedish" | "unit.identifications.linkings.taxon.occurrenceCountFinland" | "unit.identifications.linkings.taxon.primaryHabitat.habitat" | "unit.identifications.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.identifications.linkings.taxon.primaryHabitat.id" | "unit.identifications.linkings.taxon.primaryHabitat.order" | "unit.identifications.linkings.taxon.qname" | "unit.identifications.linkings.taxon.scientificName" | "unit.identifications.linkings.taxon.scientificNameAuthorship" | "unit.identifications.linkings.taxon.scientificNameDisplayName" | "unit.identifications.linkings.taxon.sensitive" | "unit.identifications.linkings.taxon.taxonConceptIds" | "unit.identifications.linkings.taxon.taxonRank" | "unit.identifications.linkings.taxon.taxonomicOrder" | "unit.identifications.linkings.taxon.threatenedStatus" | "unit.identifications.linkings.taxon.vernacularName" | "unit.identifications.notes" | "unit.identifications.preferred" | "unit.identifications.taxon" | "unit.identifications.taxonID" | "unit.identifications.taxonSpecifier" | "unit.identifications.taxonSpecifierAuthor" | "unit.imageCount" | "unit.individualCountFemale" | "unit.individualCountMale" | "unit.individualId" | "unit.interpretations.annotatedTaxonId" | "unit.interpretations.collectionAndRecordQuality" | "unit.interpretations.det" | "unit.interpretations.effectiveTags" | "unit.interpretations.individualCount" | "unit.interpretations.invasiveControlEffectiveness" | "unit.interpretations.invasiveControlled" | "unit.interpretations.needsCheck" | "unit.interpretations.needsIdentification" | "unit.interpretations.pairCount" | "unit.interpretations.recordQuality" | "unit.interpretations.recordQualityNumeric" | "unit.interpretations.reliability" | "unit.keywords" | "unit.lifeStage" | "unit.linkings.originalTaxon.administrativeStatuses" | "unit.linkings.originalTaxon.checklist" | "unit.linkings.originalTaxon.cursiveName" | "unit.linkings.originalTaxon.finnish" | "unit.linkings.originalTaxon.id" | "unit.linkings.originalTaxon.informalTaxonGroups" | "unit.linkings.originalTaxon.kingdomScientificName" | "unit.linkings.originalTaxon.latestRedListStatusFinland.status" | "unit.linkings.originalTaxon.latestRedListStatusFinland.year" | "unit.linkings.originalTaxon.nameEnglish" | "unit.linkings.originalTaxon.nameFinnish" | "unit.linkings.originalTaxon.nameSwedish" | "unit.linkings.originalTaxon.occurrenceCountFinland" | "unit.linkings.originalTaxon.primaryHabitat.habitat" | "unit.linkings.originalTaxon.primaryHabitat.habitatSpecificTypes" | "unit.linkings.originalTaxon.primaryHabitat.id" | "unit.linkings.originalTaxon.primaryHabitat.order" | "unit.linkings.originalTaxon.qname" | "unit.linkings.originalTaxon.scientificName" | "unit.linkings.originalTaxon.scientificNameAuthorship" | "unit.linkings.originalTaxon.scientificNameDisplayName" | "unit.linkings.originalTaxon.sensitive" | "unit.linkings.originalTaxon.taxonConceptIds" | "unit.linkings.originalTaxon.taxonRank" | "unit.linkings.originalTaxon.taxonomicOrder" | "unit.linkings.originalTaxon.threatenedStatus" | "unit.linkings.originalTaxon.vernacularName" | "unit.linkings.taxon.administrativeStatuses" | "unit.linkings.taxon.checklist" | "unit.linkings.taxon.cursiveName" | "unit.linkings.taxon.finnish" | "unit.linkings.taxon.id" | "unit.linkings.taxon.informalTaxonGroups" | "unit.linkings.taxon.kingdomScientificName" | "unit.linkings.taxon.latestRedListStatusFinland.status" | "unit.linkings.taxon.latestRedListStatusFinland.year" | "unit.linkings.taxon.nameEnglish" | "unit.linkings.taxon.nameFinnish" | "unit.linkings.taxon.nameSwedish" | "unit.linkings.taxon.occurrenceCountFinland" | "unit.linkings.taxon.primaryHabitat.habitat" | "unit.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.linkings.taxon.primaryHabitat.id" | "unit.linkings.taxon.primaryHabitat.order" | "unit.linkings.taxon.qname" | "unit.linkings.taxon.scientificName" | "unit.linkings.taxon.scientificNameAuthorship" | "unit.linkings.taxon.scientificNameDisplayName" | "unit.linkings.taxon.sensitive" | "unit.linkings.taxon.taxonConceptIds" | "unit.linkings.taxon.taxonRank" | "unit.linkings.taxon.taxonomicOrder" | "unit.linkings.taxon.threatenedStatus" | "unit.linkings.taxon.vernacularName" | "unit.local" | "unit.media.author" | "unit.media.caption" | "unit.media.copyrightOwner" | "unit.media.fullResolutionMediaAvailable" | "unit.media.fullURL" | "unit.media.highDetailModelURL" | "unit.media.licenseId" | "unit.media.lowDetailModelURL" | "unit.media.mediaType" | "unit.media.mp3URL" | "unit.media.squareThumbnailURL" | "unit.media.thumbnailURL" | "unit.media.type" | "unit.media.videoURL" | "unit.media.wavURL" | "unit.mediaCount" | "unit.modelCount" | "unit.notes" | "unit.plantStatusCode" | "unit.primarySpecimen" | "unit.quality.documentGatheringUnitQualityIssues" | "unit.quality.issue.issue" | "unit.quality.issue.message" | "unit.quality.issue.source" | "unit.recordBasis" | "unit.reportedInformalTaxonGroup" | "unit.reportedTaxonConfidence" | "unit.reportedTaxonId" | "unit.sampleCount" | "unit.samples.collectionId" | "unit.samples.facts.decimalValue" | "unit.samples.facts.fact" | "unit.samples.facts.integerValue" | "unit.samples.facts.value" | "unit.samples.keywords" | "unit.samples.material" | "unit.samples.multiple" | "unit.samples.notes" | "unit.samples.quality" | "unit.samples.sampleId" | "unit.samples.sampleOrder" | "unit.samples.status" | "unit.samples.type" | "unit.samplingMethod" | "unit.sequenceText" | "unit.sex" | "unit.sourceTags" | "unit.superRecordBasis" | "unit.taxonVerbatim" | "unit.typeSpecimen" | "unit.types.author" | "unit.types.basionymePublication" | "unit.types.facts.decimalValue" | "unit.types.facts.fact" | "unit.types.facts.integerValue" | "unit.types.facts.value" | "unit.types.id" | "unit.types.linkings.taxon.administrativeStatuses" | "unit.types.linkings.taxon.checklist" | "unit.types.linkings.taxon.cursiveName" | "unit.types.linkings.taxon.finnish" | "unit.types.linkings.taxon.id" | "unit.types.linkings.taxon.informalTaxonGroups" | "unit.types.linkings.taxon.kingdomScientificName" | "unit.types.linkings.taxon.latestRedListStatusFinland.status" | "unit.types.linkings.taxon.latestRedListStatusFinland.year" | "unit.types.linkings.taxon.nameEnglish" | "unit.types.linkings.taxon.nameFinnish" | "unit.types.linkings.taxon.nameSwedish" | "unit.types.linkings.taxon.occurrenceCountFinland" | "unit.types.linkings.taxon.primaryHabitat.habitat" | "unit.types.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.types.linkings.taxon.primaryHabitat.id" | "unit.types.linkings.taxon.primaryHabitat.order" | "unit.types.linkings.taxon.qname" | "unit.types.linkings.taxon.scientificName" | "unit.types.linkings.taxon.scientificNameAuthorship" | "unit.types.linkings.taxon.scientificNameDisplayName" | "unit.types.linkings.taxon.sensitive" | "unit.types.linkings.taxon.taxonConceptIds" | "unit.types.linkings.taxon.taxonRank" | "unit.types.linkings.taxon.taxonomicOrder" | "unit.types.linkings.taxon.threatenedStatus" | "unit.types.linkings.taxon.vernacularName" | "unit.types.notes" | "unit.types.publication" | "unit.types.status" | "unit.types.taxon" | "unit.types.taxonID" | "unit.types.taxonSpecifier" | "unit.types.taxonSpecifierAuthor" | "unit.types.typif" | "unit.types.typifDate" | "unit.types.verification" | "unit.unitId" | "unit.unitOrder" | "unit.videoCount" | "unit.wild")[];
+                    /** @description Define what fields to include to the result. Defaults to [annotation.addedTags, annotation.annotationByPerson, annotation.annotationByPersonName, annotation.annotationBySystem, annotation.annotationBySystemName, annotation.atlasCode, annotation.byRole, annotation.created, annotation.deleted, annotation.deletedByPerson, annotation.deletedByPersonName, annotation.deletedDateTime, annotation.id, annotation.identification.author, annotation.identification.facts.decimalValue, annotation.identification.facts.fact, annotation.identification.facts.integerValue, annotation.identification.facts.value, annotation.identification.id, annotation.identification.linkings.taxon.administrativeStatuses, annotation.identification.linkings.taxon.checklist, annotation.identification.linkings.taxon.cursiveName, annotation.identification.linkings.taxon.finnish, annotation.identification.linkings.taxon.id, annotation.identification.linkings.taxon.informalTaxonGroups, annotation.identification.linkings.taxon.kingdomScientificName, annotation.identification.linkings.taxon.latestRedListStatusFinland.status, annotation.identification.linkings.taxon.latestRedListStatusFinland.year, annotation.identification.linkings.taxon.nameEnglish, annotation.identification.linkings.taxon.nameFinnish, annotation.identification.linkings.taxon.nameSwedish, annotation.identification.linkings.taxon.occurrenceCountFinland, annotation.identification.linkings.taxon.primaryHabitat.habitat, annotation.identification.linkings.taxon.primaryHabitat.habitatSpecificTypes, annotation.identification.linkings.taxon.primaryHabitat.id, annotation.identification.linkings.taxon.primaryHabitat.order, annotation.identification.linkings.taxon.qname, annotation.identification.linkings.taxon.scientificName, annotation.identification.linkings.taxon.scientificNameAuthorship, annotation.identification.linkings.taxon.scientificNameDisplayName, annotation.identification.linkings.taxon.sensitive, annotation.identification.linkings.taxon.taxonConceptIds, annotation.identification.linkings.taxon.taxonRank, annotation.identification.linkings.taxon.taxonomicOrder, annotation.identification.linkings.taxon.threatenedStatus, annotation.identification.linkings.taxon.vernacularName, annotation.identification.notes, annotation.identification.taxon, annotation.identification.taxonID, annotation.identification.taxonRank, annotation.identification.taxonSpecifier, annotation.identification.taxonSpecifierAuthor, annotation.notes, annotation.occurrenceAtTimeOfAnnotation.countryVerbatim, annotation.occurrenceAtTimeOfAnnotation.dateBegin, annotation.occurrenceAtTimeOfAnnotation.dateEnd, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.administrativeStatuses, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.checklist, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.cursiveName, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.finnish, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.id, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.informalTaxonGroups, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.kingdomScientificName, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.status, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.year, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.nameEnglish, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.nameFinnish, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.nameSwedish, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.occurrenceCountFinland, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitat, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitatSpecificTypes, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.id, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.order, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.qname, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificName, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameAuthorship, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameDisplayName, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.sensitive, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonConceptIds, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonRank, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonomicOrder, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.threatenedStatus, annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.vernacularName, annotation.occurrenceAtTimeOfAnnotation.locality, annotation.occurrenceAtTimeOfAnnotation.municipalityVerbatim, annotation.occurrenceAtTimeOfAnnotation.taxonId, annotation.occurrenceAtTimeOfAnnotation.taxonVerbatim, annotation.occurrenceAtTimeOfAnnotation.wgs84centerPointLat, annotation.occurrenceAtTimeOfAnnotation.wgs84centerPointLon, annotation.removedTags, annotation.valid, document.collectionId, document.documentId, gathering.displayDateTime, gathering.team, unit.linkings.originalTaxon.id, unit.linkings.originalTaxon.scientificName, unit.linkings.originalTaxon.vernacularName, unit.linkings.taxon.id, unit.linkings.taxon.scientificName, unit.linkings.taxon.vernacularName, unit.taxonVerbatim, unit.unitId] Multiple values are seperated by ','. */
+                    selected?: ("annotation.addedTags" | "annotation.annotationByPerson" | "annotation.annotationByPersonName" | "annotation.annotationBySystem" | "annotation.annotationBySystemName" | "annotation.atlasCode" | "annotation.byRole" | "annotation.created" | "annotation.deleted" | "annotation.deletedByPerson" | "annotation.deletedByPersonName" | "annotation.deletedDateTime" | "annotation.id" | "annotation.identification.author" | "annotation.identification.facts.decimalValue" | "annotation.identification.facts.fact" | "annotation.identification.facts.integerValue" | "annotation.identification.facts.value" | "annotation.identification.id" | "annotation.identification.linkings.taxon.administrativeStatuses" | "annotation.identification.linkings.taxon.checklist" | "annotation.identification.linkings.taxon.cursiveName" | "annotation.identification.linkings.taxon.finnish" | "annotation.identification.linkings.taxon.id" | "annotation.identification.linkings.taxon.informalTaxonGroups" | "annotation.identification.linkings.taxon.kingdomScientificName" | "annotation.identification.linkings.taxon.latestRedListStatusFinland.status" | "annotation.identification.linkings.taxon.latestRedListStatusFinland.year" | "annotation.identification.linkings.taxon.nameEnglish" | "annotation.identification.linkings.taxon.nameFinnish" | "annotation.identification.linkings.taxon.nameSwedish" | "annotation.identification.linkings.taxon.occurrenceCountFinland" | "annotation.identification.linkings.taxon.primaryHabitat.habitat" | "annotation.identification.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "annotation.identification.linkings.taxon.primaryHabitat.id" | "annotation.identification.linkings.taxon.primaryHabitat.order" | "annotation.identification.linkings.taxon.qname" | "annotation.identification.linkings.taxon.scientificName" | "annotation.identification.linkings.taxon.scientificNameAuthorship" | "annotation.identification.linkings.taxon.scientificNameDisplayName" | "annotation.identification.linkings.taxon.sensitive" | "annotation.identification.linkings.taxon.taxonConceptIds" | "annotation.identification.linkings.taxon.taxonRank" | "annotation.identification.linkings.taxon.taxonomicOrder" | "annotation.identification.linkings.taxon.threatenedStatus" | "annotation.identification.linkings.taxon.vernacularName" | "annotation.identification.notes" | "annotation.identification.taxon" | "annotation.identification.taxonID" | "annotation.identification.taxonRank" | "annotation.identification.taxonSpecifier" | "annotation.identification.taxonSpecifierAuthor" | "annotation.notes" | "annotation.occurrenceAtTimeOfAnnotation.countryVerbatim" | "annotation.occurrenceAtTimeOfAnnotation.dateBegin" | "annotation.occurrenceAtTimeOfAnnotation.dateEnd" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.administrativeStatuses" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.checklist" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.cursiveName" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.finnish" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.id" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.informalTaxonGroups" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.kingdomScientificName" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.status" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.year" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.nameEnglish" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.nameFinnish" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.nameSwedish" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.occurrenceCountFinland" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitat" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.id" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.order" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.qname" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificName" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameAuthorship" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameDisplayName" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.sensitive" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonConceptIds" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonRank" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonomicOrder" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.threatenedStatus" | "annotation.occurrenceAtTimeOfAnnotation.linkings.taxon.vernacularName" | "annotation.occurrenceAtTimeOfAnnotation.locality" | "annotation.occurrenceAtTimeOfAnnotation.municipalityVerbatim" | "annotation.occurrenceAtTimeOfAnnotation.taxonId" | "annotation.occurrenceAtTimeOfAnnotation.taxonVerbatim" | "annotation.occurrenceAtTimeOfAnnotation.wgs84centerPointLat" | "annotation.occurrenceAtTimeOfAnnotation.wgs84centerPointLon" | "annotation.removedTags" | "annotation.valid" | "document.annotations.addedTags" | "document.annotations.annotationByPerson" | "document.annotations.annotationByPersonName" | "document.annotations.annotationBySystem" | "document.annotations.annotationBySystemName" | "document.annotations.atlasCode" | "document.annotations.byRole" | "document.annotations.created" | "document.annotations.deleted" | "document.annotations.deletedByPerson" | "document.annotations.deletedByPersonName" | "document.annotations.deletedDateTime" | "document.annotations.id" | "document.annotations.notes" | "document.annotations.removedTags" | "document.annotations.valid" | "document.collectionId" | "document.completeListTaxonId" | "document.completeListType" | "document.createdDate" | "document.dataSource" | "document.documentId" | "document.editorUserIds" | "document.facts.decimalValue" | "document.facts.fact" | "document.facts.integerValue" | "document.facts.value" | "document.firstLoadDate" | "document.formId" | "document.keywords" | "document.licenseId" | "document.linkings.collectionQuality" | "document.linkings.editors.fullName" | "document.linkings.editors.id" | "document.linkings.editors.userId" | "document.loadDate" | "document.media.author" | "document.media.caption" | "document.media.copyrightOwner" | "document.media.fullResolutionMediaAvailable" | "document.media.fullURL" | "document.media.highDetailModelURL" | "document.media.licenseId" | "document.media.lowDetailModelURL" | "document.media.mediaType" | "document.media.mp3URL" | "document.media.squareThumbnailURL" | "document.media.thumbnailURL" | "document.media.type" | "document.media.videoURL" | "document.media.wavURL" | "document.mediaCount" | "document.modifiedDate" | "document.namedPlace.alternativeId" | "document.namedPlace.alternativeIds" | "document.namedPlace.birdAssociationAreaDisplayName" | "document.namedPlace.birdAssociationAreaId" | "document.namedPlace.collectionId" | "document.namedPlace.id" | "document.namedPlace.municipalityDisplayName" | "document.namedPlace.municipalityId" | "document.namedPlace.name" | "document.namedPlace.tags" | "document.namedPlace.wgs84CenterPoint.lat" | "document.namedPlace.wgs84CenterPoint.lon" | "document.namedPlace.ykj10km.lat" | "document.namedPlace.ykj10km.lon" | "document.namedPlaceId" | "document.notes" | "document.partial" | "document.prefix" | "document.quality.issue.issue" | "document.quality.issue.message" | "document.quality.issue.source" | "document.referenceURL" | "document.secureLevel" | "document.secureReasons" | "document.secured" | "document.siteDead" | "document.siteStatus" | "document.siteType" | "document.sourceId" | "document.sourceTags" | "gathering.accurateArea" | "gathering.biogeographicalProvince" | "gathering.conversions.birdAssociationArea" | "gathering.conversions.boundingBoxAreaInSquareMeters" | "gathering.conversions.century" | "gathering.conversions.day" | "gathering.conversions.dayOfYearBegin" | "gathering.conversions.dayOfYearEnd" | "gathering.conversions.decade" | "gathering.conversions.euref.latMax" | "gathering.conversions.euref.latMin" | "gathering.conversions.euref.lonMax" | "gathering.conversions.euref.lonMin" | "gathering.conversions.eurefCenterPoint.lat" | "gathering.conversions.eurefCenterPoint.lon" | "gathering.conversions.eurefWKT" | "gathering.conversions.linelengthInMeters" | "gathering.conversions.month" | "gathering.conversions.seasonBegin" | "gathering.conversions.seasonEnd" | "gathering.conversions.wgs84.latMax" | "gathering.conversions.wgs84.latMin" | "gathering.conversions.wgs84.lonMax" | "gathering.conversions.wgs84.lonMin" | "gathering.conversions.wgs84CenterPoint.lat" | "gathering.conversions.wgs84CenterPoint.lon" | "gathering.conversions.wgs84Grid005.lat" | "gathering.conversions.wgs84Grid005.lon" | "gathering.conversions.wgs84Grid01.lat" | "gathering.conversions.wgs84Grid01.lon" | "gathering.conversions.wgs84Grid05.lat" | "gathering.conversions.wgs84Grid05.lon" | "gathering.conversions.wgs84Grid1.lat" | "gathering.conversions.wgs84Grid1.lon" | "gathering.conversions.wgs84WKT" | "gathering.conversions.year" | "gathering.conversions.ykj.latMax" | "gathering.conversions.ykj.latMin" | "gathering.conversions.ykj.lonMax" | "gathering.conversions.ykj.lonMin" | "gathering.conversions.ykj100km.lat" | "gathering.conversions.ykj100km.lon" | "gathering.conversions.ykj100kmCenter.lat" | "gathering.conversions.ykj100kmCenter.lon" | "gathering.conversions.ykj10km.lat" | "gathering.conversions.ykj10km.lon" | "gathering.conversions.ykj10kmCenter.lat" | "gathering.conversions.ykj10kmCenter.lon" | "gathering.conversions.ykj1km.lat" | "gathering.conversions.ykj1km.lon" | "gathering.conversions.ykj1kmCenter.lat" | "gathering.conversions.ykj1kmCenter.lon" | "gathering.conversions.ykj50km.lat" | "gathering.conversions.ykj50km.lon" | "gathering.conversions.ykj50kmCenter.lat" | "gathering.conversions.ykj50kmCenter.lon" | "gathering.conversions.ykjWKT" | "gathering.coordinatesVerbatim" | "gathering.country" | "gathering.displayDateTime" | "gathering.eventDate.begin" | "gathering.eventDate.end" | "gathering.facts.decimalValue" | "gathering.facts.fact" | "gathering.facts.integerValue" | "gathering.facts.value" | "gathering.gatheringId" | "gathering.gatheringOrder" | "gathering.gatheringSection" | "gathering.higherGeography" | "gathering.hourBegin" | "gathering.hourEnd" | "gathering.interpretations.biogeographicalProvince" | "gathering.interpretations.biogeographicalProvinceDisplayname" | "gathering.interpretations.biogeographicalProvinces" | "gathering.interpretations.coordinateAccuracy" | "gathering.interpretations.country" | "gathering.interpretations.countryDisplayname" | "gathering.interpretations.finnishMunicipalities" | "gathering.interpretations.finnishMunicipality" | "gathering.interpretations.municipalityDisplayname" | "gathering.interpretations.sourceOfBiogeographicalProvince" | "gathering.interpretations.sourceOfCoordinates" | "gathering.interpretations.sourceOfCountry" | "gathering.interpretations.sourceOfFinnishMunicipality" | "gathering.linkings.observers.fullName" | "gathering.linkings.observers.id" | "gathering.linkings.observers.userId" | "gathering.locality" | "gathering.media.author" | "gathering.media.caption" | "gathering.media.copyrightOwner" | "gathering.media.fullResolutionMediaAvailable" | "gathering.media.fullURL" | "gathering.media.highDetailModelURL" | "gathering.media.licenseId" | "gathering.media.lowDetailModelURL" | "gathering.media.mediaType" | "gathering.media.mp3URL" | "gathering.media.squareThumbnailURL" | "gathering.media.thumbnailURL" | "gathering.media.type" | "gathering.media.videoURL" | "gathering.media.wavURL" | "gathering.mediaCount" | "gathering.minutesBegin" | "gathering.minutesEnd" | "gathering.municipality" | "gathering.notes" | "gathering.observerUserIds" | "gathering.province" | "gathering.quality.issue.issue" | "gathering.quality.issue.message" | "gathering.quality.issue.source" | "gathering.quality.locationIssue.issue" | "gathering.quality.locationIssue.message" | "gathering.quality.locationIssue.source" | "gathering.quality.timeIssue.issue" | "gathering.quality.timeIssue.message" | "gathering.quality.timeIssue.source" | "gathering.stateLand" | "gathering.taxonCensus.taxonId" | "gathering.taxonCensus.type" | "gathering.team" | "unit.abundanceString" | "unit.abundanceUnit" | "unit.alive" | "unit.annotationCount" | "unit.annotations.addedTags" | "unit.annotations.annotationByPerson" | "unit.annotations.annotationByPersonName" | "unit.annotations.annotationBySystem" | "unit.annotations.annotationBySystemName" | "unit.annotations.atlasCode" | "unit.annotations.byRole" | "unit.annotations.created" | "unit.annotations.deleted" | "unit.annotations.deletedByPerson" | "unit.annotations.deletedByPersonName" | "unit.annotations.deletedDateTime" | "unit.annotations.id" | "unit.annotations.identification.author" | "unit.annotations.identification.facts.decimalValue" | "unit.annotations.identification.facts.fact" | "unit.annotations.identification.facts.integerValue" | "unit.annotations.identification.facts.value" | "unit.annotations.identification.id" | "unit.annotations.identification.linkings.taxon.administrativeStatuses" | "unit.annotations.identification.linkings.taxon.checklist" | "unit.annotations.identification.linkings.taxon.cursiveName" | "unit.annotations.identification.linkings.taxon.finnish" | "unit.annotations.identification.linkings.taxon.id" | "unit.annotations.identification.linkings.taxon.informalTaxonGroups" | "unit.annotations.identification.linkings.taxon.kingdomScientificName" | "unit.annotations.identification.linkings.taxon.latestRedListStatusFinland.status" | "unit.annotations.identification.linkings.taxon.latestRedListStatusFinland.year" | "unit.annotations.identification.linkings.taxon.nameEnglish" | "unit.annotations.identification.linkings.taxon.nameFinnish" | "unit.annotations.identification.linkings.taxon.nameSwedish" | "unit.annotations.identification.linkings.taxon.occurrenceCountFinland" | "unit.annotations.identification.linkings.taxon.primaryHabitat.habitat" | "unit.annotations.identification.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.annotations.identification.linkings.taxon.primaryHabitat.id" | "unit.annotations.identification.linkings.taxon.primaryHabitat.order" | "unit.annotations.identification.linkings.taxon.qname" | "unit.annotations.identification.linkings.taxon.scientificName" | "unit.annotations.identification.linkings.taxon.scientificNameAuthorship" | "unit.annotations.identification.linkings.taxon.scientificNameDisplayName" | "unit.annotations.identification.linkings.taxon.sensitive" | "unit.annotations.identification.linkings.taxon.taxonConceptIds" | "unit.annotations.identification.linkings.taxon.taxonRank" | "unit.annotations.identification.linkings.taxon.taxonomicOrder" | "unit.annotations.identification.linkings.taxon.threatenedStatus" | "unit.annotations.identification.linkings.taxon.vernacularName" | "unit.annotations.identification.notes" | "unit.annotations.identification.taxon" | "unit.annotations.identification.taxonID" | "unit.annotations.identification.taxonRank" | "unit.annotations.identification.taxonSpecifier" | "unit.annotations.identification.taxonSpecifierAuthor" | "unit.annotations.notes" | "unit.annotations.occurrenceAtTimeOfAnnotation.countryVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.dateBegin" | "unit.annotations.occurrenceAtTimeOfAnnotation.dateEnd" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.administrativeStatuses" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.checklist" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.cursiveName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.finnish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.id" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.informalTaxonGroups" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.kingdomScientificName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.status" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.year" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameEnglish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameFinnish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameSwedish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.occurrenceCountFinland" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitat" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.id" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.order" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.qname" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameAuthorship" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameDisplayName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.sensitive" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonConceptIds" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonRank" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonomicOrder" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.threatenedStatus" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.vernacularName" | "unit.annotations.occurrenceAtTimeOfAnnotation.locality" | "unit.annotations.occurrenceAtTimeOfAnnotation.municipalityVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.taxonId" | "unit.annotations.occurrenceAtTimeOfAnnotation.taxonVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.wgs84centerPointLat" | "unit.annotations.occurrenceAtTimeOfAnnotation.wgs84centerPointLon" | "unit.annotations.removedTags" | "unit.annotations.valid" | "unit.atlasClass" | "unit.atlasCode" | "unit.audioCount" | "unit.author" | "unit.breedingSite" | "unit.det" | "unit.externalMediaCount" | "unit.facts.decimalValue" | "unit.facts.fact" | "unit.facts.integerValue" | "unit.facts.value" | "unit.identificationBasis" | "unit.identifications.author" | "unit.identifications.det" | "unit.identifications.detDate" | "unit.identifications.facts.decimalValue" | "unit.identifications.facts.fact" | "unit.identifications.facts.integerValue" | "unit.identifications.facts.value" | "unit.identifications.id" | "unit.identifications.linkings.taxon.administrativeStatuses" | "unit.identifications.linkings.taxon.checklist" | "unit.identifications.linkings.taxon.cursiveName" | "unit.identifications.linkings.taxon.finnish" | "unit.identifications.linkings.taxon.id" | "unit.identifications.linkings.taxon.informalTaxonGroups" | "unit.identifications.linkings.taxon.kingdomScientificName" | "unit.identifications.linkings.taxon.latestRedListStatusFinland.status" | "unit.identifications.linkings.taxon.latestRedListStatusFinland.year" | "unit.identifications.linkings.taxon.nameEnglish" | "unit.identifications.linkings.taxon.nameFinnish" | "unit.identifications.linkings.taxon.nameSwedish" | "unit.identifications.linkings.taxon.occurrenceCountFinland" | "unit.identifications.linkings.taxon.primaryHabitat.habitat" | "unit.identifications.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.identifications.linkings.taxon.primaryHabitat.id" | "unit.identifications.linkings.taxon.primaryHabitat.order" | "unit.identifications.linkings.taxon.qname" | "unit.identifications.linkings.taxon.scientificName" | "unit.identifications.linkings.taxon.scientificNameAuthorship" | "unit.identifications.linkings.taxon.scientificNameDisplayName" | "unit.identifications.linkings.taxon.sensitive" | "unit.identifications.linkings.taxon.taxonConceptIds" | "unit.identifications.linkings.taxon.taxonRank" | "unit.identifications.linkings.taxon.taxonomicOrder" | "unit.identifications.linkings.taxon.threatenedStatus" | "unit.identifications.linkings.taxon.vernacularName" | "unit.identifications.notes" | "unit.identifications.preferred" | "unit.identifications.taxon" | "unit.identifications.taxonID" | "unit.identifications.taxonRank" | "unit.identifications.taxonSpecifier" | "unit.identifications.taxonSpecifierAuthor" | "unit.imageCount" | "unit.individualCountFemale" | "unit.individualCountMale" | "unit.individualId" | "unit.interpretations.annotatedTaxonId" | "unit.interpretations.collectionAndRecordQuality" | "unit.interpretations.det" | "unit.interpretations.effectiveTags" | "unit.interpretations.individualCount" | "unit.interpretations.invasiveControlEffectiveness" | "unit.interpretations.invasiveControlled" | "unit.interpretations.needsCheck" | "unit.interpretations.needsIdentification" | "unit.interpretations.pairCount" | "unit.interpretations.recordQuality" | "unit.interpretations.recordQualityNumeric" | "unit.interpretations.reliability" | "unit.keywords" | "unit.lifeStage" | "unit.linkings.originalTaxon.administrativeStatuses" | "unit.linkings.originalTaxon.checklist" | "unit.linkings.originalTaxon.cursiveName" | "unit.linkings.originalTaxon.finnish" | "unit.linkings.originalTaxon.id" | "unit.linkings.originalTaxon.informalTaxonGroups" | "unit.linkings.originalTaxon.kingdomScientificName" | "unit.linkings.originalTaxon.latestRedListStatusFinland.status" | "unit.linkings.originalTaxon.latestRedListStatusFinland.year" | "unit.linkings.originalTaxon.nameEnglish" | "unit.linkings.originalTaxon.nameFinnish" | "unit.linkings.originalTaxon.nameSwedish" | "unit.linkings.originalTaxon.occurrenceCountFinland" | "unit.linkings.originalTaxon.primaryHabitat.habitat" | "unit.linkings.originalTaxon.primaryHabitat.habitatSpecificTypes" | "unit.linkings.originalTaxon.primaryHabitat.id" | "unit.linkings.originalTaxon.primaryHabitat.order" | "unit.linkings.originalTaxon.qname" | "unit.linkings.originalTaxon.scientificName" | "unit.linkings.originalTaxon.scientificNameAuthorship" | "unit.linkings.originalTaxon.scientificNameDisplayName" | "unit.linkings.originalTaxon.sensitive" | "unit.linkings.originalTaxon.taxonConceptIds" | "unit.linkings.originalTaxon.taxonRank" | "unit.linkings.originalTaxon.taxonomicOrder" | "unit.linkings.originalTaxon.threatenedStatus" | "unit.linkings.originalTaxon.vernacularName" | "unit.linkings.taxon.administrativeStatuses" | "unit.linkings.taxon.checklist" | "unit.linkings.taxon.cursiveName" | "unit.linkings.taxon.finnish" | "unit.linkings.taxon.id" | "unit.linkings.taxon.informalTaxonGroups" | "unit.linkings.taxon.kingdomScientificName" | "unit.linkings.taxon.latestRedListStatusFinland.status" | "unit.linkings.taxon.latestRedListStatusFinland.year" | "unit.linkings.taxon.nameEnglish" | "unit.linkings.taxon.nameFinnish" | "unit.linkings.taxon.nameSwedish" | "unit.linkings.taxon.occurrenceCountFinland" | "unit.linkings.taxon.primaryHabitat.habitat" | "unit.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.linkings.taxon.primaryHabitat.id" | "unit.linkings.taxon.primaryHabitat.order" | "unit.linkings.taxon.qname" | "unit.linkings.taxon.scientificName" | "unit.linkings.taxon.scientificNameAuthorship" | "unit.linkings.taxon.scientificNameDisplayName" | "unit.linkings.taxon.sensitive" | "unit.linkings.taxon.taxonConceptIds" | "unit.linkings.taxon.taxonRank" | "unit.linkings.taxon.taxonomicOrder" | "unit.linkings.taxon.threatenedStatus" | "unit.linkings.taxon.vernacularName" | "unit.local" | "unit.media.author" | "unit.media.caption" | "unit.media.copyrightOwner" | "unit.media.fullResolutionMediaAvailable" | "unit.media.fullURL" | "unit.media.highDetailModelURL" | "unit.media.licenseId" | "unit.media.lowDetailModelURL" | "unit.media.mediaType" | "unit.media.mp3URL" | "unit.media.squareThumbnailURL" | "unit.media.thumbnailURL" | "unit.media.type" | "unit.media.videoURL" | "unit.media.wavURL" | "unit.mediaCount" | "unit.modelCount" | "unit.notes" | "unit.plantStatusCode" | "unit.primarySpecimen" | "unit.quality.documentGatheringUnitQualityIssues" | "unit.quality.issue.issue" | "unit.quality.issue.message" | "unit.quality.issue.source" | "unit.recordBasis" | "unit.reportedInformalTaxonGroup" | "unit.reportedKingdom" | "unit.reportedTaxonConfidence" | "unit.reportedTaxonId" | "unit.reportedTaxonRank" | "unit.sampleCount" | "unit.samples.collectionId" | "unit.samples.facts.decimalValue" | "unit.samples.facts.fact" | "unit.samples.facts.integerValue" | "unit.samples.facts.value" | "unit.samples.keywords" | "unit.samples.material" | "unit.samples.multiple" | "unit.samples.notes" | "unit.samples.quality" | "unit.samples.sampleId" | "unit.samples.sampleOrder" | "unit.samples.status" | "unit.samples.type" | "unit.samplingMethod" | "unit.sequenceText" | "unit.sex" | "unit.sourceTags" | "unit.superRecordBasis" | "unit.taxonVerbatim" | "unit.typeSpecimen" | "unit.types.author" | "unit.types.basionymePublication" | "unit.types.facts.decimalValue" | "unit.types.facts.fact" | "unit.types.facts.integerValue" | "unit.types.facts.value" | "unit.types.id" | "unit.types.linkings.taxon.administrativeStatuses" | "unit.types.linkings.taxon.checklist" | "unit.types.linkings.taxon.cursiveName" | "unit.types.linkings.taxon.finnish" | "unit.types.linkings.taxon.id" | "unit.types.linkings.taxon.informalTaxonGroups" | "unit.types.linkings.taxon.kingdomScientificName" | "unit.types.linkings.taxon.latestRedListStatusFinland.status" | "unit.types.linkings.taxon.latestRedListStatusFinland.year" | "unit.types.linkings.taxon.nameEnglish" | "unit.types.linkings.taxon.nameFinnish" | "unit.types.linkings.taxon.nameSwedish" | "unit.types.linkings.taxon.occurrenceCountFinland" | "unit.types.linkings.taxon.primaryHabitat.habitat" | "unit.types.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.types.linkings.taxon.primaryHabitat.id" | "unit.types.linkings.taxon.primaryHabitat.order" | "unit.types.linkings.taxon.qname" | "unit.types.linkings.taxon.scientificName" | "unit.types.linkings.taxon.scientificNameAuthorship" | "unit.types.linkings.taxon.scientificNameDisplayName" | "unit.types.linkings.taxon.sensitive" | "unit.types.linkings.taxon.taxonConceptIds" | "unit.types.linkings.taxon.taxonRank" | "unit.types.linkings.taxon.taxonomicOrder" | "unit.types.linkings.taxon.threatenedStatus" | "unit.types.linkings.taxon.vernacularName" | "unit.types.notes" | "unit.types.publication" | "unit.types.status" | "unit.types.taxon" | "unit.types.taxonID" | "unit.types.taxonRank" | "unit.types.taxonSpecifier" | "unit.types.taxonSpecifierAuthor" | "unit.types.typif" | "unit.types.typifDate" | "unit.types.verification" | "unit.unitId" | "unit.unitOrder" | "unit.videoCount" | "unit.wild")[];
                     /** @description Define what fields to use when sorting results. Defaults to [unit.annotations.created DESC, unit.annotations.id ASC]. Unit key is always added as a last parameter to ensure correct paging. You can include ASC or DESC after the name of the field (defaults to ASC).Multiple values are seperated by ','. */
                     orderBy?: ("RANDOM" | "RANDOM:seed" | "document.collectionId" | "document.createdDate" | "document.dataSource" | "document.documentId" | "document.firstLoadDate" | "document.linkings.collectionQuality" | "document.loadDate" | "document.mediaCount" | "document.modifiedDate" | "document.namedPlace.birdAssociationAreaDisplayName" | "document.namedPlace.municipalityDisplayName" | "document.namedPlace.name" | "document.quality.issue.issue" | "document.quality.issue.source" | "document.secureLevel" | "document.secured" | "document.siteStatus" | "document.siteType" | "document.sourceId" | "gathering.biogeographicalProvince" | "gathering.conversions.boundingBoxAreaInSquareMeters" | "gathering.conversions.century" | "gathering.conversions.day" | "gathering.conversions.dayOfYearBegin" | "gathering.conversions.dayOfYearEnd" | "gathering.conversions.decade" | "gathering.conversions.euref.latMax" | "gathering.conversions.euref.latMin" | "gathering.conversions.euref.lonMax" | "gathering.conversions.euref.lonMin" | "gathering.conversions.month" | "gathering.conversions.seasonBegin" | "gathering.conversions.seasonEnd" | "gathering.conversions.wgs84.latMax" | "gathering.conversions.wgs84.latMin" | "gathering.conversions.wgs84.lonMax" | "gathering.conversions.wgs84.lonMin" | "gathering.conversions.wgs84CenterPoint.lat" | "gathering.conversions.wgs84CenterPoint.lon" | "gathering.conversions.wgs84Grid005.lat" | "gathering.conversions.wgs84Grid005.lon" | "gathering.conversions.wgs84Grid01.lat" | "gathering.conversions.wgs84Grid01.lon" | "gathering.conversions.wgs84Grid05.lat" | "gathering.conversions.wgs84Grid05.lon" | "gathering.conversions.wgs84Grid1.lat" | "gathering.conversions.wgs84Grid1.lon" | "gathering.conversions.year" | "gathering.conversions.ykj.latMax" | "gathering.conversions.ykj.latMin" | "gathering.conversions.ykj.lonMax" | "gathering.conversions.ykj.lonMin" | "gathering.conversions.ykj100km.lat" | "gathering.conversions.ykj100km.lon" | "gathering.conversions.ykj100kmCenter.lat" | "gathering.conversions.ykj100kmCenter.lon" | "gathering.conversions.ykj10km.lat" | "gathering.conversions.ykj10km.lon" | "gathering.conversions.ykj10kmCenter.lat" | "gathering.conversions.ykj10kmCenter.lon" | "gathering.conversions.ykj1km.lat" | "gathering.conversions.ykj1km.lon" | "gathering.conversions.ykj1kmCenter.lat" | "gathering.conversions.ykj1kmCenter.lon" | "gathering.conversions.ykj50km.lat" | "gathering.conversions.ykj50km.lon" | "gathering.conversions.ykj50kmCenter.lat" | "gathering.conversions.ykj50kmCenter.lon" | "gathering.coordinatesVerbatim" | "gathering.country" | "gathering.displayDateTime" | "gathering.eventDate.begin" | "gathering.eventDate.end" | "gathering.gatheringId" | "gathering.gatheringOrder" | "gathering.gatheringSection" | "gathering.higherGeography" | "gathering.hourBegin" | "gathering.hourEnd" | "gathering.interpretations.biogeographicalProvince" | "gathering.interpretations.biogeographicalProvinceDisplayname" | "gathering.interpretations.coordinateAccuracy" | "gathering.interpretations.country" | "gathering.interpretations.countryDisplayname" | "gathering.interpretations.finnishMunicipality" | "gathering.interpretations.municipalityDisplayname" | "gathering.interpretations.sourceOfBiogeographicalProvince" | "gathering.interpretations.sourceOfCoordinates" | "gathering.interpretations.sourceOfCountry" | "gathering.interpretations.sourceOfFinnishMunicipality" | "gathering.locality" | "gathering.mediaCount" | "gathering.minutesBegin" | "gathering.minutesEnd" | "gathering.municipality" | "gathering.province" | "gathering.quality.issue.issue" | "gathering.quality.issue.source" | "gathering.quality.locationIssue.issue" | "gathering.quality.locationIssue.source" | "gathering.quality.timeIssue.issue" | "gathering.quality.timeIssue.source" | "gathering.stateLand" | "gathering.team" | "unit.abundanceString" | "unit.alive" | "unit.annotations.annotationByPersonName" | "unit.annotations.annotationBySystemName" | "unit.annotations.created" | "unit.annotations.id" | "unit.author" | "unit.breedingSite" | "unit.det" | "unit.individualId" | "unit.interpretations.annotatedTaxonId" | "unit.interpretations.individualCount" | "unit.interpretations.invasiveControlEffectiveness" | "unit.interpretations.invasiveControlled" | "unit.interpretations.recordQuality" | "unit.interpretations.recordQualityNumeric" | "unit.interpretations.reliability" | "unit.lifeStage" | "unit.linkings.originalTaxon.author" | "unit.linkings.originalTaxon.finnish" | "unit.linkings.originalTaxon.invasive" | "unit.linkings.originalTaxon.nameEnglish" | "unit.linkings.originalTaxon.nameFinnish" | "unit.linkings.originalTaxon.nameSwedish" | "unit.linkings.originalTaxon.occurrenceCount" | "unit.linkings.originalTaxon.occurrenceCountFinland" | "unit.linkings.originalTaxon.redListStatus" | "unit.linkings.originalTaxon.scientificName" | "unit.linkings.originalTaxon.scientificNameDisplayName" | "unit.linkings.originalTaxon.species" | "unit.linkings.originalTaxon.speciesNameEnglish" | "unit.linkings.originalTaxon.speciesNameFinnish" | "unit.linkings.originalTaxon.speciesNameSwedish" | "unit.linkings.originalTaxon.speciesScientificName" | "unit.linkings.originalTaxon.taxonRank" | "unit.linkings.originalTaxon.taxonomicOrder" | "unit.linkings.taxon.author" | "unit.linkings.taxon.finnish" | "unit.linkings.taxon.invasive" | "unit.linkings.taxon.nameEnglish" | "unit.linkings.taxon.nameFinnish" | "unit.linkings.taxon.nameSwedish" | "unit.linkings.taxon.occurrenceCount" | "unit.linkings.taxon.occurrenceCountFinland" | "unit.linkings.taxon.redListStatus" | "unit.linkings.taxon.scientificName" | "unit.linkings.taxon.scientificNameDisplayName" | "unit.linkings.taxon.species" | "unit.linkings.taxon.speciesNameEnglish" | "unit.linkings.taxon.speciesNameFinnish" | "unit.linkings.taxon.speciesNameSwedish" | "unit.linkings.taxon.speciesScientificName" | "unit.linkings.taxon.taxonRank" | "unit.linkings.taxon.taxonomicOrder" | "unit.local" | "unit.mediaCount" | "unit.notes" | "unit.quality.documentGatheringUnitQualityIssues" | "unit.quality.issue.issue" | "unit.quality.issue.source" | "unit.recordBasis" | "unit.reportedTaxonConfidence" | "unit.sex" | "unit.superRecordBasis" | "unit.taxonVerbatim" | "unit.typeSpecimen" | "unit.unitId" | "unit.unitOrder" | "unit.wild")[];
                     /** @description For GeoJSON requests there are two additional parameters: crs and featureType. This controls the coordinate reference system used in the returned GeoJSON features. (WGS84 = EPSG:4326; EUREF = ETRS-TM35FIN EPSG:3067; YKJ = EPSG:2393) */
@@ -4010,10 +4016,12 @@ export interface paths {
                     useIdentificationAnnotations?: boolean;
                     /** @description By default, all taxon linking related filters return all entries that belong to the filtered taxa. To return only exact matches (no subtaxa), set this to false. */
                     includeSubTaxa?: boolean;
-                    /** @description Set to false if you want to include only those entries where reported target name can be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    includeNonValidTaxa?: boolean;
-                    /** @description Set to true if you want to include only those entries where reported target name can not be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    onlyNonValidTaxa?: boolean;
+                    /** @description True: occurrence is linked to a taxon concept that exactly matches the taxonomic information provided in the occurrence. False: occurrence is not linked to an exact taxon concept, including occurrences linked only to higher taxonomy based on a partial name. */
+                    hasTaxon?: boolean;
+                    /** @description Filter occurrences by how their taxonomic information is linked: EXACT: linked to a taxon concept that exactly matches the information provided in the occurrence; NON_EXACT: linked only to higher taxonomy based on a partial name; NONE: not linked to taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. */
+                    taxonLinking?: "EXACT" | "NON_EXACT" | "NO_LINKING";
+                    /** @description Filter by the checklist to which the taxon concept linked to the occurrence belongs. The checklist is identified by its URI or Qname, for example MR.1 for the FinBIF Master Checklist or MR.2 for the GBIF Backbone Taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /checklist */
+                    checklist?: string;
                     /** @description Filter based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
                     informalTaxonGroupId?: string;
                     /** @description Exclude based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will exclude entries that have been linked with taxa that belong to any of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
@@ -4376,10 +4384,12 @@ export interface paths {
                     useIdentificationAnnotations?: boolean;
                     /** @description By default, all taxon linking related filters return all entries that belong to the filtered taxa. To return only exact matches (no subtaxa), set this to false. */
                     includeSubTaxa?: boolean;
-                    /** @description Set to false if you want to include only those entries where reported target name can be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    includeNonValidTaxa?: boolean;
-                    /** @description Set to true if you want to include only those entries where reported target name can not be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    onlyNonValidTaxa?: boolean;
+                    /** @description True: occurrence is linked to a taxon concept that exactly matches the taxonomic information provided in the occurrence. False: occurrence is not linked to an exact taxon concept, including occurrences linked only to higher taxonomy based on a partial name. */
+                    hasTaxon?: boolean;
+                    /** @description Filter occurrences by how their taxonomic information is linked: EXACT: linked to a taxon concept that exactly matches the information provided in the occurrence; NON_EXACT: linked only to higher taxonomy based on a partial name; NONE: not linked to taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. */
+                    taxonLinking?: "EXACT" | "NON_EXACT" | "NO_LINKING";
+                    /** @description Filter by the checklist to which the taxon concept linked to the occurrence belongs. The checklist is identified by its URI or Qname, for example MR.1 for the FinBIF Master Checklist or MR.2 for the GBIF Backbone Taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /checklist */
+                    checklist?: string;
                     /** @description Filter based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
                     informalTaxonGroupId?: string;
                     /** @description Exclude based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will exclude entries that have been linked with taxa that belong to any of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
@@ -4716,7 +4726,7 @@ export interface paths {
             parameters: {
                 query?: {
                     /** @description Define what fields to include to the result. Defaults to [document.documentId, media.author, media.caption, media.copyrightOwner, media.fullResolutionMediaAvailable, media.fullURL, media.highDetailModelURL, media.licenseId, media.lowDetailModelURL, media.mediaType, media.mp3URL, media.squareThumbnailURL, media.thumbnailURL, media.type, media.videoURL, media.wavURL, unit.linkings.taxon.scientificName, unit.linkings.taxon.vernacularName, unit.reportedInformalTaxonGroup, unit.taxonVerbatim, unit.unitId] Multiple values are seperated by ','. */
-                    selected?: ("document.annotations.addedTags" | "document.annotations.annotationByPerson" | "document.annotations.annotationByPersonName" | "document.annotations.annotationBySystem" | "document.annotations.annotationBySystemName" | "document.annotations.atlasCode" | "document.annotations.byRole" | "document.annotations.created" | "document.annotations.deleted" | "document.annotations.deletedByPerson" | "document.annotations.deletedByPersonName" | "document.annotations.deletedDateTime" | "document.annotations.id" | "document.annotations.notes" | "document.annotations.removedTags" | "document.annotations.valid" | "document.collectionId" | "document.completeListTaxonId" | "document.completeListType" | "document.createdDate" | "document.dataSource" | "document.documentId" | "document.editorUserIds" | "document.facts.decimalValue" | "document.facts.fact" | "document.facts.integerValue" | "document.facts.value" | "document.firstLoadDate" | "document.formId" | "document.keywords" | "document.licenseId" | "document.linkings.collectionQuality" | "document.linkings.editors.fullName" | "document.linkings.editors.id" | "document.linkings.editors.userId" | "document.loadDate" | "document.media.author" | "document.media.caption" | "document.media.copyrightOwner" | "document.media.fullResolutionMediaAvailable" | "document.media.fullURL" | "document.media.highDetailModelURL" | "document.media.licenseId" | "document.media.lowDetailModelURL" | "document.media.mediaType" | "document.media.mp3URL" | "document.media.squareThumbnailURL" | "document.media.thumbnailURL" | "document.media.type" | "document.media.videoURL" | "document.media.wavURL" | "document.mediaCount" | "document.modifiedDate" | "document.namedPlace.alternativeId" | "document.namedPlace.alternativeIds" | "document.namedPlace.birdAssociationAreaDisplayName" | "document.namedPlace.birdAssociationAreaId" | "document.namedPlace.collectionId" | "document.namedPlace.id" | "document.namedPlace.municipalityDisplayName" | "document.namedPlace.municipalityId" | "document.namedPlace.name" | "document.namedPlace.tags" | "document.namedPlace.wgs84CenterPoint.lat" | "document.namedPlace.wgs84CenterPoint.lon" | "document.namedPlace.ykj10km.lat" | "document.namedPlace.ykj10km.lon" | "document.namedPlaceId" | "document.notes" | "document.partial" | "document.prefix" | "document.quality.issue.issue" | "document.quality.issue.message" | "document.quality.issue.source" | "document.referenceURL" | "document.secureLevel" | "document.secureReasons" | "document.secured" | "document.siteDead" | "document.siteStatus" | "document.siteType" | "document.sourceId" | "document.sourceTags" | "gathering.accurateArea" | "gathering.biogeographicalProvince" | "gathering.conversions.birdAssociationArea" | "gathering.conversions.boundingBoxAreaInSquareMeters" | "gathering.conversions.century" | "gathering.conversions.day" | "gathering.conversions.dayOfYearBegin" | "gathering.conversions.dayOfYearEnd" | "gathering.conversions.decade" | "gathering.conversions.euref.latMax" | "gathering.conversions.euref.latMin" | "gathering.conversions.euref.lonMax" | "gathering.conversions.euref.lonMin" | "gathering.conversions.eurefCenterPoint.lat" | "gathering.conversions.eurefCenterPoint.lon" | "gathering.conversions.eurefWKT" | "gathering.conversions.linelengthInMeters" | "gathering.conversions.month" | "gathering.conversions.seasonBegin" | "gathering.conversions.seasonEnd" | "gathering.conversions.wgs84.latMax" | "gathering.conversions.wgs84.latMin" | "gathering.conversions.wgs84.lonMax" | "gathering.conversions.wgs84.lonMin" | "gathering.conversions.wgs84CenterPoint.lat" | "gathering.conversions.wgs84CenterPoint.lon" | "gathering.conversions.wgs84Grid005.lat" | "gathering.conversions.wgs84Grid005.lon" | "gathering.conversions.wgs84Grid01.lat" | "gathering.conversions.wgs84Grid01.lon" | "gathering.conversions.wgs84Grid05.lat" | "gathering.conversions.wgs84Grid05.lon" | "gathering.conversions.wgs84Grid1.lat" | "gathering.conversions.wgs84Grid1.lon" | "gathering.conversions.wgs84WKT" | "gathering.conversions.year" | "gathering.conversions.ykj.latMax" | "gathering.conversions.ykj.latMin" | "gathering.conversions.ykj.lonMax" | "gathering.conversions.ykj.lonMin" | "gathering.conversions.ykj100km.lat" | "gathering.conversions.ykj100km.lon" | "gathering.conversions.ykj100kmCenter.lat" | "gathering.conversions.ykj100kmCenter.lon" | "gathering.conversions.ykj10km.lat" | "gathering.conversions.ykj10km.lon" | "gathering.conversions.ykj10kmCenter.lat" | "gathering.conversions.ykj10kmCenter.lon" | "gathering.conversions.ykj1km.lat" | "gathering.conversions.ykj1km.lon" | "gathering.conversions.ykj1kmCenter.lat" | "gathering.conversions.ykj1kmCenter.lon" | "gathering.conversions.ykj50km.lat" | "gathering.conversions.ykj50km.lon" | "gathering.conversions.ykj50kmCenter.lat" | "gathering.conversions.ykj50kmCenter.lon" | "gathering.conversions.ykjWKT" | "gathering.coordinatesVerbatim" | "gathering.country" | "gathering.displayDateTime" | "gathering.eventDate.begin" | "gathering.eventDate.end" | "gathering.facts.decimalValue" | "gathering.facts.fact" | "gathering.facts.integerValue" | "gathering.facts.value" | "gathering.gatheringId" | "gathering.gatheringOrder" | "gathering.gatheringSection" | "gathering.higherGeography" | "gathering.hourBegin" | "gathering.hourEnd" | "gathering.interpretations.biogeographicalProvince" | "gathering.interpretations.biogeographicalProvinceDisplayname" | "gathering.interpretations.biogeographicalProvinces" | "gathering.interpretations.coordinateAccuracy" | "gathering.interpretations.country" | "gathering.interpretations.countryDisplayname" | "gathering.interpretations.finnishMunicipalities" | "gathering.interpretations.finnishMunicipality" | "gathering.interpretations.municipalityDisplayname" | "gathering.interpretations.sourceOfBiogeographicalProvince" | "gathering.interpretations.sourceOfCoordinates" | "gathering.interpretations.sourceOfCountry" | "gathering.interpretations.sourceOfFinnishMunicipality" | "gathering.linkings.observers.fullName" | "gathering.linkings.observers.id" | "gathering.linkings.observers.userId" | "gathering.locality" | "gathering.media.author" | "gathering.media.caption" | "gathering.media.copyrightOwner" | "gathering.media.fullResolutionMediaAvailable" | "gathering.media.fullURL" | "gathering.media.highDetailModelURL" | "gathering.media.licenseId" | "gathering.media.lowDetailModelURL" | "gathering.media.mediaType" | "gathering.media.mp3URL" | "gathering.media.squareThumbnailURL" | "gathering.media.thumbnailURL" | "gathering.media.type" | "gathering.media.videoURL" | "gathering.media.wavURL" | "gathering.mediaCount" | "gathering.minutesBegin" | "gathering.minutesEnd" | "gathering.municipality" | "gathering.notes" | "gathering.observerUserIds" | "gathering.province" | "gathering.quality.issue.issue" | "gathering.quality.issue.message" | "gathering.quality.issue.source" | "gathering.quality.locationIssue.issue" | "gathering.quality.locationIssue.message" | "gathering.quality.locationIssue.source" | "gathering.quality.timeIssue.issue" | "gathering.quality.timeIssue.message" | "gathering.quality.timeIssue.source" | "gathering.stateLand" | "gathering.taxonCensus.taxonId" | "gathering.taxonCensus.type" | "gathering.team" | "media.author" | "media.caption" | "media.copyrightOwner" | "media.fullResolutionMediaAvailable" | "media.fullURL" | "media.highDetailModelURL" | "media.licenseId" | "media.lowDetailModelURL" | "media.mediaType" | "media.mp3URL" | "media.squareThumbnailURL" | "media.thumbnailURL" | "media.type" | "media.videoURL" | "media.wavURL" | "unit.abundanceString" | "unit.abundanceUnit" | "unit.alive" | "unit.annotationCount" | "unit.annotations.addedTags" | "unit.annotations.annotationByPerson" | "unit.annotations.annotationByPersonName" | "unit.annotations.annotationBySystem" | "unit.annotations.annotationBySystemName" | "unit.annotations.atlasCode" | "unit.annotations.byRole" | "unit.annotations.created" | "unit.annotations.deleted" | "unit.annotations.deletedByPerson" | "unit.annotations.deletedByPersonName" | "unit.annotations.deletedDateTime" | "unit.annotations.id" | "unit.annotations.identification.author" | "unit.annotations.identification.facts.decimalValue" | "unit.annotations.identification.facts.fact" | "unit.annotations.identification.facts.integerValue" | "unit.annotations.identification.facts.value" | "unit.annotations.identification.id" | "unit.annotations.identification.linkings.taxon.administrativeStatuses" | "unit.annotations.identification.linkings.taxon.checklist" | "unit.annotations.identification.linkings.taxon.cursiveName" | "unit.annotations.identification.linkings.taxon.finnish" | "unit.annotations.identification.linkings.taxon.id" | "unit.annotations.identification.linkings.taxon.informalTaxonGroups" | "unit.annotations.identification.linkings.taxon.kingdomScientificName" | "unit.annotations.identification.linkings.taxon.latestRedListStatusFinland.status" | "unit.annotations.identification.linkings.taxon.latestRedListStatusFinland.year" | "unit.annotations.identification.linkings.taxon.nameEnglish" | "unit.annotations.identification.linkings.taxon.nameFinnish" | "unit.annotations.identification.linkings.taxon.nameSwedish" | "unit.annotations.identification.linkings.taxon.occurrenceCountFinland" | "unit.annotations.identification.linkings.taxon.primaryHabitat.habitat" | "unit.annotations.identification.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.annotations.identification.linkings.taxon.primaryHabitat.id" | "unit.annotations.identification.linkings.taxon.primaryHabitat.order" | "unit.annotations.identification.linkings.taxon.qname" | "unit.annotations.identification.linkings.taxon.scientificName" | "unit.annotations.identification.linkings.taxon.scientificNameAuthorship" | "unit.annotations.identification.linkings.taxon.scientificNameDisplayName" | "unit.annotations.identification.linkings.taxon.sensitive" | "unit.annotations.identification.linkings.taxon.taxonConceptIds" | "unit.annotations.identification.linkings.taxon.taxonRank" | "unit.annotations.identification.linkings.taxon.taxonomicOrder" | "unit.annotations.identification.linkings.taxon.threatenedStatus" | "unit.annotations.identification.linkings.taxon.vernacularName" | "unit.annotations.identification.notes" | "unit.annotations.identification.taxon" | "unit.annotations.identification.taxonID" | "unit.annotations.identification.taxonSpecifier" | "unit.annotations.identification.taxonSpecifierAuthor" | "unit.annotations.notes" | "unit.annotations.occurrenceAtTimeOfAnnotation.countryVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.dateBegin" | "unit.annotations.occurrenceAtTimeOfAnnotation.dateEnd" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.administrativeStatuses" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.checklist" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.cursiveName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.finnish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.id" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.informalTaxonGroups" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.kingdomScientificName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.status" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.year" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameEnglish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameFinnish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameSwedish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.occurrenceCountFinland" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitat" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.id" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.order" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.qname" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameAuthorship" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameDisplayName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.sensitive" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonConceptIds" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonRank" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonomicOrder" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.threatenedStatus" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.vernacularName" | "unit.annotations.occurrenceAtTimeOfAnnotation.locality" | "unit.annotations.occurrenceAtTimeOfAnnotation.municipalityVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.taxonId" | "unit.annotations.occurrenceAtTimeOfAnnotation.taxonVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.wgs84centerPointLat" | "unit.annotations.occurrenceAtTimeOfAnnotation.wgs84centerPointLon" | "unit.annotations.removedTags" | "unit.annotations.valid" | "unit.atlasClass" | "unit.atlasCode" | "unit.audioCount" | "unit.author" | "unit.breedingSite" | "unit.det" | "unit.externalMediaCount" | "unit.facts.decimalValue" | "unit.facts.fact" | "unit.facts.integerValue" | "unit.facts.value" | "unit.identificationBasis" | "unit.identifications.author" | "unit.identifications.det" | "unit.identifications.detDate" | "unit.identifications.facts.decimalValue" | "unit.identifications.facts.fact" | "unit.identifications.facts.integerValue" | "unit.identifications.facts.value" | "unit.identifications.id" | "unit.identifications.linkings.taxon.administrativeStatuses" | "unit.identifications.linkings.taxon.checklist" | "unit.identifications.linkings.taxon.cursiveName" | "unit.identifications.linkings.taxon.finnish" | "unit.identifications.linkings.taxon.id" | "unit.identifications.linkings.taxon.informalTaxonGroups" | "unit.identifications.linkings.taxon.kingdomScientificName" | "unit.identifications.linkings.taxon.latestRedListStatusFinland.status" | "unit.identifications.linkings.taxon.latestRedListStatusFinland.year" | "unit.identifications.linkings.taxon.nameEnglish" | "unit.identifications.linkings.taxon.nameFinnish" | "unit.identifications.linkings.taxon.nameSwedish" | "unit.identifications.linkings.taxon.occurrenceCountFinland" | "unit.identifications.linkings.taxon.primaryHabitat.habitat" | "unit.identifications.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.identifications.linkings.taxon.primaryHabitat.id" | "unit.identifications.linkings.taxon.primaryHabitat.order" | "unit.identifications.linkings.taxon.qname" | "unit.identifications.linkings.taxon.scientificName" | "unit.identifications.linkings.taxon.scientificNameAuthorship" | "unit.identifications.linkings.taxon.scientificNameDisplayName" | "unit.identifications.linkings.taxon.sensitive" | "unit.identifications.linkings.taxon.taxonConceptIds" | "unit.identifications.linkings.taxon.taxonRank" | "unit.identifications.linkings.taxon.taxonomicOrder" | "unit.identifications.linkings.taxon.threatenedStatus" | "unit.identifications.linkings.taxon.vernacularName" | "unit.identifications.notes" | "unit.identifications.preferred" | "unit.identifications.taxon" | "unit.identifications.taxonID" | "unit.identifications.taxonSpecifier" | "unit.identifications.taxonSpecifierAuthor" | "unit.imageCount" | "unit.individualCountFemale" | "unit.individualCountMale" | "unit.individualId" | "unit.interpretations.annotatedTaxonId" | "unit.interpretations.collectionAndRecordQuality" | "unit.interpretations.det" | "unit.interpretations.effectiveTags" | "unit.interpretations.individualCount" | "unit.interpretations.invasiveControlEffectiveness" | "unit.interpretations.invasiveControlled" | "unit.interpretations.needsCheck" | "unit.interpretations.needsIdentification" | "unit.interpretations.pairCount" | "unit.interpretations.recordQuality" | "unit.interpretations.recordQualityNumeric" | "unit.interpretations.reliability" | "unit.keywords" | "unit.lifeStage" | "unit.linkings.originalTaxon.administrativeStatuses" | "unit.linkings.originalTaxon.checklist" | "unit.linkings.originalTaxon.cursiveName" | "unit.linkings.originalTaxon.finnish" | "unit.linkings.originalTaxon.id" | "unit.linkings.originalTaxon.informalTaxonGroups" | "unit.linkings.originalTaxon.kingdomScientificName" | "unit.linkings.originalTaxon.latestRedListStatusFinland.status" | "unit.linkings.originalTaxon.latestRedListStatusFinland.year" | "unit.linkings.originalTaxon.nameEnglish" | "unit.linkings.originalTaxon.nameFinnish" | "unit.linkings.originalTaxon.nameSwedish" | "unit.linkings.originalTaxon.occurrenceCountFinland" | "unit.linkings.originalTaxon.primaryHabitat.habitat" | "unit.linkings.originalTaxon.primaryHabitat.habitatSpecificTypes" | "unit.linkings.originalTaxon.primaryHabitat.id" | "unit.linkings.originalTaxon.primaryHabitat.order" | "unit.linkings.originalTaxon.qname" | "unit.linkings.originalTaxon.scientificName" | "unit.linkings.originalTaxon.scientificNameAuthorship" | "unit.linkings.originalTaxon.scientificNameDisplayName" | "unit.linkings.originalTaxon.sensitive" | "unit.linkings.originalTaxon.taxonConceptIds" | "unit.linkings.originalTaxon.taxonRank" | "unit.linkings.originalTaxon.taxonomicOrder" | "unit.linkings.originalTaxon.threatenedStatus" | "unit.linkings.originalTaxon.vernacularName" | "unit.linkings.taxon.administrativeStatuses" | "unit.linkings.taxon.checklist" | "unit.linkings.taxon.cursiveName" | "unit.linkings.taxon.finnish" | "unit.linkings.taxon.id" | "unit.linkings.taxon.informalTaxonGroups" | "unit.linkings.taxon.kingdomScientificName" | "unit.linkings.taxon.latestRedListStatusFinland.status" | "unit.linkings.taxon.latestRedListStatusFinland.year" | "unit.linkings.taxon.nameEnglish" | "unit.linkings.taxon.nameFinnish" | "unit.linkings.taxon.nameSwedish" | "unit.linkings.taxon.occurrenceCountFinland" | "unit.linkings.taxon.primaryHabitat.habitat" | "unit.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.linkings.taxon.primaryHabitat.id" | "unit.linkings.taxon.primaryHabitat.order" | "unit.linkings.taxon.qname" | "unit.linkings.taxon.scientificName" | "unit.linkings.taxon.scientificNameAuthorship" | "unit.linkings.taxon.scientificNameDisplayName" | "unit.linkings.taxon.sensitive" | "unit.linkings.taxon.taxonConceptIds" | "unit.linkings.taxon.taxonRank" | "unit.linkings.taxon.taxonomicOrder" | "unit.linkings.taxon.threatenedStatus" | "unit.linkings.taxon.vernacularName" | "unit.local" | "unit.media.author" | "unit.media.caption" | "unit.media.copyrightOwner" | "unit.media.fullResolutionMediaAvailable" | "unit.media.fullURL" | "unit.media.highDetailModelURL" | "unit.media.licenseId" | "unit.media.lowDetailModelURL" | "unit.media.mediaType" | "unit.media.mp3URL" | "unit.media.squareThumbnailURL" | "unit.media.thumbnailURL" | "unit.media.type" | "unit.media.videoURL" | "unit.media.wavURL" | "unit.mediaCount" | "unit.modelCount" | "unit.notes" | "unit.plantStatusCode" | "unit.primarySpecimen" | "unit.quality.documentGatheringUnitQualityIssues" | "unit.quality.issue.issue" | "unit.quality.issue.message" | "unit.quality.issue.source" | "unit.recordBasis" | "unit.reportedInformalTaxonGroup" | "unit.reportedTaxonConfidence" | "unit.reportedTaxonId" | "unit.sampleCount" | "unit.samples.collectionId" | "unit.samples.facts.decimalValue" | "unit.samples.facts.fact" | "unit.samples.facts.integerValue" | "unit.samples.facts.value" | "unit.samples.keywords" | "unit.samples.material" | "unit.samples.multiple" | "unit.samples.notes" | "unit.samples.quality" | "unit.samples.sampleId" | "unit.samples.sampleOrder" | "unit.samples.status" | "unit.samples.type" | "unit.samplingMethod" | "unit.sequenceText" | "unit.sex" | "unit.sourceTags" | "unit.superRecordBasis" | "unit.taxonVerbatim" | "unit.typeSpecimen" | "unit.types.author" | "unit.types.basionymePublication" | "unit.types.facts.decimalValue" | "unit.types.facts.fact" | "unit.types.facts.integerValue" | "unit.types.facts.value" | "unit.types.id" | "unit.types.linkings.taxon.administrativeStatuses" | "unit.types.linkings.taxon.checklist" | "unit.types.linkings.taxon.cursiveName" | "unit.types.linkings.taxon.finnish" | "unit.types.linkings.taxon.id" | "unit.types.linkings.taxon.informalTaxonGroups" | "unit.types.linkings.taxon.kingdomScientificName" | "unit.types.linkings.taxon.latestRedListStatusFinland.status" | "unit.types.linkings.taxon.latestRedListStatusFinland.year" | "unit.types.linkings.taxon.nameEnglish" | "unit.types.linkings.taxon.nameFinnish" | "unit.types.linkings.taxon.nameSwedish" | "unit.types.linkings.taxon.occurrenceCountFinland" | "unit.types.linkings.taxon.primaryHabitat.habitat" | "unit.types.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.types.linkings.taxon.primaryHabitat.id" | "unit.types.linkings.taxon.primaryHabitat.order" | "unit.types.linkings.taxon.qname" | "unit.types.linkings.taxon.scientificName" | "unit.types.linkings.taxon.scientificNameAuthorship" | "unit.types.linkings.taxon.scientificNameDisplayName" | "unit.types.linkings.taxon.sensitive" | "unit.types.linkings.taxon.taxonConceptIds" | "unit.types.linkings.taxon.taxonRank" | "unit.types.linkings.taxon.taxonomicOrder" | "unit.types.linkings.taxon.threatenedStatus" | "unit.types.linkings.taxon.vernacularName" | "unit.types.notes" | "unit.types.publication" | "unit.types.status" | "unit.types.taxon" | "unit.types.taxonID" | "unit.types.taxonSpecifier" | "unit.types.taxonSpecifierAuthor" | "unit.types.typif" | "unit.types.typifDate" | "unit.types.verification" | "unit.unitId" | "unit.unitOrder" | "unit.videoCount" | "unit.wild")[];
+                    selected?: ("document.annotations.addedTags" | "document.annotations.annotationByPerson" | "document.annotations.annotationByPersonName" | "document.annotations.annotationBySystem" | "document.annotations.annotationBySystemName" | "document.annotations.atlasCode" | "document.annotations.byRole" | "document.annotations.created" | "document.annotations.deleted" | "document.annotations.deletedByPerson" | "document.annotations.deletedByPersonName" | "document.annotations.deletedDateTime" | "document.annotations.id" | "document.annotations.notes" | "document.annotations.removedTags" | "document.annotations.valid" | "document.collectionId" | "document.completeListTaxonId" | "document.completeListType" | "document.createdDate" | "document.dataSource" | "document.documentId" | "document.editorUserIds" | "document.facts.decimalValue" | "document.facts.fact" | "document.facts.integerValue" | "document.facts.value" | "document.firstLoadDate" | "document.formId" | "document.keywords" | "document.licenseId" | "document.linkings.collectionQuality" | "document.linkings.editors.fullName" | "document.linkings.editors.id" | "document.linkings.editors.userId" | "document.loadDate" | "document.media.author" | "document.media.caption" | "document.media.copyrightOwner" | "document.media.fullResolutionMediaAvailable" | "document.media.fullURL" | "document.media.highDetailModelURL" | "document.media.licenseId" | "document.media.lowDetailModelURL" | "document.media.mediaType" | "document.media.mp3URL" | "document.media.squareThumbnailURL" | "document.media.thumbnailURL" | "document.media.type" | "document.media.videoURL" | "document.media.wavURL" | "document.mediaCount" | "document.modifiedDate" | "document.namedPlace.alternativeId" | "document.namedPlace.alternativeIds" | "document.namedPlace.birdAssociationAreaDisplayName" | "document.namedPlace.birdAssociationAreaId" | "document.namedPlace.collectionId" | "document.namedPlace.id" | "document.namedPlace.municipalityDisplayName" | "document.namedPlace.municipalityId" | "document.namedPlace.name" | "document.namedPlace.tags" | "document.namedPlace.wgs84CenterPoint.lat" | "document.namedPlace.wgs84CenterPoint.lon" | "document.namedPlace.ykj10km.lat" | "document.namedPlace.ykj10km.lon" | "document.namedPlaceId" | "document.notes" | "document.partial" | "document.prefix" | "document.quality.issue.issue" | "document.quality.issue.message" | "document.quality.issue.source" | "document.referenceURL" | "document.secureLevel" | "document.secureReasons" | "document.secured" | "document.siteDead" | "document.siteStatus" | "document.siteType" | "document.sourceId" | "document.sourceTags" | "gathering.accurateArea" | "gathering.biogeographicalProvince" | "gathering.conversions.birdAssociationArea" | "gathering.conversions.boundingBoxAreaInSquareMeters" | "gathering.conversions.century" | "gathering.conversions.day" | "gathering.conversions.dayOfYearBegin" | "gathering.conversions.dayOfYearEnd" | "gathering.conversions.decade" | "gathering.conversions.euref.latMax" | "gathering.conversions.euref.latMin" | "gathering.conversions.euref.lonMax" | "gathering.conversions.euref.lonMin" | "gathering.conversions.eurefCenterPoint.lat" | "gathering.conversions.eurefCenterPoint.lon" | "gathering.conversions.eurefWKT" | "gathering.conversions.linelengthInMeters" | "gathering.conversions.month" | "gathering.conversions.seasonBegin" | "gathering.conversions.seasonEnd" | "gathering.conversions.wgs84.latMax" | "gathering.conversions.wgs84.latMin" | "gathering.conversions.wgs84.lonMax" | "gathering.conversions.wgs84.lonMin" | "gathering.conversions.wgs84CenterPoint.lat" | "gathering.conversions.wgs84CenterPoint.lon" | "gathering.conversions.wgs84Grid005.lat" | "gathering.conversions.wgs84Grid005.lon" | "gathering.conversions.wgs84Grid01.lat" | "gathering.conversions.wgs84Grid01.lon" | "gathering.conversions.wgs84Grid05.lat" | "gathering.conversions.wgs84Grid05.lon" | "gathering.conversions.wgs84Grid1.lat" | "gathering.conversions.wgs84Grid1.lon" | "gathering.conversions.wgs84WKT" | "gathering.conversions.year" | "gathering.conversions.ykj.latMax" | "gathering.conversions.ykj.latMin" | "gathering.conversions.ykj.lonMax" | "gathering.conversions.ykj.lonMin" | "gathering.conversions.ykj100km.lat" | "gathering.conversions.ykj100km.lon" | "gathering.conversions.ykj100kmCenter.lat" | "gathering.conversions.ykj100kmCenter.lon" | "gathering.conversions.ykj10km.lat" | "gathering.conversions.ykj10km.lon" | "gathering.conversions.ykj10kmCenter.lat" | "gathering.conversions.ykj10kmCenter.lon" | "gathering.conversions.ykj1km.lat" | "gathering.conversions.ykj1km.lon" | "gathering.conversions.ykj1kmCenter.lat" | "gathering.conversions.ykj1kmCenter.lon" | "gathering.conversions.ykj50km.lat" | "gathering.conversions.ykj50km.lon" | "gathering.conversions.ykj50kmCenter.lat" | "gathering.conversions.ykj50kmCenter.lon" | "gathering.conversions.ykjWKT" | "gathering.coordinatesVerbatim" | "gathering.country" | "gathering.displayDateTime" | "gathering.eventDate.begin" | "gathering.eventDate.end" | "gathering.facts.decimalValue" | "gathering.facts.fact" | "gathering.facts.integerValue" | "gathering.facts.value" | "gathering.gatheringId" | "gathering.gatheringOrder" | "gathering.gatheringSection" | "gathering.higherGeography" | "gathering.hourBegin" | "gathering.hourEnd" | "gathering.interpretations.biogeographicalProvince" | "gathering.interpretations.biogeographicalProvinceDisplayname" | "gathering.interpretations.biogeographicalProvinces" | "gathering.interpretations.coordinateAccuracy" | "gathering.interpretations.country" | "gathering.interpretations.countryDisplayname" | "gathering.interpretations.finnishMunicipalities" | "gathering.interpretations.finnishMunicipality" | "gathering.interpretations.municipalityDisplayname" | "gathering.interpretations.sourceOfBiogeographicalProvince" | "gathering.interpretations.sourceOfCoordinates" | "gathering.interpretations.sourceOfCountry" | "gathering.interpretations.sourceOfFinnishMunicipality" | "gathering.linkings.observers.fullName" | "gathering.linkings.observers.id" | "gathering.linkings.observers.userId" | "gathering.locality" | "gathering.media.author" | "gathering.media.caption" | "gathering.media.copyrightOwner" | "gathering.media.fullResolutionMediaAvailable" | "gathering.media.fullURL" | "gathering.media.highDetailModelURL" | "gathering.media.licenseId" | "gathering.media.lowDetailModelURL" | "gathering.media.mediaType" | "gathering.media.mp3URL" | "gathering.media.squareThumbnailURL" | "gathering.media.thumbnailURL" | "gathering.media.type" | "gathering.media.videoURL" | "gathering.media.wavURL" | "gathering.mediaCount" | "gathering.minutesBegin" | "gathering.minutesEnd" | "gathering.municipality" | "gathering.notes" | "gathering.observerUserIds" | "gathering.province" | "gathering.quality.issue.issue" | "gathering.quality.issue.message" | "gathering.quality.issue.source" | "gathering.quality.locationIssue.issue" | "gathering.quality.locationIssue.message" | "gathering.quality.locationIssue.source" | "gathering.quality.timeIssue.issue" | "gathering.quality.timeIssue.message" | "gathering.quality.timeIssue.source" | "gathering.stateLand" | "gathering.taxonCensus.taxonId" | "gathering.taxonCensus.type" | "gathering.team" | "media.author" | "media.caption" | "media.copyrightOwner" | "media.fullResolutionMediaAvailable" | "media.fullURL" | "media.highDetailModelURL" | "media.licenseId" | "media.lowDetailModelURL" | "media.mediaType" | "media.mp3URL" | "media.squareThumbnailURL" | "media.thumbnailURL" | "media.type" | "media.videoURL" | "media.wavURL" | "unit.abundanceString" | "unit.abundanceUnit" | "unit.alive" | "unit.annotationCount" | "unit.annotations.addedTags" | "unit.annotations.annotationByPerson" | "unit.annotations.annotationByPersonName" | "unit.annotations.annotationBySystem" | "unit.annotations.annotationBySystemName" | "unit.annotations.atlasCode" | "unit.annotations.byRole" | "unit.annotations.created" | "unit.annotations.deleted" | "unit.annotations.deletedByPerson" | "unit.annotations.deletedByPersonName" | "unit.annotations.deletedDateTime" | "unit.annotations.id" | "unit.annotations.identification.author" | "unit.annotations.identification.facts.decimalValue" | "unit.annotations.identification.facts.fact" | "unit.annotations.identification.facts.integerValue" | "unit.annotations.identification.facts.value" | "unit.annotations.identification.id" | "unit.annotations.identification.linkings.taxon.administrativeStatuses" | "unit.annotations.identification.linkings.taxon.checklist" | "unit.annotations.identification.linkings.taxon.cursiveName" | "unit.annotations.identification.linkings.taxon.finnish" | "unit.annotations.identification.linkings.taxon.id" | "unit.annotations.identification.linkings.taxon.informalTaxonGroups" | "unit.annotations.identification.linkings.taxon.kingdomScientificName" | "unit.annotations.identification.linkings.taxon.latestRedListStatusFinland.status" | "unit.annotations.identification.linkings.taxon.latestRedListStatusFinland.year" | "unit.annotations.identification.linkings.taxon.nameEnglish" | "unit.annotations.identification.linkings.taxon.nameFinnish" | "unit.annotations.identification.linkings.taxon.nameSwedish" | "unit.annotations.identification.linkings.taxon.occurrenceCountFinland" | "unit.annotations.identification.linkings.taxon.primaryHabitat.habitat" | "unit.annotations.identification.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.annotations.identification.linkings.taxon.primaryHabitat.id" | "unit.annotations.identification.linkings.taxon.primaryHabitat.order" | "unit.annotations.identification.linkings.taxon.qname" | "unit.annotations.identification.linkings.taxon.scientificName" | "unit.annotations.identification.linkings.taxon.scientificNameAuthorship" | "unit.annotations.identification.linkings.taxon.scientificNameDisplayName" | "unit.annotations.identification.linkings.taxon.sensitive" | "unit.annotations.identification.linkings.taxon.taxonConceptIds" | "unit.annotations.identification.linkings.taxon.taxonRank" | "unit.annotations.identification.linkings.taxon.taxonomicOrder" | "unit.annotations.identification.linkings.taxon.threatenedStatus" | "unit.annotations.identification.linkings.taxon.vernacularName" | "unit.annotations.identification.notes" | "unit.annotations.identification.taxon" | "unit.annotations.identification.taxonID" | "unit.annotations.identification.taxonRank" | "unit.annotations.identification.taxonSpecifier" | "unit.annotations.identification.taxonSpecifierAuthor" | "unit.annotations.notes" | "unit.annotations.occurrenceAtTimeOfAnnotation.countryVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.dateBegin" | "unit.annotations.occurrenceAtTimeOfAnnotation.dateEnd" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.administrativeStatuses" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.checklist" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.cursiveName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.finnish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.id" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.informalTaxonGroups" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.kingdomScientificName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.status" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.year" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameEnglish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameFinnish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameSwedish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.occurrenceCountFinland" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitat" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.id" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.order" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.qname" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameAuthorship" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameDisplayName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.sensitive" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonConceptIds" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonRank" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonomicOrder" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.threatenedStatus" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.vernacularName" | "unit.annotations.occurrenceAtTimeOfAnnotation.locality" | "unit.annotations.occurrenceAtTimeOfAnnotation.municipalityVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.taxonId" | "unit.annotations.occurrenceAtTimeOfAnnotation.taxonVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.wgs84centerPointLat" | "unit.annotations.occurrenceAtTimeOfAnnotation.wgs84centerPointLon" | "unit.annotations.removedTags" | "unit.annotations.valid" | "unit.atlasClass" | "unit.atlasCode" | "unit.audioCount" | "unit.author" | "unit.breedingSite" | "unit.det" | "unit.externalMediaCount" | "unit.facts.decimalValue" | "unit.facts.fact" | "unit.facts.integerValue" | "unit.facts.value" | "unit.identificationBasis" | "unit.identifications.author" | "unit.identifications.det" | "unit.identifications.detDate" | "unit.identifications.facts.decimalValue" | "unit.identifications.facts.fact" | "unit.identifications.facts.integerValue" | "unit.identifications.facts.value" | "unit.identifications.id" | "unit.identifications.linkings.taxon.administrativeStatuses" | "unit.identifications.linkings.taxon.checklist" | "unit.identifications.linkings.taxon.cursiveName" | "unit.identifications.linkings.taxon.finnish" | "unit.identifications.linkings.taxon.id" | "unit.identifications.linkings.taxon.informalTaxonGroups" | "unit.identifications.linkings.taxon.kingdomScientificName" | "unit.identifications.linkings.taxon.latestRedListStatusFinland.status" | "unit.identifications.linkings.taxon.latestRedListStatusFinland.year" | "unit.identifications.linkings.taxon.nameEnglish" | "unit.identifications.linkings.taxon.nameFinnish" | "unit.identifications.linkings.taxon.nameSwedish" | "unit.identifications.linkings.taxon.occurrenceCountFinland" | "unit.identifications.linkings.taxon.primaryHabitat.habitat" | "unit.identifications.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.identifications.linkings.taxon.primaryHabitat.id" | "unit.identifications.linkings.taxon.primaryHabitat.order" | "unit.identifications.linkings.taxon.qname" | "unit.identifications.linkings.taxon.scientificName" | "unit.identifications.linkings.taxon.scientificNameAuthorship" | "unit.identifications.linkings.taxon.scientificNameDisplayName" | "unit.identifications.linkings.taxon.sensitive" | "unit.identifications.linkings.taxon.taxonConceptIds" | "unit.identifications.linkings.taxon.taxonRank" | "unit.identifications.linkings.taxon.taxonomicOrder" | "unit.identifications.linkings.taxon.threatenedStatus" | "unit.identifications.linkings.taxon.vernacularName" | "unit.identifications.notes" | "unit.identifications.preferred" | "unit.identifications.taxon" | "unit.identifications.taxonID" | "unit.identifications.taxonRank" | "unit.identifications.taxonSpecifier" | "unit.identifications.taxonSpecifierAuthor" | "unit.imageCount" | "unit.individualCountFemale" | "unit.individualCountMale" | "unit.individualId" | "unit.interpretations.annotatedTaxonId" | "unit.interpretations.collectionAndRecordQuality" | "unit.interpretations.det" | "unit.interpretations.effectiveTags" | "unit.interpretations.individualCount" | "unit.interpretations.invasiveControlEffectiveness" | "unit.interpretations.invasiveControlled" | "unit.interpretations.needsCheck" | "unit.interpretations.needsIdentification" | "unit.interpretations.pairCount" | "unit.interpretations.recordQuality" | "unit.interpretations.recordQualityNumeric" | "unit.interpretations.reliability" | "unit.keywords" | "unit.lifeStage" | "unit.linkings.originalTaxon.administrativeStatuses" | "unit.linkings.originalTaxon.checklist" | "unit.linkings.originalTaxon.cursiveName" | "unit.linkings.originalTaxon.finnish" | "unit.linkings.originalTaxon.id" | "unit.linkings.originalTaxon.informalTaxonGroups" | "unit.linkings.originalTaxon.kingdomScientificName" | "unit.linkings.originalTaxon.latestRedListStatusFinland.status" | "unit.linkings.originalTaxon.latestRedListStatusFinland.year" | "unit.linkings.originalTaxon.nameEnglish" | "unit.linkings.originalTaxon.nameFinnish" | "unit.linkings.originalTaxon.nameSwedish" | "unit.linkings.originalTaxon.occurrenceCountFinland" | "unit.linkings.originalTaxon.primaryHabitat.habitat" | "unit.linkings.originalTaxon.primaryHabitat.habitatSpecificTypes" | "unit.linkings.originalTaxon.primaryHabitat.id" | "unit.linkings.originalTaxon.primaryHabitat.order" | "unit.linkings.originalTaxon.qname" | "unit.linkings.originalTaxon.scientificName" | "unit.linkings.originalTaxon.scientificNameAuthorship" | "unit.linkings.originalTaxon.scientificNameDisplayName" | "unit.linkings.originalTaxon.sensitive" | "unit.linkings.originalTaxon.taxonConceptIds" | "unit.linkings.originalTaxon.taxonRank" | "unit.linkings.originalTaxon.taxonomicOrder" | "unit.linkings.originalTaxon.threatenedStatus" | "unit.linkings.originalTaxon.vernacularName" | "unit.linkings.taxon.administrativeStatuses" | "unit.linkings.taxon.checklist" | "unit.linkings.taxon.cursiveName" | "unit.linkings.taxon.finnish" | "unit.linkings.taxon.id" | "unit.linkings.taxon.informalTaxonGroups" | "unit.linkings.taxon.kingdomScientificName" | "unit.linkings.taxon.latestRedListStatusFinland.status" | "unit.linkings.taxon.latestRedListStatusFinland.year" | "unit.linkings.taxon.nameEnglish" | "unit.linkings.taxon.nameFinnish" | "unit.linkings.taxon.nameSwedish" | "unit.linkings.taxon.occurrenceCountFinland" | "unit.linkings.taxon.primaryHabitat.habitat" | "unit.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.linkings.taxon.primaryHabitat.id" | "unit.linkings.taxon.primaryHabitat.order" | "unit.linkings.taxon.qname" | "unit.linkings.taxon.scientificName" | "unit.linkings.taxon.scientificNameAuthorship" | "unit.linkings.taxon.scientificNameDisplayName" | "unit.linkings.taxon.sensitive" | "unit.linkings.taxon.taxonConceptIds" | "unit.linkings.taxon.taxonRank" | "unit.linkings.taxon.taxonomicOrder" | "unit.linkings.taxon.threatenedStatus" | "unit.linkings.taxon.vernacularName" | "unit.local" | "unit.media.author" | "unit.media.caption" | "unit.media.copyrightOwner" | "unit.media.fullResolutionMediaAvailable" | "unit.media.fullURL" | "unit.media.highDetailModelURL" | "unit.media.licenseId" | "unit.media.lowDetailModelURL" | "unit.media.mediaType" | "unit.media.mp3URL" | "unit.media.squareThumbnailURL" | "unit.media.thumbnailURL" | "unit.media.type" | "unit.media.videoURL" | "unit.media.wavURL" | "unit.mediaCount" | "unit.modelCount" | "unit.notes" | "unit.plantStatusCode" | "unit.primarySpecimen" | "unit.quality.documentGatheringUnitQualityIssues" | "unit.quality.issue.issue" | "unit.quality.issue.message" | "unit.quality.issue.source" | "unit.recordBasis" | "unit.reportedInformalTaxonGroup" | "unit.reportedKingdom" | "unit.reportedTaxonConfidence" | "unit.reportedTaxonId" | "unit.reportedTaxonRank" | "unit.sampleCount" | "unit.samples.collectionId" | "unit.samples.facts.decimalValue" | "unit.samples.facts.fact" | "unit.samples.facts.integerValue" | "unit.samples.facts.value" | "unit.samples.keywords" | "unit.samples.material" | "unit.samples.multiple" | "unit.samples.notes" | "unit.samples.quality" | "unit.samples.sampleId" | "unit.samples.sampleOrder" | "unit.samples.status" | "unit.samples.type" | "unit.samplingMethod" | "unit.sequenceText" | "unit.sex" | "unit.sourceTags" | "unit.superRecordBasis" | "unit.taxonVerbatim" | "unit.typeSpecimen" | "unit.types.author" | "unit.types.basionymePublication" | "unit.types.facts.decimalValue" | "unit.types.facts.fact" | "unit.types.facts.integerValue" | "unit.types.facts.value" | "unit.types.id" | "unit.types.linkings.taxon.administrativeStatuses" | "unit.types.linkings.taxon.checklist" | "unit.types.linkings.taxon.cursiveName" | "unit.types.linkings.taxon.finnish" | "unit.types.linkings.taxon.id" | "unit.types.linkings.taxon.informalTaxonGroups" | "unit.types.linkings.taxon.kingdomScientificName" | "unit.types.linkings.taxon.latestRedListStatusFinland.status" | "unit.types.linkings.taxon.latestRedListStatusFinland.year" | "unit.types.linkings.taxon.nameEnglish" | "unit.types.linkings.taxon.nameFinnish" | "unit.types.linkings.taxon.nameSwedish" | "unit.types.linkings.taxon.occurrenceCountFinland" | "unit.types.linkings.taxon.primaryHabitat.habitat" | "unit.types.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.types.linkings.taxon.primaryHabitat.id" | "unit.types.linkings.taxon.primaryHabitat.order" | "unit.types.linkings.taxon.qname" | "unit.types.linkings.taxon.scientificName" | "unit.types.linkings.taxon.scientificNameAuthorship" | "unit.types.linkings.taxon.scientificNameDisplayName" | "unit.types.linkings.taxon.sensitive" | "unit.types.linkings.taxon.taxonConceptIds" | "unit.types.linkings.taxon.taxonRank" | "unit.types.linkings.taxon.taxonomicOrder" | "unit.types.linkings.taxon.threatenedStatus" | "unit.types.linkings.taxon.vernacularName" | "unit.types.notes" | "unit.types.publication" | "unit.types.status" | "unit.types.taxon" | "unit.types.taxonID" | "unit.types.taxonRank" | "unit.types.taxonSpecifier" | "unit.types.taxonSpecifierAuthor" | "unit.types.typif" | "unit.types.typifDate" | "unit.types.verification" | "unit.unitId" | "unit.unitOrder" | "unit.videoCount" | "unit.wild")[];
                     /** @description Define what fields to use when sorting results. Defaults to [unit.media.fullURL ASC]. Unit key is always added as a last parameter to ensure correct paging. You can include ASC or DESC after the name of the field (defaults to ASC).Multiple values are seperated by ','. */
                     orderBy?: ("RANDOM" | "RANDOM:seed" | "document.collectionId" | "document.createdDate" | "document.dataSource" | "document.documentId" | "document.firstLoadDate" | "document.linkings.collectionQuality" | "document.loadDate" | "document.mediaCount" | "document.modifiedDate" | "document.namedPlace.birdAssociationAreaDisplayName" | "document.namedPlace.municipalityDisplayName" | "document.namedPlace.name" | "document.quality.issue.issue" | "document.quality.issue.source" | "document.secureLevel" | "document.secured" | "document.siteStatus" | "document.siteType" | "document.sourceId" | "gathering.biogeographicalProvince" | "gathering.conversions.boundingBoxAreaInSquareMeters" | "gathering.conversions.century" | "gathering.conversions.day" | "gathering.conversions.dayOfYearBegin" | "gathering.conversions.dayOfYearEnd" | "gathering.conversions.decade" | "gathering.conversions.euref.latMax" | "gathering.conversions.euref.latMin" | "gathering.conversions.euref.lonMax" | "gathering.conversions.euref.lonMin" | "gathering.conversions.month" | "gathering.conversions.seasonBegin" | "gathering.conversions.seasonEnd" | "gathering.conversions.wgs84.latMax" | "gathering.conversions.wgs84.latMin" | "gathering.conversions.wgs84.lonMax" | "gathering.conversions.wgs84.lonMin" | "gathering.conversions.wgs84CenterPoint.lat" | "gathering.conversions.wgs84CenterPoint.lon" | "gathering.conversions.wgs84Grid005.lat" | "gathering.conversions.wgs84Grid005.lon" | "gathering.conversions.wgs84Grid01.lat" | "gathering.conversions.wgs84Grid01.lon" | "gathering.conversions.wgs84Grid05.lat" | "gathering.conversions.wgs84Grid05.lon" | "gathering.conversions.wgs84Grid1.lat" | "gathering.conversions.wgs84Grid1.lon" | "gathering.conversions.year" | "gathering.conversions.ykj.latMax" | "gathering.conversions.ykj.latMin" | "gathering.conversions.ykj.lonMax" | "gathering.conversions.ykj.lonMin" | "gathering.conversions.ykj100km.lat" | "gathering.conversions.ykj100km.lon" | "gathering.conversions.ykj100kmCenter.lat" | "gathering.conversions.ykj100kmCenter.lon" | "gathering.conversions.ykj10km.lat" | "gathering.conversions.ykj10km.lon" | "gathering.conversions.ykj10kmCenter.lat" | "gathering.conversions.ykj10kmCenter.lon" | "gathering.conversions.ykj1km.lat" | "gathering.conversions.ykj1km.lon" | "gathering.conversions.ykj1kmCenter.lat" | "gathering.conversions.ykj1kmCenter.lon" | "gathering.conversions.ykj50km.lat" | "gathering.conversions.ykj50km.lon" | "gathering.conversions.ykj50kmCenter.lat" | "gathering.conversions.ykj50kmCenter.lon" | "gathering.coordinatesVerbatim" | "gathering.country" | "gathering.displayDateTime" | "gathering.eventDate.begin" | "gathering.eventDate.end" | "gathering.gatheringId" | "gathering.gatheringOrder" | "gathering.gatheringSection" | "gathering.higherGeography" | "gathering.hourBegin" | "gathering.hourEnd" | "gathering.interpretations.biogeographicalProvince" | "gathering.interpretations.biogeographicalProvinceDisplayname" | "gathering.interpretations.coordinateAccuracy" | "gathering.interpretations.country" | "gathering.interpretations.countryDisplayname" | "gathering.interpretations.finnishMunicipality" | "gathering.interpretations.municipalityDisplayname" | "gathering.interpretations.sourceOfBiogeographicalProvince" | "gathering.interpretations.sourceOfCoordinates" | "gathering.interpretations.sourceOfCountry" | "gathering.interpretations.sourceOfFinnishMunicipality" | "gathering.locality" | "gathering.mediaCount" | "gathering.minutesBegin" | "gathering.minutesEnd" | "gathering.municipality" | "gathering.province" | "gathering.quality.issue.issue" | "gathering.quality.issue.source" | "gathering.quality.locationIssue.issue" | "gathering.quality.locationIssue.source" | "gathering.quality.timeIssue.issue" | "gathering.quality.timeIssue.source" | "gathering.stateLand" | "gathering.team" | "unit.abundanceString" | "unit.alive" | "unit.author" | "unit.breedingSite" | "unit.det" | "unit.individualId" | "unit.interpretations.annotatedTaxonId" | "unit.interpretations.individualCount" | "unit.interpretations.invasiveControlEffectiveness" | "unit.interpretations.invasiveControlled" | "unit.interpretations.recordQuality" | "unit.interpretations.recordQualityNumeric" | "unit.interpretations.reliability" | "unit.lifeStage" | "unit.linkings.originalTaxon.author" | "unit.linkings.originalTaxon.finnish" | "unit.linkings.originalTaxon.invasive" | "unit.linkings.originalTaxon.nameEnglish" | "unit.linkings.originalTaxon.nameFinnish" | "unit.linkings.originalTaxon.nameSwedish" | "unit.linkings.originalTaxon.occurrenceCount" | "unit.linkings.originalTaxon.occurrenceCountFinland" | "unit.linkings.originalTaxon.redListStatus" | "unit.linkings.originalTaxon.scientificName" | "unit.linkings.originalTaxon.scientificNameDisplayName" | "unit.linkings.originalTaxon.species" | "unit.linkings.originalTaxon.speciesNameEnglish" | "unit.linkings.originalTaxon.speciesNameFinnish" | "unit.linkings.originalTaxon.speciesNameSwedish" | "unit.linkings.originalTaxon.speciesScientificName" | "unit.linkings.originalTaxon.taxonRank" | "unit.linkings.originalTaxon.taxonomicOrder" | "unit.linkings.taxon.author" | "unit.linkings.taxon.finnish" | "unit.linkings.taxon.invasive" | "unit.linkings.taxon.nameEnglish" | "unit.linkings.taxon.nameFinnish" | "unit.linkings.taxon.nameSwedish" | "unit.linkings.taxon.occurrenceCount" | "unit.linkings.taxon.occurrenceCountFinland" | "unit.linkings.taxon.redListStatus" | "unit.linkings.taxon.scientificName" | "unit.linkings.taxon.scientificNameDisplayName" | "unit.linkings.taxon.species" | "unit.linkings.taxon.speciesNameEnglish" | "unit.linkings.taxon.speciesNameFinnish" | "unit.linkings.taxon.speciesNameSwedish" | "unit.linkings.taxon.speciesScientificName" | "unit.linkings.taxon.taxonRank" | "unit.linkings.taxon.taxonomicOrder" | "unit.local" | "unit.media.fullURL" | "unit.media.mediaType" | "unit.mediaCount" | "unit.notes" | "unit.quality.documentGatheringUnitQualityIssues" | "unit.quality.issue.issue" | "unit.quality.issue.source" | "unit.recordBasis" | "unit.reportedTaxonConfidence" | "unit.sex" | "unit.superRecordBasis" | "unit.taxonVerbatim" | "unit.typeSpecimen" | "unit.unitId" | "unit.unitOrder" | "unit.wild")[];
                     /** @description For GeoJSON requests there are two additional parameters: crs and featureType. This controls the coordinate reference system used in the returned GeoJSON features. (WGS84 = EPSG:4326; EUREF = ETRS-TM35FIN EPSG:3067; YKJ = EPSG:2393) */
@@ -4737,10 +4747,12 @@ export interface paths {
                     useIdentificationAnnotations?: boolean;
                     /** @description By default, all taxon linking related filters return all entries that belong to the filtered taxa. To return only exact matches (no subtaxa), set this to false. */
                     includeSubTaxa?: boolean;
-                    /** @description Set to false if you want to include only those entries where reported target name can be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    includeNonValidTaxa?: boolean;
-                    /** @description Set to true if you want to include only those entries where reported target name can not be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    onlyNonValidTaxa?: boolean;
+                    /** @description True: occurrence is linked to a taxon concept that exactly matches the taxonomic information provided in the occurrence. False: occurrence is not linked to an exact taxon concept, including occurrences linked only to higher taxonomy based on a partial name. */
+                    hasTaxon?: boolean;
+                    /** @description Filter occurrences by how their taxonomic information is linked: EXACT: linked to a taxon concept that exactly matches the information provided in the occurrence; NON_EXACT: linked only to higher taxonomy based on a partial name; NONE: not linked to taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. */
+                    taxonLinking?: "EXACT" | "NON_EXACT" | "NO_LINKING";
+                    /** @description Filter by the checklist to which the taxon concept linked to the occurrence belongs. The checklist is identified by its URI or Qname, for example MR.1 for the FinBIF Master Checklist or MR.2 for the GBIF Backbone Taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /checklist */
+                    checklist?: string;
                     /** @description Filter based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
                     informalTaxonGroupId?: string;
                     /** @description Exclude based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will exclude entries that have been linked with taxa that belong to any of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
@@ -5079,10 +5091,12 @@ export interface paths {
                     useIdentificationAnnotations?: boolean;
                     /** @description By default, all taxon linking related filters return all entries that belong to the filtered taxa. To return only exact matches (no subtaxa), set this to false. */
                     includeSubTaxa?: boolean;
-                    /** @description Set to false if you want to include only those entries where reported target name can be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    includeNonValidTaxa?: boolean;
-                    /** @description Set to true if you want to include only those entries where reported target name can not be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    onlyNonValidTaxa?: boolean;
+                    /** @description True: occurrence is linked to a taxon concept that exactly matches the taxonomic information provided in the occurrence. False: occurrence is not linked to an exact taxon concept, including occurrences linked only to higher taxonomy based on a partial name. */
+                    hasTaxon?: boolean;
+                    /** @description Filter occurrences by how their taxonomic information is linked: EXACT: linked to a taxon concept that exactly matches the information provided in the occurrence; NON_EXACT: linked only to higher taxonomy based on a partial name; NONE: not linked to taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. */
+                    taxonLinking?: "EXACT" | "NON_EXACT" | "NO_LINKING";
+                    /** @description Filter by the checklist to which the taxon concept linked to the occurrence belongs. The checklist is identified by its URI or Qname, for example MR.1 for the FinBIF Master Checklist or MR.2 for the GBIF Backbone Taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /checklist */
+                    checklist?: string;
                     /** @description Filter based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
                     informalTaxonGroupId?: string;
                     /** @description Exclude based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will exclude entries that have been linked with taxa that belong to any of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
@@ -5423,7 +5437,7 @@ export interface paths {
             parameters: {
                 query?: {
                     /** @description Define what fields to include to the result. Defaults to [document.documentId, sample.collectionId, sample.facts.decimalValue, sample.facts.fact, sample.facts.integerValue, sample.facts.value, sample.keywords, sample.material, sample.multiple, sample.notes, sample.quality, sample.sampleId, sample.sampleOrder, sample.status, sample.type, unit.linkings.taxon.id, unit.linkings.taxon.scientificName, unit.taxonVerbatim, unit.unitId] Multiple values are seperated by ','. */
-                    selected?: ("document.annotations.addedTags" | "document.annotations.annotationByPerson" | "document.annotations.annotationByPersonName" | "document.annotations.annotationBySystem" | "document.annotations.annotationBySystemName" | "document.annotations.atlasCode" | "document.annotations.byRole" | "document.annotations.created" | "document.annotations.deleted" | "document.annotations.deletedByPerson" | "document.annotations.deletedByPersonName" | "document.annotations.deletedDateTime" | "document.annotations.id" | "document.annotations.notes" | "document.annotations.removedTags" | "document.annotations.valid" | "document.collectionId" | "document.completeListTaxonId" | "document.completeListType" | "document.createdDate" | "document.dataSource" | "document.documentId" | "document.editorUserIds" | "document.facts.decimalValue" | "document.facts.fact" | "document.facts.integerValue" | "document.facts.value" | "document.firstLoadDate" | "document.formId" | "document.keywords" | "document.licenseId" | "document.linkings.collectionQuality" | "document.linkings.editors.fullName" | "document.linkings.editors.id" | "document.linkings.editors.userId" | "document.loadDate" | "document.media.author" | "document.media.caption" | "document.media.copyrightOwner" | "document.media.fullResolutionMediaAvailable" | "document.media.fullURL" | "document.media.highDetailModelURL" | "document.media.licenseId" | "document.media.lowDetailModelURL" | "document.media.mediaType" | "document.media.mp3URL" | "document.media.squareThumbnailURL" | "document.media.thumbnailURL" | "document.media.type" | "document.media.videoURL" | "document.media.wavURL" | "document.mediaCount" | "document.modifiedDate" | "document.namedPlace.alternativeId" | "document.namedPlace.alternativeIds" | "document.namedPlace.birdAssociationAreaDisplayName" | "document.namedPlace.birdAssociationAreaId" | "document.namedPlace.collectionId" | "document.namedPlace.id" | "document.namedPlace.municipalityDisplayName" | "document.namedPlace.municipalityId" | "document.namedPlace.name" | "document.namedPlace.tags" | "document.namedPlace.wgs84CenterPoint.lat" | "document.namedPlace.wgs84CenterPoint.lon" | "document.namedPlace.ykj10km.lat" | "document.namedPlace.ykj10km.lon" | "document.namedPlaceId" | "document.notes" | "document.partial" | "document.prefix" | "document.quality.issue.issue" | "document.quality.issue.message" | "document.quality.issue.source" | "document.referenceURL" | "document.secureLevel" | "document.secureReasons" | "document.secured" | "document.siteDead" | "document.siteStatus" | "document.siteType" | "document.sourceId" | "document.sourceTags" | "gathering.accurateArea" | "gathering.biogeographicalProvince" | "gathering.conversions.birdAssociationArea" | "gathering.conversions.boundingBoxAreaInSquareMeters" | "gathering.conversions.century" | "gathering.conversions.day" | "gathering.conversions.dayOfYearBegin" | "gathering.conversions.dayOfYearEnd" | "gathering.conversions.decade" | "gathering.conversions.euref.latMax" | "gathering.conversions.euref.latMin" | "gathering.conversions.euref.lonMax" | "gathering.conversions.euref.lonMin" | "gathering.conversions.eurefCenterPoint.lat" | "gathering.conversions.eurefCenterPoint.lon" | "gathering.conversions.eurefWKT" | "gathering.conversions.linelengthInMeters" | "gathering.conversions.month" | "gathering.conversions.seasonBegin" | "gathering.conversions.seasonEnd" | "gathering.conversions.wgs84.latMax" | "gathering.conversions.wgs84.latMin" | "gathering.conversions.wgs84.lonMax" | "gathering.conversions.wgs84.lonMin" | "gathering.conversions.wgs84CenterPoint.lat" | "gathering.conversions.wgs84CenterPoint.lon" | "gathering.conversions.wgs84Grid005.lat" | "gathering.conversions.wgs84Grid005.lon" | "gathering.conversions.wgs84Grid01.lat" | "gathering.conversions.wgs84Grid01.lon" | "gathering.conversions.wgs84Grid05.lat" | "gathering.conversions.wgs84Grid05.lon" | "gathering.conversions.wgs84Grid1.lat" | "gathering.conversions.wgs84Grid1.lon" | "gathering.conversions.wgs84WKT" | "gathering.conversions.year" | "gathering.conversions.ykj.latMax" | "gathering.conversions.ykj.latMin" | "gathering.conversions.ykj.lonMax" | "gathering.conversions.ykj.lonMin" | "gathering.conversions.ykj100km.lat" | "gathering.conversions.ykj100km.lon" | "gathering.conversions.ykj100kmCenter.lat" | "gathering.conversions.ykj100kmCenter.lon" | "gathering.conversions.ykj10km.lat" | "gathering.conversions.ykj10km.lon" | "gathering.conversions.ykj10kmCenter.lat" | "gathering.conversions.ykj10kmCenter.lon" | "gathering.conversions.ykj1km.lat" | "gathering.conversions.ykj1km.lon" | "gathering.conversions.ykj1kmCenter.lat" | "gathering.conversions.ykj1kmCenter.lon" | "gathering.conversions.ykj50km.lat" | "gathering.conversions.ykj50km.lon" | "gathering.conversions.ykj50kmCenter.lat" | "gathering.conversions.ykj50kmCenter.lon" | "gathering.conversions.ykjWKT" | "gathering.coordinatesVerbatim" | "gathering.country" | "gathering.displayDateTime" | "gathering.eventDate.begin" | "gathering.eventDate.end" | "gathering.facts.decimalValue" | "gathering.facts.fact" | "gathering.facts.integerValue" | "gathering.facts.value" | "gathering.gatheringId" | "gathering.gatheringOrder" | "gathering.gatheringSection" | "gathering.higherGeography" | "gathering.hourBegin" | "gathering.hourEnd" | "gathering.interpretations.biogeographicalProvince" | "gathering.interpretations.biogeographicalProvinceDisplayname" | "gathering.interpretations.biogeographicalProvinces" | "gathering.interpretations.coordinateAccuracy" | "gathering.interpretations.country" | "gathering.interpretations.countryDisplayname" | "gathering.interpretations.finnishMunicipalities" | "gathering.interpretations.finnishMunicipality" | "gathering.interpretations.municipalityDisplayname" | "gathering.interpretations.sourceOfBiogeographicalProvince" | "gathering.interpretations.sourceOfCoordinates" | "gathering.interpretations.sourceOfCountry" | "gathering.interpretations.sourceOfFinnishMunicipality" | "gathering.linkings.observers.fullName" | "gathering.linkings.observers.id" | "gathering.linkings.observers.userId" | "gathering.locality" | "gathering.media.author" | "gathering.media.caption" | "gathering.media.copyrightOwner" | "gathering.media.fullResolutionMediaAvailable" | "gathering.media.fullURL" | "gathering.media.highDetailModelURL" | "gathering.media.licenseId" | "gathering.media.lowDetailModelURL" | "gathering.media.mediaType" | "gathering.media.mp3URL" | "gathering.media.squareThumbnailURL" | "gathering.media.thumbnailURL" | "gathering.media.type" | "gathering.media.videoURL" | "gathering.media.wavURL" | "gathering.mediaCount" | "gathering.minutesBegin" | "gathering.minutesEnd" | "gathering.municipality" | "gathering.notes" | "gathering.observerUserIds" | "gathering.province" | "gathering.quality.issue.issue" | "gathering.quality.issue.message" | "gathering.quality.issue.source" | "gathering.quality.locationIssue.issue" | "gathering.quality.locationIssue.message" | "gathering.quality.locationIssue.source" | "gathering.quality.timeIssue.issue" | "gathering.quality.timeIssue.message" | "gathering.quality.timeIssue.source" | "gathering.stateLand" | "gathering.taxonCensus.taxonId" | "gathering.taxonCensus.type" | "gathering.team" | "sample.collectionId" | "sample.facts.decimalValue" | "sample.facts.fact" | "sample.facts.integerValue" | "sample.facts.value" | "sample.keywords" | "sample.material" | "sample.multiple" | "sample.notes" | "sample.quality" | "sample.sampleId" | "sample.sampleOrder" | "sample.status" | "sample.type" | "unit.abundanceString" | "unit.abundanceUnit" | "unit.alive" | "unit.annotationCount" | "unit.annotations.addedTags" | "unit.annotations.annotationByPerson" | "unit.annotations.annotationByPersonName" | "unit.annotations.annotationBySystem" | "unit.annotations.annotationBySystemName" | "unit.annotations.atlasCode" | "unit.annotations.byRole" | "unit.annotations.created" | "unit.annotations.deleted" | "unit.annotations.deletedByPerson" | "unit.annotations.deletedByPersonName" | "unit.annotations.deletedDateTime" | "unit.annotations.id" | "unit.annotations.identification.author" | "unit.annotations.identification.facts.decimalValue" | "unit.annotations.identification.facts.fact" | "unit.annotations.identification.facts.integerValue" | "unit.annotations.identification.facts.value" | "unit.annotations.identification.id" | "unit.annotations.identification.linkings.taxon.administrativeStatuses" | "unit.annotations.identification.linkings.taxon.checklist" | "unit.annotations.identification.linkings.taxon.cursiveName" | "unit.annotations.identification.linkings.taxon.finnish" | "unit.annotations.identification.linkings.taxon.id" | "unit.annotations.identification.linkings.taxon.informalTaxonGroups" | "unit.annotations.identification.linkings.taxon.kingdomScientificName" | "unit.annotations.identification.linkings.taxon.latestRedListStatusFinland.status" | "unit.annotations.identification.linkings.taxon.latestRedListStatusFinland.year" | "unit.annotations.identification.linkings.taxon.nameEnglish" | "unit.annotations.identification.linkings.taxon.nameFinnish" | "unit.annotations.identification.linkings.taxon.nameSwedish" | "unit.annotations.identification.linkings.taxon.occurrenceCountFinland" | "unit.annotations.identification.linkings.taxon.primaryHabitat.habitat" | "unit.annotations.identification.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.annotations.identification.linkings.taxon.primaryHabitat.id" | "unit.annotations.identification.linkings.taxon.primaryHabitat.order" | "unit.annotations.identification.linkings.taxon.qname" | "unit.annotations.identification.linkings.taxon.scientificName" | "unit.annotations.identification.linkings.taxon.scientificNameAuthorship" | "unit.annotations.identification.linkings.taxon.scientificNameDisplayName" | "unit.annotations.identification.linkings.taxon.sensitive" | "unit.annotations.identification.linkings.taxon.taxonConceptIds" | "unit.annotations.identification.linkings.taxon.taxonRank" | "unit.annotations.identification.linkings.taxon.taxonomicOrder" | "unit.annotations.identification.linkings.taxon.threatenedStatus" | "unit.annotations.identification.linkings.taxon.vernacularName" | "unit.annotations.identification.notes" | "unit.annotations.identification.taxon" | "unit.annotations.identification.taxonID" | "unit.annotations.identification.taxonSpecifier" | "unit.annotations.identification.taxonSpecifierAuthor" | "unit.annotations.notes" | "unit.annotations.occurrenceAtTimeOfAnnotation.countryVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.dateBegin" | "unit.annotations.occurrenceAtTimeOfAnnotation.dateEnd" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.administrativeStatuses" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.checklist" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.cursiveName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.finnish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.id" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.informalTaxonGroups" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.kingdomScientificName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.status" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.year" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameEnglish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameFinnish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameSwedish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.occurrenceCountFinland" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitat" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.id" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.order" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.qname" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameAuthorship" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameDisplayName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.sensitive" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonConceptIds" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonRank" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonomicOrder" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.threatenedStatus" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.vernacularName" | "unit.annotations.occurrenceAtTimeOfAnnotation.locality" | "unit.annotations.occurrenceAtTimeOfAnnotation.municipalityVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.taxonId" | "unit.annotations.occurrenceAtTimeOfAnnotation.taxonVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.wgs84centerPointLat" | "unit.annotations.occurrenceAtTimeOfAnnotation.wgs84centerPointLon" | "unit.annotations.removedTags" | "unit.annotations.valid" | "unit.atlasClass" | "unit.atlasCode" | "unit.audioCount" | "unit.author" | "unit.breedingSite" | "unit.det" | "unit.externalMediaCount" | "unit.facts.decimalValue" | "unit.facts.fact" | "unit.facts.integerValue" | "unit.facts.value" | "unit.identificationBasis" | "unit.identifications.author" | "unit.identifications.det" | "unit.identifications.detDate" | "unit.identifications.facts.decimalValue" | "unit.identifications.facts.fact" | "unit.identifications.facts.integerValue" | "unit.identifications.facts.value" | "unit.identifications.id" | "unit.identifications.linkings.taxon.administrativeStatuses" | "unit.identifications.linkings.taxon.checklist" | "unit.identifications.linkings.taxon.cursiveName" | "unit.identifications.linkings.taxon.finnish" | "unit.identifications.linkings.taxon.id" | "unit.identifications.linkings.taxon.informalTaxonGroups" | "unit.identifications.linkings.taxon.kingdomScientificName" | "unit.identifications.linkings.taxon.latestRedListStatusFinland.status" | "unit.identifications.linkings.taxon.latestRedListStatusFinland.year" | "unit.identifications.linkings.taxon.nameEnglish" | "unit.identifications.linkings.taxon.nameFinnish" | "unit.identifications.linkings.taxon.nameSwedish" | "unit.identifications.linkings.taxon.occurrenceCountFinland" | "unit.identifications.linkings.taxon.primaryHabitat.habitat" | "unit.identifications.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.identifications.linkings.taxon.primaryHabitat.id" | "unit.identifications.linkings.taxon.primaryHabitat.order" | "unit.identifications.linkings.taxon.qname" | "unit.identifications.linkings.taxon.scientificName" | "unit.identifications.linkings.taxon.scientificNameAuthorship" | "unit.identifications.linkings.taxon.scientificNameDisplayName" | "unit.identifications.linkings.taxon.sensitive" | "unit.identifications.linkings.taxon.taxonConceptIds" | "unit.identifications.linkings.taxon.taxonRank" | "unit.identifications.linkings.taxon.taxonomicOrder" | "unit.identifications.linkings.taxon.threatenedStatus" | "unit.identifications.linkings.taxon.vernacularName" | "unit.identifications.notes" | "unit.identifications.preferred" | "unit.identifications.taxon" | "unit.identifications.taxonID" | "unit.identifications.taxonSpecifier" | "unit.identifications.taxonSpecifierAuthor" | "unit.imageCount" | "unit.individualCountFemale" | "unit.individualCountMale" | "unit.individualId" | "unit.interpretations.annotatedTaxonId" | "unit.interpretations.collectionAndRecordQuality" | "unit.interpretations.det" | "unit.interpretations.effectiveTags" | "unit.interpretations.individualCount" | "unit.interpretations.invasiveControlEffectiveness" | "unit.interpretations.invasiveControlled" | "unit.interpretations.needsCheck" | "unit.interpretations.needsIdentification" | "unit.interpretations.pairCount" | "unit.interpretations.recordQuality" | "unit.interpretations.recordQualityNumeric" | "unit.interpretations.reliability" | "unit.keywords" | "unit.lifeStage" | "unit.linkings.originalTaxon.administrativeStatuses" | "unit.linkings.originalTaxon.checklist" | "unit.linkings.originalTaxon.cursiveName" | "unit.linkings.originalTaxon.finnish" | "unit.linkings.originalTaxon.id" | "unit.linkings.originalTaxon.informalTaxonGroups" | "unit.linkings.originalTaxon.kingdomScientificName" | "unit.linkings.originalTaxon.latestRedListStatusFinland.status" | "unit.linkings.originalTaxon.latestRedListStatusFinland.year" | "unit.linkings.originalTaxon.nameEnglish" | "unit.linkings.originalTaxon.nameFinnish" | "unit.linkings.originalTaxon.nameSwedish" | "unit.linkings.originalTaxon.occurrenceCountFinland" | "unit.linkings.originalTaxon.primaryHabitat.habitat" | "unit.linkings.originalTaxon.primaryHabitat.habitatSpecificTypes" | "unit.linkings.originalTaxon.primaryHabitat.id" | "unit.linkings.originalTaxon.primaryHabitat.order" | "unit.linkings.originalTaxon.qname" | "unit.linkings.originalTaxon.scientificName" | "unit.linkings.originalTaxon.scientificNameAuthorship" | "unit.linkings.originalTaxon.scientificNameDisplayName" | "unit.linkings.originalTaxon.sensitive" | "unit.linkings.originalTaxon.taxonConceptIds" | "unit.linkings.originalTaxon.taxonRank" | "unit.linkings.originalTaxon.taxonomicOrder" | "unit.linkings.originalTaxon.threatenedStatus" | "unit.linkings.originalTaxon.vernacularName" | "unit.linkings.taxon.administrativeStatuses" | "unit.linkings.taxon.checklist" | "unit.linkings.taxon.cursiveName" | "unit.linkings.taxon.finnish" | "unit.linkings.taxon.id" | "unit.linkings.taxon.informalTaxonGroups" | "unit.linkings.taxon.kingdomScientificName" | "unit.linkings.taxon.latestRedListStatusFinland.status" | "unit.linkings.taxon.latestRedListStatusFinland.year" | "unit.linkings.taxon.nameEnglish" | "unit.linkings.taxon.nameFinnish" | "unit.linkings.taxon.nameSwedish" | "unit.linkings.taxon.occurrenceCountFinland" | "unit.linkings.taxon.primaryHabitat.habitat" | "unit.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.linkings.taxon.primaryHabitat.id" | "unit.linkings.taxon.primaryHabitat.order" | "unit.linkings.taxon.qname" | "unit.linkings.taxon.scientificName" | "unit.linkings.taxon.scientificNameAuthorship" | "unit.linkings.taxon.scientificNameDisplayName" | "unit.linkings.taxon.sensitive" | "unit.linkings.taxon.taxonConceptIds" | "unit.linkings.taxon.taxonRank" | "unit.linkings.taxon.taxonomicOrder" | "unit.linkings.taxon.threatenedStatus" | "unit.linkings.taxon.vernacularName" | "unit.local" | "unit.media.author" | "unit.media.caption" | "unit.media.copyrightOwner" | "unit.media.fullResolutionMediaAvailable" | "unit.media.fullURL" | "unit.media.highDetailModelURL" | "unit.media.licenseId" | "unit.media.lowDetailModelURL" | "unit.media.mediaType" | "unit.media.mp3URL" | "unit.media.squareThumbnailURL" | "unit.media.thumbnailURL" | "unit.media.type" | "unit.media.videoURL" | "unit.media.wavURL" | "unit.mediaCount" | "unit.modelCount" | "unit.notes" | "unit.plantStatusCode" | "unit.primarySpecimen" | "unit.quality.documentGatheringUnitQualityIssues" | "unit.quality.issue.issue" | "unit.quality.issue.message" | "unit.quality.issue.source" | "unit.recordBasis" | "unit.reportedInformalTaxonGroup" | "unit.reportedTaxonConfidence" | "unit.reportedTaxonId" | "unit.sampleCount" | "unit.samples.collectionId" | "unit.samples.facts.decimalValue" | "unit.samples.facts.fact" | "unit.samples.facts.integerValue" | "unit.samples.facts.value" | "unit.samples.keywords" | "unit.samples.material" | "unit.samples.multiple" | "unit.samples.notes" | "unit.samples.quality" | "unit.samples.sampleId" | "unit.samples.sampleOrder" | "unit.samples.status" | "unit.samples.type" | "unit.samplingMethod" | "unit.sequenceText" | "unit.sex" | "unit.sourceTags" | "unit.superRecordBasis" | "unit.taxonVerbatim" | "unit.typeSpecimen" | "unit.types.author" | "unit.types.basionymePublication" | "unit.types.facts.decimalValue" | "unit.types.facts.fact" | "unit.types.facts.integerValue" | "unit.types.facts.value" | "unit.types.id" | "unit.types.linkings.taxon.administrativeStatuses" | "unit.types.linkings.taxon.checklist" | "unit.types.linkings.taxon.cursiveName" | "unit.types.linkings.taxon.finnish" | "unit.types.linkings.taxon.id" | "unit.types.linkings.taxon.informalTaxonGroups" | "unit.types.linkings.taxon.kingdomScientificName" | "unit.types.linkings.taxon.latestRedListStatusFinland.status" | "unit.types.linkings.taxon.latestRedListStatusFinland.year" | "unit.types.linkings.taxon.nameEnglish" | "unit.types.linkings.taxon.nameFinnish" | "unit.types.linkings.taxon.nameSwedish" | "unit.types.linkings.taxon.occurrenceCountFinland" | "unit.types.linkings.taxon.primaryHabitat.habitat" | "unit.types.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.types.linkings.taxon.primaryHabitat.id" | "unit.types.linkings.taxon.primaryHabitat.order" | "unit.types.linkings.taxon.qname" | "unit.types.linkings.taxon.scientificName" | "unit.types.linkings.taxon.scientificNameAuthorship" | "unit.types.linkings.taxon.scientificNameDisplayName" | "unit.types.linkings.taxon.sensitive" | "unit.types.linkings.taxon.taxonConceptIds" | "unit.types.linkings.taxon.taxonRank" | "unit.types.linkings.taxon.taxonomicOrder" | "unit.types.linkings.taxon.threatenedStatus" | "unit.types.linkings.taxon.vernacularName" | "unit.types.notes" | "unit.types.publication" | "unit.types.status" | "unit.types.taxon" | "unit.types.taxonID" | "unit.types.taxonSpecifier" | "unit.types.taxonSpecifierAuthor" | "unit.types.typif" | "unit.types.typifDate" | "unit.types.verification" | "unit.unitId" | "unit.unitOrder" | "unit.videoCount" | "unit.wild")[];
+                    selected?: ("document.annotations.addedTags" | "document.annotations.annotationByPerson" | "document.annotations.annotationByPersonName" | "document.annotations.annotationBySystem" | "document.annotations.annotationBySystemName" | "document.annotations.atlasCode" | "document.annotations.byRole" | "document.annotations.created" | "document.annotations.deleted" | "document.annotations.deletedByPerson" | "document.annotations.deletedByPersonName" | "document.annotations.deletedDateTime" | "document.annotations.id" | "document.annotations.notes" | "document.annotations.removedTags" | "document.annotations.valid" | "document.collectionId" | "document.completeListTaxonId" | "document.completeListType" | "document.createdDate" | "document.dataSource" | "document.documentId" | "document.editorUserIds" | "document.facts.decimalValue" | "document.facts.fact" | "document.facts.integerValue" | "document.facts.value" | "document.firstLoadDate" | "document.formId" | "document.keywords" | "document.licenseId" | "document.linkings.collectionQuality" | "document.linkings.editors.fullName" | "document.linkings.editors.id" | "document.linkings.editors.userId" | "document.loadDate" | "document.media.author" | "document.media.caption" | "document.media.copyrightOwner" | "document.media.fullResolutionMediaAvailable" | "document.media.fullURL" | "document.media.highDetailModelURL" | "document.media.licenseId" | "document.media.lowDetailModelURL" | "document.media.mediaType" | "document.media.mp3URL" | "document.media.squareThumbnailURL" | "document.media.thumbnailURL" | "document.media.type" | "document.media.videoURL" | "document.media.wavURL" | "document.mediaCount" | "document.modifiedDate" | "document.namedPlace.alternativeId" | "document.namedPlace.alternativeIds" | "document.namedPlace.birdAssociationAreaDisplayName" | "document.namedPlace.birdAssociationAreaId" | "document.namedPlace.collectionId" | "document.namedPlace.id" | "document.namedPlace.municipalityDisplayName" | "document.namedPlace.municipalityId" | "document.namedPlace.name" | "document.namedPlace.tags" | "document.namedPlace.wgs84CenterPoint.lat" | "document.namedPlace.wgs84CenterPoint.lon" | "document.namedPlace.ykj10km.lat" | "document.namedPlace.ykj10km.lon" | "document.namedPlaceId" | "document.notes" | "document.partial" | "document.prefix" | "document.quality.issue.issue" | "document.quality.issue.message" | "document.quality.issue.source" | "document.referenceURL" | "document.secureLevel" | "document.secureReasons" | "document.secured" | "document.siteDead" | "document.siteStatus" | "document.siteType" | "document.sourceId" | "document.sourceTags" | "gathering.accurateArea" | "gathering.biogeographicalProvince" | "gathering.conversions.birdAssociationArea" | "gathering.conversions.boundingBoxAreaInSquareMeters" | "gathering.conversions.century" | "gathering.conversions.day" | "gathering.conversions.dayOfYearBegin" | "gathering.conversions.dayOfYearEnd" | "gathering.conversions.decade" | "gathering.conversions.euref.latMax" | "gathering.conversions.euref.latMin" | "gathering.conversions.euref.lonMax" | "gathering.conversions.euref.lonMin" | "gathering.conversions.eurefCenterPoint.lat" | "gathering.conversions.eurefCenterPoint.lon" | "gathering.conversions.eurefWKT" | "gathering.conversions.linelengthInMeters" | "gathering.conversions.month" | "gathering.conversions.seasonBegin" | "gathering.conversions.seasonEnd" | "gathering.conversions.wgs84.latMax" | "gathering.conversions.wgs84.latMin" | "gathering.conversions.wgs84.lonMax" | "gathering.conversions.wgs84.lonMin" | "gathering.conversions.wgs84CenterPoint.lat" | "gathering.conversions.wgs84CenterPoint.lon" | "gathering.conversions.wgs84Grid005.lat" | "gathering.conversions.wgs84Grid005.lon" | "gathering.conversions.wgs84Grid01.lat" | "gathering.conversions.wgs84Grid01.lon" | "gathering.conversions.wgs84Grid05.lat" | "gathering.conversions.wgs84Grid05.lon" | "gathering.conversions.wgs84Grid1.lat" | "gathering.conversions.wgs84Grid1.lon" | "gathering.conversions.wgs84WKT" | "gathering.conversions.year" | "gathering.conversions.ykj.latMax" | "gathering.conversions.ykj.latMin" | "gathering.conversions.ykj.lonMax" | "gathering.conversions.ykj.lonMin" | "gathering.conversions.ykj100km.lat" | "gathering.conversions.ykj100km.lon" | "gathering.conversions.ykj100kmCenter.lat" | "gathering.conversions.ykj100kmCenter.lon" | "gathering.conversions.ykj10km.lat" | "gathering.conversions.ykj10km.lon" | "gathering.conversions.ykj10kmCenter.lat" | "gathering.conversions.ykj10kmCenter.lon" | "gathering.conversions.ykj1km.lat" | "gathering.conversions.ykj1km.lon" | "gathering.conversions.ykj1kmCenter.lat" | "gathering.conversions.ykj1kmCenter.lon" | "gathering.conversions.ykj50km.lat" | "gathering.conversions.ykj50km.lon" | "gathering.conversions.ykj50kmCenter.lat" | "gathering.conversions.ykj50kmCenter.lon" | "gathering.conversions.ykjWKT" | "gathering.coordinatesVerbatim" | "gathering.country" | "gathering.displayDateTime" | "gathering.eventDate.begin" | "gathering.eventDate.end" | "gathering.facts.decimalValue" | "gathering.facts.fact" | "gathering.facts.integerValue" | "gathering.facts.value" | "gathering.gatheringId" | "gathering.gatheringOrder" | "gathering.gatheringSection" | "gathering.higherGeography" | "gathering.hourBegin" | "gathering.hourEnd" | "gathering.interpretations.biogeographicalProvince" | "gathering.interpretations.biogeographicalProvinceDisplayname" | "gathering.interpretations.biogeographicalProvinces" | "gathering.interpretations.coordinateAccuracy" | "gathering.interpretations.country" | "gathering.interpretations.countryDisplayname" | "gathering.interpretations.finnishMunicipalities" | "gathering.interpretations.finnishMunicipality" | "gathering.interpretations.municipalityDisplayname" | "gathering.interpretations.sourceOfBiogeographicalProvince" | "gathering.interpretations.sourceOfCoordinates" | "gathering.interpretations.sourceOfCountry" | "gathering.interpretations.sourceOfFinnishMunicipality" | "gathering.linkings.observers.fullName" | "gathering.linkings.observers.id" | "gathering.linkings.observers.userId" | "gathering.locality" | "gathering.media.author" | "gathering.media.caption" | "gathering.media.copyrightOwner" | "gathering.media.fullResolutionMediaAvailable" | "gathering.media.fullURL" | "gathering.media.highDetailModelURL" | "gathering.media.licenseId" | "gathering.media.lowDetailModelURL" | "gathering.media.mediaType" | "gathering.media.mp3URL" | "gathering.media.squareThumbnailURL" | "gathering.media.thumbnailURL" | "gathering.media.type" | "gathering.media.videoURL" | "gathering.media.wavURL" | "gathering.mediaCount" | "gathering.minutesBegin" | "gathering.minutesEnd" | "gathering.municipality" | "gathering.notes" | "gathering.observerUserIds" | "gathering.province" | "gathering.quality.issue.issue" | "gathering.quality.issue.message" | "gathering.quality.issue.source" | "gathering.quality.locationIssue.issue" | "gathering.quality.locationIssue.message" | "gathering.quality.locationIssue.source" | "gathering.quality.timeIssue.issue" | "gathering.quality.timeIssue.message" | "gathering.quality.timeIssue.source" | "gathering.stateLand" | "gathering.taxonCensus.taxonId" | "gathering.taxonCensus.type" | "gathering.team" | "sample.collectionId" | "sample.facts.decimalValue" | "sample.facts.fact" | "sample.facts.integerValue" | "sample.facts.value" | "sample.keywords" | "sample.material" | "sample.multiple" | "sample.notes" | "sample.quality" | "sample.sampleId" | "sample.sampleOrder" | "sample.status" | "sample.type" | "unit.abundanceString" | "unit.abundanceUnit" | "unit.alive" | "unit.annotationCount" | "unit.annotations.addedTags" | "unit.annotations.annotationByPerson" | "unit.annotations.annotationByPersonName" | "unit.annotations.annotationBySystem" | "unit.annotations.annotationBySystemName" | "unit.annotations.atlasCode" | "unit.annotations.byRole" | "unit.annotations.created" | "unit.annotations.deleted" | "unit.annotations.deletedByPerson" | "unit.annotations.deletedByPersonName" | "unit.annotations.deletedDateTime" | "unit.annotations.id" | "unit.annotations.identification.author" | "unit.annotations.identification.facts.decimalValue" | "unit.annotations.identification.facts.fact" | "unit.annotations.identification.facts.integerValue" | "unit.annotations.identification.facts.value" | "unit.annotations.identification.id" | "unit.annotations.identification.linkings.taxon.administrativeStatuses" | "unit.annotations.identification.linkings.taxon.checklist" | "unit.annotations.identification.linkings.taxon.cursiveName" | "unit.annotations.identification.linkings.taxon.finnish" | "unit.annotations.identification.linkings.taxon.id" | "unit.annotations.identification.linkings.taxon.informalTaxonGroups" | "unit.annotations.identification.linkings.taxon.kingdomScientificName" | "unit.annotations.identification.linkings.taxon.latestRedListStatusFinland.status" | "unit.annotations.identification.linkings.taxon.latestRedListStatusFinland.year" | "unit.annotations.identification.linkings.taxon.nameEnglish" | "unit.annotations.identification.linkings.taxon.nameFinnish" | "unit.annotations.identification.linkings.taxon.nameSwedish" | "unit.annotations.identification.linkings.taxon.occurrenceCountFinland" | "unit.annotations.identification.linkings.taxon.primaryHabitat.habitat" | "unit.annotations.identification.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.annotations.identification.linkings.taxon.primaryHabitat.id" | "unit.annotations.identification.linkings.taxon.primaryHabitat.order" | "unit.annotations.identification.linkings.taxon.qname" | "unit.annotations.identification.linkings.taxon.scientificName" | "unit.annotations.identification.linkings.taxon.scientificNameAuthorship" | "unit.annotations.identification.linkings.taxon.scientificNameDisplayName" | "unit.annotations.identification.linkings.taxon.sensitive" | "unit.annotations.identification.linkings.taxon.taxonConceptIds" | "unit.annotations.identification.linkings.taxon.taxonRank" | "unit.annotations.identification.linkings.taxon.taxonomicOrder" | "unit.annotations.identification.linkings.taxon.threatenedStatus" | "unit.annotations.identification.linkings.taxon.vernacularName" | "unit.annotations.identification.notes" | "unit.annotations.identification.taxon" | "unit.annotations.identification.taxonID" | "unit.annotations.identification.taxonRank" | "unit.annotations.identification.taxonSpecifier" | "unit.annotations.identification.taxonSpecifierAuthor" | "unit.annotations.notes" | "unit.annotations.occurrenceAtTimeOfAnnotation.countryVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.dateBegin" | "unit.annotations.occurrenceAtTimeOfAnnotation.dateEnd" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.administrativeStatuses" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.checklist" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.cursiveName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.finnish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.id" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.informalTaxonGroups" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.kingdomScientificName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.status" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.latestRedListStatusFinland.year" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameEnglish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameFinnish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.nameSwedish" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.occurrenceCountFinland" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitat" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.id" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.primaryHabitat.order" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.qname" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameAuthorship" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.scientificNameDisplayName" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.sensitive" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonConceptIds" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonRank" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.taxonomicOrder" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.threatenedStatus" | "unit.annotations.occurrenceAtTimeOfAnnotation.linkings.taxon.vernacularName" | "unit.annotations.occurrenceAtTimeOfAnnotation.locality" | "unit.annotations.occurrenceAtTimeOfAnnotation.municipalityVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.taxonId" | "unit.annotations.occurrenceAtTimeOfAnnotation.taxonVerbatim" | "unit.annotations.occurrenceAtTimeOfAnnotation.wgs84centerPointLat" | "unit.annotations.occurrenceAtTimeOfAnnotation.wgs84centerPointLon" | "unit.annotations.removedTags" | "unit.annotations.valid" | "unit.atlasClass" | "unit.atlasCode" | "unit.audioCount" | "unit.author" | "unit.breedingSite" | "unit.det" | "unit.externalMediaCount" | "unit.facts.decimalValue" | "unit.facts.fact" | "unit.facts.integerValue" | "unit.facts.value" | "unit.identificationBasis" | "unit.identifications.author" | "unit.identifications.det" | "unit.identifications.detDate" | "unit.identifications.facts.decimalValue" | "unit.identifications.facts.fact" | "unit.identifications.facts.integerValue" | "unit.identifications.facts.value" | "unit.identifications.id" | "unit.identifications.linkings.taxon.administrativeStatuses" | "unit.identifications.linkings.taxon.checklist" | "unit.identifications.linkings.taxon.cursiveName" | "unit.identifications.linkings.taxon.finnish" | "unit.identifications.linkings.taxon.id" | "unit.identifications.linkings.taxon.informalTaxonGroups" | "unit.identifications.linkings.taxon.kingdomScientificName" | "unit.identifications.linkings.taxon.latestRedListStatusFinland.status" | "unit.identifications.linkings.taxon.latestRedListStatusFinland.year" | "unit.identifications.linkings.taxon.nameEnglish" | "unit.identifications.linkings.taxon.nameFinnish" | "unit.identifications.linkings.taxon.nameSwedish" | "unit.identifications.linkings.taxon.occurrenceCountFinland" | "unit.identifications.linkings.taxon.primaryHabitat.habitat" | "unit.identifications.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.identifications.linkings.taxon.primaryHabitat.id" | "unit.identifications.linkings.taxon.primaryHabitat.order" | "unit.identifications.linkings.taxon.qname" | "unit.identifications.linkings.taxon.scientificName" | "unit.identifications.linkings.taxon.scientificNameAuthorship" | "unit.identifications.linkings.taxon.scientificNameDisplayName" | "unit.identifications.linkings.taxon.sensitive" | "unit.identifications.linkings.taxon.taxonConceptIds" | "unit.identifications.linkings.taxon.taxonRank" | "unit.identifications.linkings.taxon.taxonomicOrder" | "unit.identifications.linkings.taxon.threatenedStatus" | "unit.identifications.linkings.taxon.vernacularName" | "unit.identifications.notes" | "unit.identifications.preferred" | "unit.identifications.taxon" | "unit.identifications.taxonID" | "unit.identifications.taxonRank" | "unit.identifications.taxonSpecifier" | "unit.identifications.taxonSpecifierAuthor" | "unit.imageCount" | "unit.individualCountFemale" | "unit.individualCountMale" | "unit.individualId" | "unit.interpretations.annotatedTaxonId" | "unit.interpretations.collectionAndRecordQuality" | "unit.interpretations.det" | "unit.interpretations.effectiveTags" | "unit.interpretations.individualCount" | "unit.interpretations.invasiveControlEffectiveness" | "unit.interpretations.invasiveControlled" | "unit.interpretations.needsCheck" | "unit.interpretations.needsIdentification" | "unit.interpretations.pairCount" | "unit.interpretations.recordQuality" | "unit.interpretations.recordQualityNumeric" | "unit.interpretations.reliability" | "unit.keywords" | "unit.lifeStage" | "unit.linkings.originalTaxon.administrativeStatuses" | "unit.linkings.originalTaxon.checklist" | "unit.linkings.originalTaxon.cursiveName" | "unit.linkings.originalTaxon.finnish" | "unit.linkings.originalTaxon.id" | "unit.linkings.originalTaxon.informalTaxonGroups" | "unit.linkings.originalTaxon.kingdomScientificName" | "unit.linkings.originalTaxon.latestRedListStatusFinland.status" | "unit.linkings.originalTaxon.latestRedListStatusFinland.year" | "unit.linkings.originalTaxon.nameEnglish" | "unit.linkings.originalTaxon.nameFinnish" | "unit.linkings.originalTaxon.nameSwedish" | "unit.linkings.originalTaxon.occurrenceCountFinland" | "unit.linkings.originalTaxon.primaryHabitat.habitat" | "unit.linkings.originalTaxon.primaryHabitat.habitatSpecificTypes" | "unit.linkings.originalTaxon.primaryHabitat.id" | "unit.linkings.originalTaxon.primaryHabitat.order" | "unit.linkings.originalTaxon.qname" | "unit.linkings.originalTaxon.scientificName" | "unit.linkings.originalTaxon.scientificNameAuthorship" | "unit.linkings.originalTaxon.scientificNameDisplayName" | "unit.linkings.originalTaxon.sensitive" | "unit.linkings.originalTaxon.taxonConceptIds" | "unit.linkings.originalTaxon.taxonRank" | "unit.linkings.originalTaxon.taxonomicOrder" | "unit.linkings.originalTaxon.threatenedStatus" | "unit.linkings.originalTaxon.vernacularName" | "unit.linkings.taxon.administrativeStatuses" | "unit.linkings.taxon.checklist" | "unit.linkings.taxon.cursiveName" | "unit.linkings.taxon.finnish" | "unit.linkings.taxon.id" | "unit.linkings.taxon.informalTaxonGroups" | "unit.linkings.taxon.kingdomScientificName" | "unit.linkings.taxon.latestRedListStatusFinland.status" | "unit.linkings.taxon.latestRedListStatusFinland.year" | "unit.linkings.taxon.nameEnglish" | "unit.linkings.taxon.nameFinnish" | "unit.linkings.taxon.nameSwedish" | "unit.linkings.taxon.occurrenceCountFinland" | "unit.linkings.taxon.primaryHabitat.habitat" | "unit.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.linkings.taxon.primaryHabitat.id" | "unit.linkings.taxon.primaryHabitat.order" | "unit.linkings.taxon.qname" | "unit.linkings.taxon.scientificName" | "unit.linkings.taxon.scientificNameAuthorship" | "unit.linkings.taxon.scientificNameDisplayName" | "unit.linkings.taxon.sensitive" | "unit.linkings.taxon.taxonConceptIds" | "unit.linkings.taxon.taxonRank" | "unit.linkings.taxon.taxonomicOrder" | "unit.linkings.taxon.threatenedStatus" | "unit.linkings.taxon.vernacularName" | "unit.local" | "unit.media.author" | "unit.media.caption" | "unit.media.copyrightOwner" | "unit.media.fullResolutionMediaAvailable" | "unit.media.fullURL" | "unit.media.highDetailModelURL" | "unit.media.licenseId" | "unit.media.lowDetailModelURL" | "unit.media.mediaType" | "unit.media.mp3URL" | "unit.media.squareThumbnailURL" | "unit.media.thumbnailURL" | "unit.media.type" | "unit.media.videoURL" | "unit.media.wavURL" | "unit.mediaCount" | "unit.modelCount" | "unit.notes" | "unit.plantStatusCode" | "unit.primarySpecimen" | "unit.quality.documentGatheringUnitQualityIssues" | "unit.quality.issue.issue" | "unit.quality.issue.message" | "unit.quality.issue.source" | "unit.recordBasis" | "unit.reportedInformalTaxonGroup" | "unit.reportedKingdom" | "unit.reportedTaxonConfidence" | "unit.reportedTaxonId" | "unit.reportedTaxonRank" | "unit.sampleCount" | "unit.samples.collectionId" | "unit.samples.facts.decimalValue" | "unit.samples.facts.fact" | "unit.samples.facts.integerValue" | "unit.samples.facts.value" | "unit.samples.keywords" | "unit.samples.material" | "unit.samples.multiple" | "unit.samples.notes" | "unit.samples.quality" | "unit.samples.sampleId" | "unit.samples.sampleOrder" | "unit.samples.status" | "unit.samples.type" | "unit.samplingMethod" | "unit.sequenceText" | "unit.sex" | "unit.sourceTags" | "unit.superRecordBasis" | "unit.taxonVerbatim" | "unit.typeSpecimen" | "unit.types.author" | "unit.types.basionymePublication" | "unit.types.facts.decimalValue" | "unit.types.facts.fact" | "unit.types.facts.integerValue" | "unit.types.facts.value" | "unit.types.id" | "unit.types.linkings.taxon.administrativeStatuses" | "unit.types.linkings.taxon.checklist" | "unit.types.linkings.taxon.cursiveName" | "unit.types.linkings.taxon.finnish" | "unit.types.linkings.taxon.id" | "unit.types.linkings.taxon.informalTaxonGroups" | "unit.types.linkings.taxon.kingdomScientificName" | "unit.types.linkings.taxon.latestRedListStatusFinland.status" | "unit.types.linkings.taxon.latestRedListStatusFinland.year" | "unit.types.linkings.taxon.nameEnglish" | "unit.types.linkings.taxon.nameFinnish" | "unit.types.linkings.taxon.nameSwedish" | "unit.types.linkings.taxon.occurrenceCountFinland" | "unit.types.linkings.taxon.primaryHabitat.habitat" | "unit.types.linkings.taxon.primaryHabitat.habitatSpecificTypes" | "unit.types.linkings.taxon.primaryHabitat.id" | "unit.types.linkings.taxon.primaryHabitat.order" | "unit.types.linkings.taxon.qname" | "unit.types.linkings.taxon.scientificName" | "unit.types.linkings.taxon.scientificNameAuthorship" | "unit.types.linkings.taxon.scientificNameDisplayName" | "unit.types.linkings.taxon.sensitive" | "unit.types.linkings.taxon.taxonConceptIds" | "unit.types.linkings.taxon.taxonRank" | "unit.types.linkings.taxon.taxonomicOrder" | "unit.types.linkings.taxon.threatenedStatus" | "unit.types.linkings.taxon.vernacularName" | "unit.types.notes" | "unit.types.publication" | "unit.types.status" | "unit.types.taxon" | "unit.types.taxonID" | "unit.types.taxonRank" | "unit.types.taxonSpecifier" | "unit.types.taxonSpecifierAuthor" | "unit.types.typif" | "unit.types.typifDate" | "unit.types.verification" | "unit.unitId" | "unit.unitOrder" | "unit.videoCount" | "unit.wild")[];
                     /** @description Define what fields to use when sorting results. Defaults to [unit.taxonVerbatim ASC, unit.unitId ASC, unit.samples.sampleOrder ASC]. Unit key is always added as a last parameter to ensure correct paging. You can include ASC or DESC after the name of the field (defaults to ASC).Multiple values are seperated by ','. */
                     orderBy?: ("RANDOM" | "RANDOM:seed" | "document.collectionId" | "document.createdDate" | "document.dataSource" | "document.documentId" | "document.firstLoadDate" | "document.linkings.collectionQuality" | "document.loadDate" | "document.mediaCount" | "document.modifiedDate" | "document.namedPlace.birdAssociationAreaDisplayName" | "document.namedPlace.municipalityDisplayName" | "document.namedPlace.name" | "document.quality.issue.issue" | "document.quality.issue.source" | "document.secureLevel" | "document.secured" | "document.siteStatus" | "document.siteType" | "document.sourceId" | "gathering.biogeographicalProvince" | "gathering.conversions.boundingBoxAreaInSquareMeters" | "gathering.conversions.century" | "gathering.conversions.day" | "gathering.conversions.dayOfYearBegin" | "gathering.conversions.dayOfYearEnd" | "gathering.conversions.decade" | "gathering.conversions.euref.latMax" | "gathering.conversions.euref.latMin" | "gathering.conversions.euref.lonMax" | "gathering.conversions.euref.lonMin" | "gathering.conversions.month" | "gathering.conversions.seasonBegin" | "gathering.conversions.seasonEnd" | "gathering.conversions.wgs84.latMax" | "gathering.conversions.wgs84.latMin" | "gathering.conversions.wgs84.lonMax" | "gathering.conversions.wgs84.lonMin" | "gathering.conversions.wgs84CenterPoint.lat" | "gathering.conversions.wgs84CenterPoint.lon" | "gathering.conversions.wgs84Grid005.lat" | "gathering.conversions.wgs84Grid005.lon" | "gathering.conversions.wgs84Grid01.lat" | "gathering.conversions.wgs84Grid01.lon" | "gathering.conversions.wgs84Grid05.lat" | "gathering.conversions.wgs84Grid05.lon" | "gathering.conversions.wgs84Grid1.lat" | "gathering.conversions.wgs84Grid1.lon" | "gathering.conversions.year" | "gathering.conversions.ykj.latMax" | "gathering.conversions.ykj.latMin" | "gathering.conversions.ykj.lonMax" | "gathering.conversions.ykj.lonMin" | "gathering.conversions.ykj100km.lat" | "gathering.conversions.ykj100km.lon" | "gathering.conversions.ykj100kmCenter.lat" | "gathering.conversions.ykj100kmCenter.lon" | "gathering.conversions.ykj10km.lat" | "gathering.conversions.ykj10km.lon" | "gathering.conversions.ykj10kmCenter.lat" | "gathering.conversions.ykj10kmCenter.lon" | "gathering.conversions.ykj1km.lat" | "gathering.conversions.ykj1km.lon" | "gathering.conversions.ykj1kmCenter.lat" | "gathering.conversions.ykj1kmCenter.lon" | "gathering.conversions.ykj50km.lat" | "gathering.conversions.ykj50km.lon" | "gathering.conversions.ykj50kmCenter.lat" | "gathering.conversions.ykj50kmCenter.lon" | "gathering.coordinatesVerbatim" | "gathering.country" | "gathering.displayDateTime" | "gathering.eventDate.begin" | "gathering.eventDate.end" | "gathering.gatheringId" | "gathering.gatheringOrder" | "gathering.gatheringSection" | "gathering.higherGeography" | "gathering.hourBegin" | "gathering.hourEnd" | "gathering.interpretations.biogeographicalProvince" | "gathering.interpretations.biogeographicalProvinceDisplayname" | "gathering.interpretations.coordinateAccuracy" | "gathering.interpretations.country" | "gathering.interpretations.countryDisplayname" | "gathering.interpretations.finnishMunicipality" | "gathering.interpretations.municipalityDisplayname" | "gathering.interpretations.sourceOfBiogeographicalProvince" | "gathering.interpretations.sourceOfCoordinates" | "gathering.interpretations.sourceOfCountry" | "gathering.interpretations.sourceOfFinnishMunicipality" | "gathering.locality" | "gathering.mediaCount" | "gathering.minutesBegin" | "gathering.minutesEnd" | "gathering.municipality" | "gathering.province" | "gathering.quality.issue.issue" | "gathering.quality.issue.source" | "gathering.quality.locationIssue.issue" | "gathering.quality.locationIssue.source" | "gathering.quality.timeIssue.issue" | "gathering.quality.timeIssue.source" | "gathering.stateLand" | "gathering.team" | "unit.abundanceString" | "unit.alive" | "unit.author" | "unit.breedingSite" | "unit.det" | "unit.individualId" | "unit.interpretations.annotatedTaxonId" | "unit.interpretations.individualCount" | "unit.interpretations.invasiveControlEffectiveness" | "unit.interpretations.invasiveControlled" | "unit.interpretations.recordQuality" | "unit.interpretations.recordQualityNumeric" | "unit.interpretations.reliability" | "unit.lifeStage" | "unit.linkings.originalTaxon.author" | "unit.linkings.originalTaxon.finnish" | "unit.linkings.originalTaxon.invasive" | "unit.linkings.originalTaxon.nameEnglish" | "unit.linkings.originalTaxon.nameFinnish" | "unit.linkings.originalTaxon.nameSwedish" | "unit.linkings.originalTaxon.occurrenceCount" | "unit.linkings.originalTaxon.occurrenceCountFinland" | "unit.linkings.originalTaxon.redListStatus" | "unit.linkings.originalTaxon.scientificName" | "unit.linkings.originalTaxon.scientificNameDisplayName" | "unit.linkings.originalTaxon.species" | "unit.linkings.originalTaxon.speciesNameEnglish" | "unit.linkings.originalTaxon.speciesNameFinnish" | "unit.linkings.originalTaxon.speciesNameSwedish" | "unit.linkings.originalTaxon.speciesScientificName" | "unit.linkings.originalTaxon.taxonRank" | "unit.linkings.originalTaxon.taxonomicOrder" | "unit.linkings.taxon.author" | "unit.linkings.taxon.finnish" | "unit.linkings.taxon.invasive" | "unit.linkings.taxon.nameEnglish" | "unit.linkings.taxon.nameFinnish" | "unit.linkings.taxon.nameSwedish" | "unit.linkings.taxon.occurrenceCount" | "unit.linkings.taxon.occurrenceCountFinland" | "unit.linkings.taxon.redListStatus" | "unit.linkings.taxon.scientificName" | "unit.linkings.taxon.scientificNameDisplayName" | "unit.linkings.taxon.species" | "unit.linkings.taxon.speciesNameEnglish" | "unit.linkings.taxon.speciesNameFinnish" | "unit.linkings.taxon.speciesNameSwedish" | "unit.linkings.taxon.speciesScientificName" | "unit.linkings.taxon.taxonRank" | "unit.linkings.taxon.taxonomicOrder" | "unit.local" | "unit.mediaCount" | "unit.notes" | "unit.quality.documentGatheringUnitQualityIssues" | "unit.quality.issue.issue" | "unit.quality.issue.source" | "unit.recordBasis" | "unit.reportedTaxonConfidence" | "unit.samples.collectionId" | "unit.samples.material" | "unit.samples.multiple" | "unit.samples.quality" | "unit.samples.sampleId" | "unit.samples.sampleOrder" | "unit.samples.status" | "unit.samples.type" | "unit.sex" | "unit.superRecordBasis" | "unit.taxonVerbatim" | "unit.typeSpecimen" | "unit.unitId" | "unit.unitOrder" | "unit.wild")[];
                     /** @description For GeoJSON requests there are two additional parameters: crs and featureType. This controls the coordinate reference system used in the returned GeoJSON features. (WGS84 = EPSG:4326; EUREF = ETRS-TM35FIN EPSG:3067; YKJ = EPSG:2393) */
@@ -5444,10 +5458,12 @@ export interface paths {
                     useIdentificationAnnotations?: boolean;
                     /** @description By default, all taxon linking related filters return all entries that belong to the filtered taxa. To return only exact matches (no subtaxa), set this to false. */
                     includeSubTaxa?: boolean;
-                    /** @description Set to false if you want to include only those entries where reported target name can be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    includeNonValidTaxa?: boolean;
-                    /** @description Set to true if you want to include only those entries where reported target name can not be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    onlyNonValidTaxa?: boolean;
+                    /** @description True: occurrence is linked to a taxon concept that exactly matches the taxonomic information provided in the occurrence. False: occurrence is not linked to an exact taxon concept, including occurrences linked only to higher taxonomy based on a partial name. */
+                    hasTaxon?: boolean;
+                    /** @description Filter occurrences by how their taxonomic information is linked: EXACT: linked to a taxon concept that exactly matches the information provided in the occurrence; NON_EXACT: linked only to higher taxonomy based on a partial name; NONE: not linked to taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. */
+                    taxonLinking?: "EXACT" | "NON_EXACT" | "NO_LINKING";
+                    /** @description Filter by the checklist to which the taxon concept linked to the occurrence belongs. The checklist is identified by its URI or Qname, for example MR.1 for the FinBIF Master Checklist or MR.2 for the GBIF Backbone Taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /checklist */
+                    checklist?: string;
                     /** @description Filter based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
                     informalTaxonGroupId?: string;
                     /** @description Exclude based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will exclude entries that have been linked with taxa that belong to any of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
@@ -5818,10 +5834,12 @@ export interface paths {
                     useIdentificationAnnotations?: boolean;
                     /** @description By default, all taxon linking related filters return all entries that belong to the filtered taxa. To return only exact matches (no subtaxa), set this to false. */
                     includeSubTaxa?: boolean;
-                    /** @description Set to false if you want to include only those entries where reported target name can be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    includeNonValidTaxa?: boolean;
-                    /** @description Set to true if you want to include only those entries where reported target name can not be linked with a taxon of the reference taxonomy. By default includes all entries. */
-                    onlyNonValidTaxa?: boolean;
+                    /** @description True: occurrence is linked to a taxon concept that exactly matches the taxonomic information provided in the occurrence. False: occurrence is not linked to an exact taxon concept, including occurrences linked only to higher taxonomy based on a partial name. */
+                    hasTaxon?: boolean;
+                    /** @description Filter occurrences by how their taxonomic information is linked: EXACT: linked to a taxon concept that exactly matches the information provided in the occurrence; NON_EXACT: linked only to higher taxonomy based on a partial name; NONE: not linked to taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. */
+                    taxonLinking?: "EXACT" | "NON_EXACT" | "NO_LINKING";
+                    /** @description Filter by the checklist to which the taxon concept linked to the occurrence belongs. The checklist is identified by its URI or Qname, for example MR.1 for the FinBIF Master Checklist or MR.2 for the GBIF Backbone Taxonomy. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /checklist */
+                    checklist?: string;
                     /** @description Filter based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will return entries that have been linked with taxa that belong to one of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
                     informalTaxonGroupId?: string;
                     /** @description Exclude based on URI or Qname identifier of an informal taxon group. Use InformalTaxonGroups-API to find identifiers. Will exclude entries that have been linked with taxa that belong to any of the given groups. Multiple values are seperated by ','. When multiple values are given, this is an OR search. API resource: /informal-taxon-groups */
@@ -10022,6 +10040,7 @@ export interface components {
         ApiUserEntity: {
             id: number;
             accessToken: string;
+            /** Format: email */
             email: string;
             systemID?: string;
             /** Format: date-time */
@@ -10400,8 +10419,11 @@ export interface components {
             primarySpecimen: boolean;
             /** Format: URI */
             reportedInformalTaxonGroup: string;
+            reportedKingdom: string;
             /** Format: URI */
             reportedTaxonId: string;
+            /** Format: URI */
+            reportedTaxonRank: string;
             sampleCount: number;
             samples: components["schemas"]["WarehouseDwQuery_Sample"][];
             samplingMethod: string;
@@ -10499,6 +10521,8 @@ export interface components {
             taxon: string;
             /** Format: URI */
             taxonID: string;
+            /** Format: URI */
+            taxonRank: string;
             taxonSpecifier: string;
             taxonSpecifierAuthor: string;
         };
@@ -10516,6 +10540,8 @@ export interface components {
             taxon: string;
             /** Format: URI */
             taxonID: string;
+            /** Format: URI */
+            taxonRank: string;
             taxonSpecifier: string;
             taxonSpecifierAuthor: string;
             typif: string;
@@ -10663,6 +10689,8 @@ export interface components {
             taxon: string;
             /** Format: URI */
             taxonID: string;
+            /** Format: URI */
+            taxonRank: string;
             taxonSpecifier: string;
             taxonSpecifierAuthor: string;
         };
@@ -10829,8 +10857,11 @@ export interface components {
             primarySpecimen: boolean;
             /** Format: URI */
             reportedInformalTaxonGroup: string;
+            reportedKingdom: string;
             /** Format: URI */
             reportedTaxonId: string;
+            /** Format: URI */
+            reportedTaxonRank: string;
             samples: components["schemas"]["WarehouseDwETL_Sample"][];
             samplingMethod: string;
             sourceTags: ("ADMIN_MARKED_SPAM" | "ADMIN_MARKED_COARSE" | "ADMIN_MARKED_NON_WILD" | "EXPERT_TAG_VERIFIED" | "EXPERT_TAG_UNCERTAIN" | "EXPERT_TAG_ERRONEOUS" | "COMMUNITY_TAG_VERIFIED" | "AUTO_VALIDATIONS_PASS" | "CHECKED_CANNOT_VERIFY" | "CHANGED_OWNER_MANUAL" | "CHANGED_DW_AUTO" | "CHECK" | "CHECK_COORDINATES" | "CHECK_DATETIME" | "CHECK_LOCATION" | "CHECK_OBSERVER" | "CHECK_TAXON" | "CHECK_DUPLICATE" | "CHECK_WILDNESS" | "CHECK_NEEDS_INFO" | "CHECK_SPAM" | "CHECK_BREEDING_INDEX" | "AUTO_DISTRIBUTION_CHECK" | "AUTO_PERIOD_CHECK" | "FORMADMIN_CENSUS_COUNT_ERROR" | "FORMADMIN_CENSUS_INNER_COUNT_ERROR" | "FORMADMIN_CENSUS_OTHER_ERROR" | "FORMADMIN_VERIFIED" | "FORMADMIN_UNCERTAIN" | "INVASIVE_FULL" | "INVASIVE_PARTIAL" | "INVASIVE_NO_EFFECT" | "INVASIVE_NOT_FOUND")[];
@@ -10926,6 +10957,8 @@ export interface components {
             taxon: string;
             /** Format: URI */
             taxonID: string;
+            /** Format: URI */
+            taxonRank: string;
             taxonSpecifier: string;
             taxonSpecifierAuthor: string;
         };
@@ -10942,6 +10975,8 @@ export interface components {
             taxon: string;
             /** Format: URI */
             taxonID: string;
+            /** Format: URI */
+            taxonRank: string;
             taxonSpecifier: string;
             taxonSpecifierAuthor: string;
             typif: string;
@@ -11079,8 +11114,11 @@ export interface components {
             primarySpecimen: boolean;
             /** Format: URI */
             reportedInformalTaxonGroup: string;
+            reportedKingdom: string;
             /** Format: URI */
             reportedTaxonId: string;
+            /** Format: URI */
+            reportedTaxonRank: string;
             sampleCount: number;
             samples: components["schemas"]["WarehouseDwSingle_Sample"][];
             samplingMethod: string;
@@ -11178,6 +11216,8 @@ export interface components {
             taxon: string;
             /** Format: URI */
             taxonID: string;
+            /** Format: URI */
+            taxonRank: string;
             taxonSpecifier: string;
             taxonSpecifierAuthor: string;
         };
@@ -11195,6 +11235,8 @@ export interface components {
             taxon: string;
             /** Format: URI */
             taxonID: string;
+            /** Format: URI */
+            taxonRank: string;
             taxonSpecifier: string;
             taxonSpecifierAuthor: string;
             typif: string;
@@ -11342,6 +11384,8 @@ export interface components {
             taxon: string;
             /** Format: URI */
             taxonID: string;
+            /** Format: URI */
+            taxonRank: string;
             taxonSpecifier: string;
             taxonSpecifierAuthor: string;
         };
@@ -11558,12 +11602,14 @@ export interface components {
             parentsIncludeSelf: string[];
             nonHiddenParentsIncludeSelf: string[];
             hiddenTaxon: boolean;
+            darkTaxon: boolean;
             /** @description Qname identifier */
             nameAccordingTo: string;
             /** @description Qname identifier */
             taxonRank: string;
             scientificName: string;
             scientificNameAuthorship: string;
+            scientificNameLabel: string;
             scientificNameDisplayName: string;
             cursiveName: boolean;
             typeSpecimenURI: string;
@@ -11657,6 +11703,7 @@ export interface components {
             taxonSets: string[];
             notes: string;
             referenceSequences: components["schemas"]["LajiBackendReferenceSequence"][];
+            hasReferenceSequences: boolean;
             taxonomicOrder: number;
             parent: {
                 domain: components["schemas"]["LajiBackendSimpleTaxon"];
@@ -11712,6 +11759,7 @@ export interface components {
         LajiBackendSimpleTaxon: {
             id: string;
             scientificName: string;
+            scientificNameLabel: string;
             scientificNameAuthorship: string;
             vernacularName?: string;
             taxonRank: string;
@@ -11990,7 +12038,7 @@ export interface components {
             functionalGroupName?: string;
             /** @description Qname identifier */
             taxonId?: string;
-            gbifTaxonId?: number;
+            gbifTaxonId?: string;
             otherTaxonId?: string;
             /**
              * @description Qname identifier
@@ -12565,7 +12613,7 @@ export interface components {
             newObservationLabel: string;
             /**
              * Open form
-             * @description Allows creating documents without a person token. Utilizes open form login system, hides navbar.
+             * @description Allows creating documents without a person token. Utilizes open form login system.
              */
             openForm: boolean;
             /**
@@ -13581,6 +13629,8 @@ export interface components {
             birdFeederCountBiotopeG: number;
             /** Ruovikon lintulaudat */
             birdFeederCountBiotopeH: number;
+            /** Vesistön lintulaiudat */
+            birdFeederCountBiotopeI: number;
             /**
              * Pilvisyys ja sade
              * @enum {string}
@@ -13606,6 +13656,8 @@ export interface components {
             feedingStationCountBiotopeG: number;
             /** Ruovikon ruokintapaikat */
             feedingStationCountBiotopeH: number;
+            /** Vesistön ruokintapaikat */
+            feedingStationCountBiotopeI: number;
             /**
              * Jääpeite
              * @enum {string}
@@ -13642,6 +13694,8 @@ export interface components {
             routeLengthBiotopeG: number;
             /** Route length reed */
             routeLengthBiotopeH: number;
+            /** Route length body of water */
+            routeLengthBiotopeI: number;
             /** Reitin muutokset (m) */
             routeLengthChange: number;
             /** Reitin muutokset kaatopaikka */
@@ -13660,6 +13714,8 @@ export interface components {
             routeLengthChangeBiotopeG: number;
             /** Reitin muutokset ruovikko */
             routeLengthChangeBiotopeH: number;
+            /** Reitin muutokset vesistö */
+            routeLengthChangeBiotopeI: number;
             /**
              * Puissa oleva lumi ja jääkarsta
              * @enum {string}
@@ -14816,6 +14872,8 @@ export interface components {
             individualCountBiotopeG: number;
             /** Individual count reed */
             individualCountBiotopeH: number;
+            /** Individual count water body */
+            individualCountBiotopeI: number;
         };
         "store-unitGathering": {
             /** Context for the Havainnon keruutiedot */
@@ -23575,16 +23633,19 @@ export interface operations {
                     parentsIncludeSelf?: string | string[];
                     nonHiddenParentsIncludeSelf?: string | string[];
                     hiddenTaxon?: boolean;
+                    darkTaxon?: boolean;
                     nameAccordingTo?: string | string[];
                     taxonRank?: string | string[];
                     scientificName?: string | string[];
                     scientificNameAuthorship?: string | string[];
+                    scientificNameLabel?: string | string[];
                     scientificNameDisplayName?: string | string[];
                     cursiveName?: boolean;
                     typeSpecimenURI?: string | string[];
                     synonymNames?: string | string[];
                     "basionyms.id"?: string | string[];
                     "basionyms.scientificName"?: string | string[];
+                    "basionyms.scientificNameLabel"?: string | string[];
                     "basionyms.scientificNameAuthorship"?: string | string[];
                     "basionyms.vernacularName.fi"?: string | string[];
                     "basionyms.vernacularName.sv"?: string | string[];
@@ -23596,6 +23657,7 @@ export interface operations {
                     "basionyms.hasBold"?: boolean;
                     "objectiveSynonyms.id"?: string | string[];
                     "objectiveSynonyms.scientificName"?: string | string[];
+                    "objectiveSynonyms.scientificNameLabel"?: string | string[];
                     "objectiveSynonyms.scientificNameAuthorship"?: string | string[];
                     "objectiveSynonyms.vernacularName.fi"?: string | string[];
                     "objectiveSynonyms.vernacularName.sv"?: string | string[];
@@ -23607,6 +23669,7 @@ export interface operations {
                     "objectiveSynonyms.hasBold"?: boolean;
                     "subjectiveSynonyms.id"?: string | string[];
                     "subjectiveSynonyms.scientificName"?: string | string[];
+                    "subjectiveSynonyms.scientificNameLabel"?: string | string[];
                     "subjectiveSynonyms.scientificNameAuthorship"?: string | string[];
                     "subjectiveSynonyms.vernacularName.fi"?: string | string[];
                     "subjectiveSynonyms.vernacularName.sv"?: string | string[];
@@ -23618,6 +23681,7 @@ export interface operations {
                     "subjectiveSynonyms.hasBold"?: boolean;
                     "homotypicSynonyms.id"?: string | string[];
                     "homotypicSynonyms.scientificName"?: string | string[];
+                    "homotypicSynonyms.scientificNameLabel"?: string | string[];
                     "homotypicSynonyms.scientificNameAuthorship"?: string | string[];
                     "homotypicSynonyms.vernacularName.fi"?: string | string[];
                     "homotypicSynonyms.vernacularName.sv"?: string | string[];
@@ -23629,6 +23693,7 @@ export interface operations {
                     "homotypicSynonyms.hasBold"?: boolean;
                     "heterotypicSynonyms.id"?: string | string[];
                     "heterotypicSynonyms.scientificName"?: string | string[];
+                    "heterotypicSynonyms.scientificNameLabel"?: string | string[];
                     "heterotypicSynonyms.scientificNameAuthorship"?: string | string[];
                     "heterotypicSynonyms.vernacularName.fi"?: string | string[];
                     "heterotypicSynonyms.vernacularName.sv"?: string | string[];
@@ -23640,6 +23705,7 @@ export interface operations {
                     "heterotypicSynonyms.hasBold"?: boolean;
                     "synonyms.id"?: string | string[];
                     "synonyms.scientificName"?: string | string[];
+                    "synonyms.scientificNameLabel"?: string | string[];
                     "synonyms.scientificNameAuthorship"?: string | string[];
                     "synonyms.vernacularName.fi"?: string | string[];
                     "synonyms.vernacularName.sv"?: string | string[];
@@ -23651,6 +23717,7 @@ export interface operations {
                     "synonyms.hasBold"?: boolean;
                     "misspelledNames.id"?: string | string[];
                     "misspelledNames.scientificName"?: string | string[];
+                    "misspelledNames.scientificNameLabel"?: string | string[];
                     "misspelledNames.scientificNameAuthorship"?: string | string[];
                     "misspelledNames.vernacularName.fi"?: string | string[];
                     "misspelledNames.vernacularName.sv"?: string | string[];
@@ -23662,6 +23729,7 @@ export interface operations {
                     "misspelledNames.hasBold"?: boolean;
                     "orthographicVariants.id"?: string | string[];
                     "orthographicVariants.scientificName"?: string | string[];
+                    "orthographicVariants.scientificNameLabel"?: string | string[];
                     "orthographicVariants.scientificNameAuthorship"?: string | string[];
                     "orthographicVariants.vernacularName.fi"?: string | string[];
                     "orthographicVariants.vernacularName.sv"?: string | string[];
@@ -23673,6 +23741,7 @@ export interface operations {
                     "orthographicVariants.hasBold"?: boolean;
                     "uncertainSynonyms.id"?: string | string[];
                     "uncertainSynonyms.scientificName"?: string | string[];
+                    "uncertainSynonyms.scientificNameLabel"?: string | string[];
                     "uncertainSynonyms.scientificNameAuthorship"?: string | string[];
                     "uncertainSynonyms.vernacularName.fi"?: string | string[];
                     "uncertainSynonyms.vernacularName.sv"?: string | string[];
@@ -23684,6 +23753,7 @@ export interface operations {
                     "uncertainSynonyms.hasBold"?: boolean;
                     "misappliedNames.id"?: string | string[];
                     "misappliedNames.scientificName"?: string | string[];
+                    "misappliedNames.scientificNameLabel"?: string | string[];
                     "misappliedNames.scientificNameAuthorship"?: string | string[];
                     "misappliedNames.vernacularName.fi"?: string | string[];
                     "misappliedNames.vernacularName.sv"?: string | string[];
@@ -23695,6 +23765,7 @@ export interface operations {
                     "misappliedNames.hasBold"?: boolean;
                     "alternativeNames.id"?: string | string[];
                     "alternativeNames.scientificName"?: string | string[];
+                    "alternativeNames.scientificNameLabel"?: string | string[];
                     "alternativeNames.scientificNameAuthorship"?: string | string[];
                     "alternativeNames.vernacularName.fi"?: string | string[];
                     "alternativeNames.vernacularName.sv"?: string | string[];
@@ -23764,6 +23835,7 @@ export interface operations {
                     "multimedia.squareThumbnailURL"?: string | string[];
                     "multimedia.taxon.id"?: string | string[];
                     "multimedia.taxon.scientificName"?: string | string[];
+                    "multimedia.taxon.scientificNameLabel"?: string | string[];
                     "multimedia.taxon.scientificNameAuthorship"?: string | string[];
                     "multimedia.taxon.vernacularName.fi"?: string | string[];
                     "multimedia.taxon.vernacularName.sv"?: string | string[];
@@ -23846,8 +23918,10 @@ export interface operations {
                     "referenceSequences.locus"?: string | string[];
                     "referenceSequences.sequenceText"?: string | string[];
                     "referenceSequences.specimenId"?: string | string[];
+                    hasReferenceSequences?: boolean;
                     "parent.domain.id"?: string | string[];
                     "parent.domain.scientificName"?: string | string[];
+                    "parent.domain.scientificNameLabel"?: string | string[];
                     "parent.domain.scientificNameAuthorship"?: string | string[];
                     "parent.domain.vernacularName.fi"?: string | string[];
                     "parent.domain.vernacularName.sv"?: string | string[];
@@ -23859,6 +23933,7 @@ export interface operations {
                     "parent.domain.hasBold"?: boolean;
                     "parent.kingdom.id"?: string | string[];
                     "parent.kingdom.scientificName"?: string | string[];
+                    "parent.kingdom.scientificNameLabel"?: string | string[];
                     "parent.kingdom.scientificNameAuthorship"?: string | string[];
                     "parent.kingdom.vernacularName.fi"?: string | string[];
                     "parent.kingdom.vernacularName.sv"?: string | string[];
@@ -23870,6 +23945,7 @@ export interface operations {
                     "parent.kingdom.hasBold"?: boolean;
                     "parent.phylum.id"?: string | string[];
                     "parent.phylum.scientificName"?: string | string[];
+                    "parent.phylum.scientificNameLabel"?: string | string[];
                     "parent.phylum.scientificNameAuthorship"?: string | string[];
                     "parent.phylum.vernacularName.fi"?: string | string[];
                     "parent.phylum.vernacularName.sv"?: string | string[];
@@ -23881,6 +23957,7 @@ export interface operations {
                     "parent.phylum.hasBold"?: boolean;
                     "parent.subphylum.id"?: string | string[];
                     "parent.subphylum.scientificName"?: string | string[];
+                    "parent.subphylum.scientificNameLabel"?: string | string[];
                     "parent.subphylum.scientificNameAuthorship"?: string | string[];
                     "parent.subphylum.vernacularName.fi"?: string | string[];
                     "parent.subphylum.vernacularName.sv"?: string | string[];
@@ -23892,6 +23969,7 @@ export interface operations {
                     "parent.subphylum.hasBold"?: boolean;
                     "parent.division.id"?: string | string[];
                     "parent.division.scientificName"?: string | string[];
+                    "parent.division.scientificNameLabel"?: string | string[];
                     "parent.division.scientificNameAuthorship"?: string | string[];
                     "parent.division.vernacularName.fi"?: string | string[];
                     "parent.division.vernacularName.sv"?: string | string[];
@@ -23903,6 +23981,7 @@ export interface operations {
                     "parent.division.hasBold"?: boolean;
                     "parent.class.id"?: string | string[];
                     "parent.class.scientificName"?: string | string[];
+                    "parent.class.scientificNameLabel"?: string | string[];
                     "parent.class.scientificNameAuthorship"?: string | string[];
                     "parent.class.vernacularName.fi"?: string | string[];
                     "parent.class.vernacularName.sv"?: string | string[];
@@ -23914,6 +23993,7 @@ export interface operations {
                     "parent.class.hasBold"?: boolean;
                     "parent.subclass.id"?: string | string[];
                     "parent.subclass.scientificName"?: string | string[];
+                    "parent.subclass.scientificNameLabel"?: string | string[];
                     "parent.subclass.scientificNameAuthorship"?: string | string[];
                     "parent.subclass.vernacularName.fi"?: string | string[];
                     "parent.subclass.vernacularName.sv"?: string | string[];
@@ -23925,6 +24005,7 @@ export interface operations {
                     "parent.subclass.hasBold"?: boolean;
                     "parent.order.id"?: string | string[];
                     "parent.order.scientificName"?: string | string[];
+                    "parent.order.scientificNameLabel"?: string | string[];
                     "parent.order.scientificNameAuthorship"?: string | string[];
                     "parent.order.vernacularName.fi"?: string | string[];
                     "parent.order.vernacularName.sv"?: string | string[];
@@ -23936,6 +24017,7 @@ export interface operations {
                     "parent.order.hasBold"?: boolean;
                     "parent.suborder.id"?: string | string[];
                     "parent.suborder.scientificName"?: string | string[];
+                    "parent.suborder.scientificNameLabel"?: string | string[];
                     "parent.suborder.scientificNameAuthorship"?: string | string[];
                     "parent.suborder.vernacularName.fi"?: string | string[];
                     "parent.suborder.vernacularName.sv"?: string | string[];
@@ -23947,6 +24029,7 @@ export interface operations {
                     "parent.suborder.hasBold"?: boolean;
                     "parent.superfamily.id"?: string | string[];
                     "parent.superfamily.scientificName"?: string | string[];
+                    "parent.superfamily.scientificNameLabel"?: string | string[];
                     "parent.superfamily.scientificNameAuthorship"?: string | string[];
                     "parent.superfamily.vernacularName.fi"?: string | string[];
                     "parent.superfamily.vernacularName.sv"?: string | string[];
@@ -23958,6 +24041,7 @@ export interface operations {
                     "parent.superfamily.hasBold"?: boolean;
                     "parent.family.id"?: string | string[];
                     "parent.family.scientificName"?: string | string[];
+                    "parent.family.scientificNameLabel"?: string | string[];
                     "parent.family.scientificNameAuthorship"?: string | string[];
                     "parent.family.vernacularName.fi"?: string | string[];
                     "parent.family.vernacularName.sv"?: string | string[];
@@ -23969,6 +24053,7 @@ export interface operations {
                     "parent.family.hasBold"?: boolean;
                     "parent.subfamily.id"?: string | string[];
                     "parent.subfamily.scientificName"?: string | string[];
+                    "parent.subfamily.scientificNameLabel"?: string | string[];
                     "parent.subfamily.scientificNameAuthorship"?: string | string[];
                     "parent.subfamily.vernacularName.fi"?: string | string[];
                     "parent.subfamily.vernacularName.sv"?: string | string[];
@@ -23980,6 +24065,7 @@ export interface operations {
                     "parent.subfamily.hasBold"?: boolean;
                     "parent.tribe.id"?: string | string[];
                     "parent.tribe.scientificName"?: string | string[];
+                    "parent.tribe.scientificNameLabel"?: string | string[];
                     "parent.tribe.scientificNameAuthorship"?: string | string[];
                     "parent.tribe.vernacularName.fi"?: string | string[];
                     "parent.tribe.vernacularName.sv"?: string | string[];
@@ -23991,6 +24077,7 @@ export interface operations {
                     "parent.tribe.hasBold"?: boolean;
                     "parent.subtribe.id"?: string | string[];
                     "parent.subtribe.scientificName"?: string | string[];
+                    "parent.subtribe.scientificNameLabel"?: string | string[];
                     "parent.subtribe.scientificNameAuthorship"?: string | string[];
                     "parent.subtribe.vernacularName.fi"?: string | string[];
                     "parent.subtribe.vernacularName.sv"?: string | string[];
@@ -24002,6 +24089,7 @@ export interface operations {
                     "parent.subtribe.hasBold"?: boolean;
                     "parent.genus.id"?: string | string[];
                     "parent.genus.scientificName"?: string | string[];
+                    "parent.genus.scientificNameLabel"?: string | string[];
                     "parent.genus.scientificNameAuthorship"?: string | string[];
                     "parent.genus.vernacularName.fi"?: string | string[];
                     "parent.genus.vernacularName.sv"?: string | string[];
@@ -24013,6 +24101,7 @@ export interface operations {
                     "parent.genus.hasBold"?: boolean;
                     "parent.subgenus.id"?: string | string[];
                     "parent.subgenus.scientificName"?: string | string[];
+                    "parent.subgenus.scientificNameLabel"?: string | string[];
                     "parent.subgenus.scientificNameAuthorship"?: string | string[];
                     "parent.subgenus.vernacularName.fi"?: string | string[];
                     "parent.subgenus.vernacularName.sv"?: string | string[];
@@ -24024,6 +24113,7 @@ export interface operations {
                     "parent.subgenus.hasBold"?: boolean;
                     "parent.aggregate.id"?: string | string[];
                     "parent.aggregate.scientificName"?: string | string[];
+                    "parent.aggregate.scientificNameLabel"?: string | string[];
                     "parent.aggregate.scientificNameAuthorship"?: string | string[];
                     "parent.aggregate.vernacularName.fi"?: string | string[];
                     "parent.aggregate.vernacularName.sv"?: string | string[];
@@ -24035,6 +24125,7 @@ export interface operations {
                     "parent.aggregate.hasBold"?: boolean;
                     "parent.species.id"?: string | string[];
                     "parent.species.scientificName"?: string | string[];
+                    "parent.species.scientificNameLabel"?: string | string[];
                     "parent.species.scientificNameAuthorship"?: string | string[];
                     "parent.species.vernacularName.fi"?: string | string[];
                     "parent.species.vernacularName.sv"?: string | string[];
@@ -24046,6 +24137,7 @@ export interface operations {
                     "parent.species.hasBold"?: boolean;
                     "synonymOf.id"?: string | string[];
                     "synonymOf.scientificName"?: string | string[];
+                    "synonymOf.scientificNameLabel"?: string | string[];
                     "synonymOf.scientificNameAuthorship"?: string | string[];
                     "synonymOf.vernacularName.fi"?: string | string[];
                     "synonymOf.vernacularName.sv"?: string | string[];
@@ -24384,16 +24476,19 @@ export interface operations {
                     parentsIncludeSelf?: string | string[];
                     nonHiddenParentsIncludeSelf?: string | string[];
                     hiddenTaxon?: boolean;
+                    darkTaxon?: boolean;
                     nameAccordingTo?: string | string[];
                     taxonRank?: string | string[];
                     scientificName?: string | string[];
                     scientificNameAuthorship?: string | string[];
+                    scientificNameLabel?: string | string[];
                     scientificNameDisplayName?: string | string[];
                     cursiveName?: boolean;
                     typeSpecimenURI?: string | string[];
                     synonymNames?: string | string[];
                     "basionyms.id"?: string | string[];
                     "basionyms.scientificName"?: string | string[];
+                    "basionyms.scientificNameLabel"?: string | string[];
                     "basionyms.scientificNameAuthorship"?: string | string[];
                     "basionyms.vernacularName.fi"?: string | string[];
                     "basionyms.vernacularName.sv"?: string | string[];
@@ -24405,6 +24500,7 @@ export interface operations {
                     "basionyms.hasBold"?: boolean;
                     "objectiveSynonyms.id"?: string | string[];
                     "objectiveSynonyms.scientificName"?: string | string[];
+                    "objectiveSynonyms.scientificNameLabel"?: string | string[];
                     "objectiveSynonyms.scientificNameAuthorship"?: string | string[];
                     "objectiveSynonyms.vernacularName.fi"?: string | string[];
                     "objectiveSynonyms.vernacularName.sv"?: string | string[];
@@ -24416,6 +24512,7 @@ export interface operations {
                     "objectiveSynonyms.hasBold"?: boolean;
                     "subjectiveSynonyms.id"?: string | string[];
                     "subjectiveSynonyms.scientificName"?: string | string[];
+                    "subjectiveSynonyms.scientificNameLabel"?: string | string[];
                     "subjectiveSynonyms.scientificNameAuthorship"?: string | string[];
                     "subjectiveSynonyms.vernacularName.fi"?: string | string[];
                     "subjectiveSynonyms.vernacularName.sv"?: string | string[];
@@ -24427,6 +24524,7 @@ export interface operations {
                     "subjectiveSynonyms.hasBold"?: boolean;
                     "homotypicSynonyms.id"?: string | string[];
                     "homotypicSynonyms.scientificName"?: string | string[];
+                    "homotypicSynonyms.scientificNameLabel"?: string | string[];
                     "homotypicSynonyms.scientificNameAuthorship"?: string | string[];
                     "homotypicSynonyms.vernacularName.fi"?: string | string[];
                     "homotypicSynonyms.vernacularName.sv"?: string | string[];
@@ -24438,6 +24536,7 @@ export interface operations {
                     "homotypicSynonyms.hasBold"?: boolean;
                     "heterotypicSynonyms.id"?: string | string[];
                     "heterotypicSynonyms.scientificName"?: string | string[];
+                    "heterotypicSynonyms.scientificNameLabel"?: string | string[];
                     "heterotypicSynonyms.scientificNameAuthorship"?: string | string[];
                     "heterotypicSynonyms.vernacularName.fi"?: string | string[];
                     "heterotypicSynonyms.vernacularName.sv"?: string | string[];
@@ -24449,6 +24548,7 @@ export interface operations {
                     "heterotypicSynonyms.hasBold"?: boolean;
                     "synonyms.id"?: string | string[];
                     "synonyms.scientificName"?: string | string[];
+                    "synonyms.scientificNameLabel"?: string | string[];
                     "synonyms.scientificNameAuthorship"?: string | string[];
                     "synonyms.vernacularName.fi"?: string | string[];
                     "synonyms.vernacularName.sv"?: string | string[];
@@ -24460,6 +24560,7 @@ export interface operations {
                     "synonyms.hasBold"?: boolean;
                     "misspelledNames.id"?: string | string[];
                     "misspelledNames.scientificName"?: string | string[];
+                    "misspelledNames.scientificNameLabel"?: string | string[];
                     "misspelledNames.scientificNameAuthorship"?: string | string[];
                     "misspelledNames.vernacularName.fi"?: string | string[];
                     "misspelledNames.vernacularName.sv"?: string | string[];
@@ -24471,6 +24572,7 @@ export interface operations {
                     "misspelledNames.hasBold"?: boolean;
                     "orthographicVariants.id"?: string | string[];
                     "orthographicVariants.scientificName"?: string | string[];
+                    "orthographicVariants.scientificNameLabel"?: string | string[];
                     "orthographicVariants.scientificNameAuthorship"?: string | string[];
                     "orthographicVariants.vernacularName.fi"?: string | string[];
                     "orthographicVariants.vernacularName.sv"?: string | string[];
@@ -24482,6 +24584,7 @@ export interface operations {
                     "orthographicVariants.hasBold"?: boolean;
                     "uncertainSynonyms.id"?: string | string[];
                     "uncertainSynonyms.scientificName"?: string | string[];
+                    "uncertainSynonyms.scientificNameLabel"?: string | string[];
                     "uncertainSynonyms.scientificNameAuthorship"?: string | string[];
                     "uncertainSynonyms.vernacularName.fi"?: string | string[];
                     "uncertainSynonyms.vernacularName.sv"?: string | string[];
@@ -24493,6 +24596,7 @@ export interface operations {
                     "uncertainSynonyms.hasBold"?: boolean;
                     "misappliedNames.id"?: string | string[];
                     "misappliedNames.scientificName"?: string | string[];
+                    "misappliedNames.scientificNameLabel"?: string | string[];
                     "misappliedNames.scientificNameAuthorship"?: string | string[];
                     "misappliedNames.vernacularName.fi"?: string | string[];
                     "misappliedNames.vernacularName.sv"?: string | string[];
@@ -24504,6 +24608,7 @@ export interface operations {
                     "misappliedNames.hasBold"?: boolean;
                     "alternativeNames.id"?: string | string[];
                     "alternativeNames.scientificName"?: string | string[];
+                    "alternativeNames.scientificNameLabel"?: string | string[];
                     "alternativeNames.scientificNameAuthorship"?: string | string[];
                     "alternativeNames.vernacularName.fi"?: string | string[];
                     "alternativeNames.vernacularName.sv"?: string | string[];
@@ -24573,6 +24678,7 @@ export interface operations {
                     "multimedia.squareThumbnailURL"?: string | string[];
                     "multimedia.taxon.id"?: string | string[];
                     "multimedia.taxon.scientificName"?: string | string[];
+                    "multimedia.taxon.scientificNameLabel"?: string | string[];
                     "multimedia.taxon.scientificNameAuthorship"?: string | string[];
                     "multimedia.taxon.vernacularName.fi"?: string | string[];
                     "multimedia.taxon.vernacularName.sv"?: string | string[];
@@ -24655,8 +24761,10 @@ export interface operations {
                     "referenceSequences.locus"?: string | string[];
                     "referenceSequences.sequenceText"?: string | string[];
                     "referenceSequences.specimenId"?: string | string[];
+                    hasReferenceSequences?: boolean;
                     "parent.domain.id"?: string | string[];
                     "parent.domain.scientificName"?: string | string[];
+                    "parent.domain.scientificNameLabel"?: string | string[];
                     "parent.domain.scientificNameAuthorship"?: string | string[];
                     "parent.domain.vernacularName.fi"?: string | string[];
                     "parent.domain.vernacularName.sv"?: string | string[];
@@ -24668,6 +24776,7 @@ export interface operations {
                     "parent.domain.hasBold"?: boolean;
                     "parent.kingdom.id"?: string | string[];
                     "parent.kingdom.scientificName"?: string | string[];
+                    "parent.kingdom.scientificNameLabel"?: string | string[];
                     "parent.kingdom.scientificNameAuthorship"?: string | string[];
                     "parent.kingdom.vernacularName.fi"?: string | string[];
                     "parent.kingdom.vernacularName.sv"?: string | string[];
@@ -24679,6 +24788,7 @@ export interface operations {
                     "parent.kingdom.hasBold"?: boolean;
                     "parent.phylum.id"?: string | string[];
                     "parent.phylum.scientificName"?: string | string[];
+                    "parent.phylum.scientificNameLabel"?: string | string[];
                     "parent.phylum.scientificNameAuthorship"?: string | string[];
                     "parent.phylum.vernacularName.fi"?: string | string[];
                     "parent.phylum.vernacularName.sv"?: string | string[];
@@ -24690,6 +24800,7 @@ export interface operations {
                     "parent.phylum.hasBold"?: boolean;
                     "parent.subphylum.id"?: string | string[];
                     "parent.subphylum.scientificName"?: string | string[];
+                    "parent.subphylum.scientificNameLabel"?: string | string[];
                     "parent.subphylum.scientificNameAuthorship"?: string | string[];
                     "parent.subphylum.vernacularName.fi"?: string | string[];
                     "parent.subphylum.vernacularName.sv"?: string | string[];
@@ -24701,6 +24812,7 @@ export interface operations {
                     "parent.subphylum.hasBold"?: boolean;
                     "parent.division.id"?: string | string[];
                     "parent.division.scientificName"?: string | string[];
+                    "parent.division.scientificNameLabel"?: string | string[];
                     "parent.division.scientificNameAuthorship"?: string | string[];
                     "parent.division.vernacularName.fi"?: string | string[];
                     "parent.division.vernacularName.sv"?: string | string[];
@@ -24712,6 +24824,7 @@ export interface operations {
                     "parent.division.hasBold"?: boolean;
                     "parent.class.id"?: string | string[];
                     "parent.class.scientificName"?: string | string[];
+                    "parent.class.scientificNameLabel"?: string | string[];
                     "parent.class.scientificNameAuthorship"?: string | string[];
                     "parent.class.vernacularName.fi"?: string | string[];
                     "parent.class.vernacularName.sv"?: string | string[];
@@ -24723,6 +24836,7 @@ export interface operations {
                     "parent.class.hasBold"?: boolean;
                     "parent.subclass.id"?: string | string[];
                     "parent.subclass.scientificName"?: string | string[];
+                    "parent.subclass.scientificNameLabel"?: string | string[];
                     "parent.subclass.scientificNameAuthorship"?: string | string[];
                     "parent.subclass.vernacularName.fi"?: string | string[];
                     "parent.subclass.vernacularName.sv"?: string | string[];
@@ -24734,6 +24848,7 @@ export interface operations {
                     "parent.subclass.hasBold"?: boolean;
                     "parent.order.id"?: string | string[];
                     "parent.order.scientificName"?: string | string[];
+                    "parent.order.scientificNameLabel"?: string | string[];
                     "parent.order.scientificNameAuthorship"?: string | string[];
                     "parent.order.vernacularName.fi"?: string | string[];
                     "parent.order.vernacularName.sv"?: string | string[];
@@ -24745,6 +24860,7 @@ export interface operations {
                     "parent.order.hasBold"?: boolean;
                     "parent.suborder.id"?: string | string[];
                     "parent.suborder.scientificName"?: string | string[];
+                    "parent.suborder.scientificNameLabel"?: string | string[];
                     "parent.suborder.scientificNameAuthorship"?: string | string[];
                     "parent.suborder.vernacularName.fi"?: string | string[];
                     "parent.suborder.vernacularName.sv"?: string | string[];
@@ -24756,6 +24872,7 @@ export interface operations {
                     "parent.suborder.hasBold"?: boolean;
                     "parent.superfamily.id"?: string | string[];
                     "parent.superfamily.scientificName"?: string | string[];
+                    "parent.superfamily.scientificNameLabel"?: string | string[];
                     "parent.superfamily.scientificNameAuthorship"?: string | string[];
                     "parent.superfamily.vernacularName.fi"?: string | string[];
                     "parent.superfamily.vernacularName.sv"?: string | string[];
@@ -24767,6 +24884,7 @@ export interface operations {
                     "parent.superfamily.hasBold"?: boolean;
                     "parent.family.id"?: string | string[];
                     "parent.family.scientificName"?: string | string[];
+                    "parent.family.scientificNameLabel"?: string | string[];
                     "parent.family.scientificNameAuthorship"?: string | string[];
                     "parent.family.vernacularName.fi"?: string | string[];
                     "parent.family.vernacularName.sv"?: string | string[];
@@ -24778,6 +24896,7 @@ export interface operations {
                     "parent.family.hasBold"?: boolean;
                     "parent.subfamily.id"?: string | string[];
                     "parent.subfamily.scientificName"?: string | string[];
+                    "parent.subfamily.scientificNameLabel"?: string | string[];
                     "parent.subfamily.scientificNameAuthorship"?: string | string[];
                     "parent.subfamily.vernacularName.fi"?: string | string[];
                     "parent.subfamily.vernacularName.sv"?: string | string[];
@@ -24789,6 +24908,7 @@ export interface operations {
                     "parent.subfamily.hasBold"?: boolean;
                     "parent.tribe.id"?: string | string[];
                     "parent.tribe.scientificName"?: string | string[];
+                    "parent.tribe.scientificNameLabel"?: string | string[];
                     "parent.tribe.scientificNameAuthorship"?: string | string[];
                     "parent.tribe.vernacularName.fi"?: string | string[];
                     "parent.tribe.vernacularName.sv"?: string | string[];
@@ -24800,6 +24920,7 @@ export interface operations {
                     "parent.tribe.hasBold"?: boolean;
                     "parent.subtribe.id"?: string | string[];
                     "parent.subtribe.scientificName"?: string | string[];
+                    "parent.subtribe.scientificNameLabel"?: string | string[];
                     "parent.subtribe.scientificNameAuthorship"?: string | string[];
                     "parent.subtribe.vernacularName.fi"?: string | string[];
                     "parent.subtribe.vernacularName.sv"?: string | string[];
@@ -24811,6 +24932,7 @@ export interface operations {
                     "parent.subtribe.hasBold"?: boolean;
                     "parent.genus.id"?: string | string[];
                     "parent.genus.scientificName"?: string | string[];
+                    "parent.genus.scientificNameLabel"?: string | string[];
                     "parent.genus.scientificNameAuthorship"?: string | string[];
                     "parent.genus.vernacularName.fi"?: string | string[];
                     "parent.genus.vernacularName.sv"?: string | string[];
@@ -24822,6 +24944,7 @@ export interface operations {
                     "parent.genus.hasBold"?: boolean;
                     "parent.subgenus.id"?: string | string[];
                     "parent.subgenus.scientificName"?: string | string[];
+                    "parent.subgenus.scientificNameLabel"?: string | string[];
                     "parent.subgenus.scientificNameAuthorship"?: string | string[];
                     "parent.subgenus.vernacularName.fi"?: string | string[];
                     "parent.subgenus.vernacularName.sv"?: string | string[];
@@ -24833,6 +24956,7 @@ export interface operations {
                     "parent.subgenus.hasBold"?: boolean;
                     "parent.aggregate.id"?: string | string[];
                     "parent.aggregate.scientificName"?: string | string[];
+                    "parent.aggregate.scientificNameLabel"?: string | string[];
                     "parent.aggregate.scientificNameAuthorship"?: string | string[];
                     "parent.aggregate.vernacularName.fi"?: string | string[];
                     "parent.aggregate.vernacularName.sv"?: string | string[];
@@ -24844,6 +24968,7 @@ export interface operations {
                     "parent.aggregate.hasBold"?: boolean;
                     "parent.species.id"?: string | string[];
                     "parent.species.scientificName"?: string | string[];
+                    "parent.species.scientificNameLabel"?: string | string[];
                     "parent.species.scientificNameAuthorship"?: string | string[];
                     "parent.species.vernacularName.fi"?: string | string[];
                     "parent.species.vernacularName.sv"?: string | string[];
@@ -24855,6 +24980,7 @@ export interface operations {
                     "parent.species.hasBold"?: boolean;
                     "synonymOf.id"?: string | string[];
                     "synonymOf.scientificName"?: string | string[];
+                    "synonymOf.scientificNameLabel"?: string | string[];
                     "synonymOf.scientificNameAuthorship"?: string | string[];
                     "synonymOf.vernacularName.fi"?: string | string[];
                     "synonymOf.vernacularName.sv"?: string | string[];
@@ -25209,16 +25335,19 @@ export interface operations {
                     parentsIncludeSelf?: string | string[];
                     nonHiddenParentsIncludeSelf?: string | string[];
                     hiddenTaxon?: boolean;
+                    darkTaxon?: boolean;
                     nameAccordingTo?: string | string[];
                     taxonRank?: string | string[];
                     scientificName?: string | string[];
                     scientificNameAuthorship?: string | string[];
+                    scientificNameLabel?: string | string[];
                     scientificNameDisplayName?: string | string[];
                     cursiveName?: boolean;
                     typeSpecimenURI?: string | string[];
                     synonymNames?: string | string[];
                     "basionyms.id"?: string | string[];
                     "basionyms.scientificName"?: string | string[];
+                    "basionyms.scientificNameLabel"?: string | string[];
                     "basionyms.scientificNameAuthorship"?: string | string[];
                     "basionyms.vernacularName.fi"?: string | string[];
                     "basionyms.vernacularName.sv"?: string | string[];
@@ -25230,6 +25359,7 @@ export interface operations {
                     "basionyms.hasBold"?: boolean;
                     "objectiveSynonyms.id"?: string | string[];
                     "objectiveSynonyms.scientificName"?: string | string[];
+                    "objectiveSynonyms.scientificNameLabel"?: string | string[];
                     "objectiveSynonyms.scientificNameAuthorship"?: string | string[];
                     "objectiveSynonyms.vernacularName.fi"?: string | string[];
                     "objectiveSynonyms.vernacularName.sv"?: string | string[];
@@ -25241,6 +25371,7 @@ export interface operations {
                     "objectiveSynonyms.hasBold"?: boolean;
                     "subjectiveSynonyms.id"?: string | string[];
                     "subjectiveSynonyms.scientificName"?: string | string[];
+                    "subjectiveSynonyms.scientificNameLabel"?: string | string[];
                     "subjectiveSynonyms.scientificNameAuthorship"?: string | string[];
                     "subjectiveSynonyms.vernacularName.fi"?: string | string[];
                     "subjectiveSynonyms.vernacularName.sv"?: string | string[];
@@ -25252,6 +25383,7 @@ export interface operations {
                     "subjectiveSynonyms.hasBold"?: boolean;
                     "homotypicSynonyms.id"?: string | string[];
                     "homotypicSynonyms.scientificName"?: string | string[];
+                    "homotypicSynonyms.scientificNameLabel"?: string | string[];
                     "homotypicSynonyms.scientificNameAuthorship"?: string | string[];
                     "homotypicSynonyms.vernacularName.fi"?: string | string[];
                     "homotypicSynonyms.vernacularName.sv"?: string | string[];
@@ -25263,6 +25395,7 @@ export interface operations {
                     "homotypicSynonyms.hasBold"?: boolean;
                     "heterotypicSynonyms.id"?: string | string[];
                     "heterotypicSynonyms.scientificName"?: string | string[];
+                    "heterotypicSynonyms.scientificNameLabel"?: string | string[];
                     "heterotypicSynonyms.scientificNameAuthorship"?: string | string[];
                     "heterotypicSynonyms.vernacularName.fi"?: string | string[];
                     "heterotypicSynonyms.vernacularName.sv"?: string | string[];
@@ -25274,6 +25407,7 @@ export interface operations {
                     "heterotypicSynonyms.hasBold"?: boolean;
                     "synonyms.id"?: string | string[];
                     "synonyms.scientificName"?: string | string[];
+                    "synonyms.scientificNameLabel"?: string | string[];
                     "synonyms.scientificNameAuthorship"?: string | string[];
                     "synonyms.vernacularName.fi"?: string | string[];
                     "synonyms.vernacularName.sv"?: string | string[];
@@ -25285,6 +25419,7 @@ export interface operations {
                     "synonyms.hasBold"?: boolean;
                     "misspelledNames.id"?: string | string[];
                     "misspelledNames.scientificName"?: string | string[];
+                    "misspelledNames.scientificNameLabel"?: string | string[];
                     "misspelledNames.scientificNameAuthorship"?: string | string[];
                     "misspelledNames.vernacularName.fi"?: string | string[];
                     "misspelledNames.vernacularName.sv"?: string | string[];
@@ -25296,6 +25431,7 @@ export interface operations {
                     "misspelledNames.hasBold"?: boolean;
                     "orthographicVariants.id"?: string | string[];
                     "orthographicVariants.scientificName"?: string | string[];
+                    "orthographicVariants.scientificNameLabel"?: string | string[];
                     "orthographicVariants.scientificNameAuthorship"?: string | string[];
                     "orthographicVariants.vernacularName.fi"?: string | string[];
                     "orthographicVariants.vernacularName.sv"?: string | string[];
@@ -25307,6 +25443,7 @@ export interface operations {
                     "orthographicVariants.hasBold"?: boolean;
                     "uncertainSynonyms.id"?: string | string[];
                     "uncertainSynonyms.scientificName"?: string | string[];
+                    "uncertainSynonyms.scientificNameLabel"?: string | string[];
                     "uncertainSynonyms.scientificNameAuthorship"?: string | string[];
                     "uncertainSynonyms.vernacularName.fi"?: string | string[];
                     "uncertainSynonyms.vernacularName.sv"?: string | string[];
@@ -25318,6 +25455,7 @@ export interface operations {
                     "uncertainSynonyms.hasBold"?: boolean;
                     "misappliedNames.id"?: string | string[];
                     "misappliedNames.scientificName"?: string | string[];
+                    "misappliedNames.scientificNameLabel"?: string | string[];
                     "misappliedNames.scientificNameAuthorship"?: string | string[];
                     "misappliedNames.vernacularName.fi"?: string | string[];
                     "misappliedNames.vernacularName.sv"?: string | string[];
@@ -25329,6 +25467,7 @@ export interface operations {
                     "misappliedNames.hasBold"?: boolean;
                     "alternativeNames.id"?: string | string[];
                     "alternativeNames.scientificName"?: string | string[];
+                    "alternativeNames.scientificNameLabel"?: string | string[];
                     "alternativeNames.scientificNameAuthorship"?: string | string[];
                     "alternativeNames.vernacularName.fi"?: string | string[];
                     "alternativeNames.vernacularName.sv"?: string | string[];
@@ -25398,6 +25537,7 @@ export interface operations {
                     "multimedia.squareThumbnailURL"?: string | string[];
                     "multimedia.taxon.id"?: string | string[];
                     "multimedia.taxon.scientificName"?: string | string[];
+                    "multimedia.taxon.scientificNameLabel"?: string | string[];
                     "multimedia.taxon.scientificNameAuthorship"?: string | string[];
                     "multimedia.taxon.vernacularName.fi"?: string | string[];
                     "multimedia.taxon.vernacularName.sv"?: string | string[];
@@ -25480,8 +25620,10 @@ export interface operations {
                     "referenceSequences.locus"?: string | string[];
                     "referenceSequences.sequenceText"?: string | string[];
                     "referenceSequences.specimenId"?: string | string[];
+                    hasReferenceSequences?: boolean;
                     "parent.domain.id"?: string | string[];
                     "parent.domain.scientificName"?: string | string[];
+                    "parent.domain.scientificNameLabel"?: string | string[];
                     "parent.domain.scientificNameAuthorship"?: string | string[];
                     "parent.domain.vernacularName.fi"?: string | string[];
                     "parent.domain.vernacularName.sv"?: string | string[];
@@ -25493,6 +25635,7 @@ export interface operations {
                     "parent.domain.hasBold"?: boolean;
                     "parent.kingdom.id"?: string | string[];
                     "parent.kingdom.scientificName"?: string | string[];
+                    "parent.kingdom.scientificNameLabel"?: string | string[];
                     "parent.kingdom.scientificNameAuthorship"?: string | string[];
                     "parent.kingdom.vernacularName.fi"?: string | string[];
                     "parent.kingdom.vernacularName.sv"?: string | string[];
@@ -25504,6 +25647,7 @@ export interface operations {
                     "parent.kingdom.hasBold"?: boolean;
                     "parent.phylum.id"?: string | string[];
                     "parent.phylum.scientificName"?: string | string[];
+                    "parent.phylum.scientificNameLabel"?: string | string[];
                     "parent.phylum.scientificNameAuthorship"?: string | string[];
                     "parent.phylum.vernacularName.fi"?: string | string[];
                     "parent.phylum.vernacularName.sv"?: string | string[];
@@ -25515,6 +25659,7 @@ export interface operations {
                     "parent.phylum.hasBold"?: boolean;
                     "parent.subphylum.id"?: string | string[];
                     "parent.subphylum.scientificName"?: string | string[];
+                    "parent.subphylum.scientificNameLabel"?: string | string[];
                     "parent.subphylum.scientificNameAuthorship"?: string | string[];
                     "parent.subphylum.vernacularName.fi"?: string | string[];
                     "parent.subphylum.vernacularName.sv"?: string | string[];
@@ -25526,6 +25671,7 @@ export interface operations {
                     "parent.subphylum.hasBold"?: boolean;
                     "parent.division.id"?: string | string[];
                     "parent.division.scientificName"?: string | string[];
+                    "parent.division.scientificNameLabel"?: string | string[];
                     "parent.division.scientificNameAuthorship"?: string | string[];
                     "parent.division.vernacularName.fi"?: string | string[];
                     "parent.division.vernacularName.sv"?: string | string[];
@@ -25537,6 +25683,7 @@ export interface operations {
                     "parent.division.hasBold"?: boolean;
                     "parent.class.id"?: string | string[];
                     "parent.class.scientificName"?: string | string[];
+                    "parent.class.scientificNameLabel"?: string | string[];
                     "parent.class.scientificNameAuthorship"?: string | string[];
                     "parent.class.vernacularName.fi"?: string | string[];
                     "parent.class.vernacularName.sv"?: string | string[];
@@ -25548,6 +25695,7 @@ export interface operations {
                     "parent.class.hasBold"?: boolean;
                     "parent.subclass.id"?: string | string[];
                     "parent.subclass.scientificName"?: string | string[];
+                    "parent.subclass.scientificNameLabel"?: string | string[];
                     "parent.subclass.scientificNameAuthorship"?: string | string[];
                     "parent.subclass.vernacularName.fi"?: string | string[];
                     "parent.subclass.vernacularName.sv"?: string | string[];
@@ -25559,6 +25707,7 @@ export interface operations {
                     "parent.subclass.hasBold"?: boolean;
                     "parent.order.id"?: string | string[];
                     "parent.order.scientificName"?: string | string[];
+                    "parent.order.scientificNameLabel"?: string | string[];
                     "parent.order.scientificNameAuthorship"?: string | string[];
                     "parent.order.vernacularName.fi"?: string | string[];
                     "parent.order.vernacularName.sv"?: string | string[];
@@ -25570,6 +25719,7 @@ export interface operations {
                     "parent.order.hasBold"?: boolean;
                     "parent.suborder.id"?: string | string[];
                     "parent.suborder.scientificName"?: string | string[];
+                    "parent.suborder.scientificNameLabel"?: string | string[];
                     "parent.suborder.scientificNameAuthorship"?: string | string[];
                     "parent.suborder.vernacularName.fi"?: string | string[];
                     "parent.suborder.vernacularName.sv"?: string | string[];
@@ -25581,6 +25731,7 @@ export interface operations {
                     "parent.suborder.hasBold"?: boolean;
                     "parent.superfamily.id"?: string | string[];
                     "parent.superfamily.scientificName"?: string | string[];
+                    "parent.superfamily.scientificNameLabel"?: string | string[];
                     "parent.superfamily.scientificNameAuthorship"?: string | string[];
                     "parent.superfamily.vernacularName.fi"?: string | string[];
                     "parent.superfamily.vernacularName.sv"?: string | string[];
@@ -25592,6 +25743,7 @@ export interface operations {
                     "parent.superfamily.hasBold"?: boolean;
                     "parent.family.id"?: string | string[];
                     "parent.family.scientificName"?: string | string[];
+                    "parent.family.scientificNameLabel"?: string | string[];
                     "parent.family.scientificNameAuthorship"?: string | string[];
                     "parent.family.vernacularName.fi"?: string | string[];
                     "parent.family.vernacularName.sv"?: string | string[];
@@ -25603,6 +25755,7 @@ export interface operations {
                     "parent.family.hasBold"?: boolean;
                     "parent.subfamily.id"?: string | string[];
                     "parent.subfamily.scientificName"?: string | string[];
+                    "parent.subfamily.scientificNameLabel"?: string | string[];
                     "parent.subfamily.scientificNameAuthorship"?: string | string[];
                     "parent.subfamily.vernacularName.fi"?: string | string[];
                     "parent.subfamily.vernacularName.sv"?: string | string[];
@@ -25614,6 +25767,7 @@ export interface operations {
                     "parent.subfamily.hasBold"?: boolean;
                     "parent.tribe.id"?: string | string[];
                     "parent.tribe.scientificName"?: string | string[];
+                    "parent.tribe.scientificNameLabel"?: string | string[];
                     "parent.tribe.scientificNameAuthorship"?: string | string[];
                     "parent.tribe.vernacularName.fi"?: string | string[];
                     "parent.tribe.vernacularName.sv"?: string | string[];
@@ -25625,6 +25779,7 @@ export interface operations {
                     "parent.tribe.hasBold"?: boolean;
                     "parent.subtribe.id"?: string | string[];
                     "parent.subtribe.scientificName"?: string | string[];
+                    "parent.subtribe.scientificNameLabel"?: string | string[];
                     "parent.subtribe.scientificNameAuthorship"?: string | string[];
                     "parent.subtribe.vernacularName.fi"?: string | string[];
                     "parent.subtribe.vernacularName.sv"?: string | string[];
@@ -25636,6 +25791,7 @@ export interface operations {
                     "parent.subtribe.hasBold"?: boolean;
                     "parent.genus.id"?: string | string[];
                     "parent.genus.scientificName"?: string | string[];
+                    "parent.genus.scientificNameLabel"?: string | string[];
                     "parent.genus.scientificNameAuthorship"?: string | string[];
                     "parent.genus.vernacularName.fi"?: string | string[];
                     "parent.genus.vernacularName.sv"?: string | string[];
@@ -25647,6 +25803,7 @@ export interface operations {
                     "parent.genus.hasBold"?: boolean;
                     "parent.subgenus.id"?: string | string[];
                     "parent.subgenus.scientificName"?: string | string[];
+                    "parent.subgenus.scientificNameLabel"?: string | string[];
                     "parent.subgenus.scientificNameAuthorship"?: string | string[];
                     "parent.subgenus.vernacularName.fi"?: string | string[];
                     "parent.subgenus.vernacularName.sv"?: string | string[];
@@ -25658,6 +25815,7 @@ export interface operations {
                     "parent.subgenus.hasBold"?: boolean;
                     "parent.aggregate.id"?: string | string[];
                     "parent.aggregate.scientificName"?: string | string[];
+                    "parent.aggregate.scientificNameLabel"?: string | string[];
                     "parent.aggregate.scientificNameAuthorship"?: string | string[];
                     "parent.aggregate.vernacularName.fi"?: string | string[];
                     "parent.aggregate.vernacularName.sv"?: string | string[];
@@ -25669,6 +25827,7 @@ export interface operations {
                     "parent.aggregate.hasBold"?: boolean;
                     "parent.species.id"?: string | string[];
                     "parent.species.scientificName"?: string | string[];
+                    "parent.species.scientificNameLabel"?: string | string[];
                     "parent.species.scientificNameAuthorship"?: string | string[];
                     "parent.species.vernacularName.fi"?: string | string[];
                     "parent.species.vernacularName.sv"?: string | string[];
@@ -25680,6 +25839,7 @@ export interface operations {
                     "parent.species.hasBold"?: boolean;
                     "synonymOf.id"?: string | string[];
                     "synonymOf.scientificName"?: string | string[];
+                    "synonymOf.scientificNameLabel"?: string | string[];
                     "synonymOf.scientificNameAuthorship"?: string | string[];
                     "synonymOf.vernacularName.fi"?: string | string[];
                     "synonymOf.vernacularName.sv"?: string | string[];
@@ -26003,16 +26163,19 @@ export interface operations {
                     parentsIncludeSelf?: string | string[];
                     nonHiddenParentsIncludeSelf?: string | string[];
                     hiddenTaxon?: boolean;
+                    darkTaxon?: boolean;
                     nameAccordingTo?: string | string[];
                     taxonRank?: string | string[];
                     scientificName?: string | string[];
                     scientificNameAuthorship?: string | string[];
+                    scientificNameLabel?: string | string[];
                     scientificNameDisplayName?: string | string[];
                     cursiveName?: boolean;
                     typeSpecimenURI?: string | string[];
                     synonymNames?: string | string[];
                     "basionyms.id"?: string | string[];
                     "basionyms.scientificName"?: string | string[];
+                    "basionyms.scientificNameLabel"?: string | string[];
                     "basionyms.scientificNameAuthorship"?: string | string[];
                     "basionyms.vernacularName.fi"?: string | string[];
                     "basionyms.vernacularName.sv"?: string | string[];
@@ -26024,6 +26187,7 @@ export interface operations {
                     "basionyms.hasBold"?: boolean;
                     "objectiveSynonyms.id"?: string | string[];
                     "objectiveSynonyms.scientificName"?: string | string[];
+                    "objectiveSynonyms.scientificNameLabel"?: string | string[];
                     "objectiveSynonyms.scientificNameAuthorship"?: string | string[];
                     "objectiveSynonyms.vernacularName.fi"?: string | string[];
                     "objectiveSynonyms.vernacularName.sv"?: string | string[];
@@ -26035,6 +26199,7 @@ export interface operations {
                     "objectiveSynonyms.hasBold"?: boolean;
                     "subjectiveSynonyms.id"?: string | string[];
                     "subjectiveSynonyms.scientificName"?: string | string[];
+                    "subjectiveSynonyms.scientificNameLabel"?: string | string[];
                     "subjectiveSynonyms.scientificNameAuthorship"?: string | string[];
                     "subjectiveSynonyms.vernacularName.fi"?: string | string[];
                     "subjectiveSynonyms.vernacularName.sv"?: string | string[];
@@ -26046,6 +26211,7 @@ export interface operations {
                     "subjectiveSynonyms.hasBold"?: boolean;
                     "homotypicSynonyms.id"?: string | string[];
                     "homotypicSynonyms.scientificName"?: string | string[];
+                    "homotypicSynonyms.scientificNameLabel"?: string | string[];
                     "homotypicSynonyms.scientificNameAuthorship"?: string | string[];
                     "homotypicSynonyms.vernacularName.fi"?: string | string[];
                     "homotypicSynonyms.vernacularName.sv"?: string | string[];
@@ -26057,6 +26223,7 @@ export interface operations {
                     "homotypicSynonyms.hasBold"?: boolean;
                     "heterotypicSynonyms.id"?: string | string[];
                     "heterotypicSynonyms.scientificName"?: string | string[];
+                    "heterotypicSynonyms.scientificNameLabel"?: string | string[];
                     "heterotypicSynonyms.scientificNameAuthorship"?: string | string[];
                     "heterotypicSynonyms.vernacularName.fi"?: string | string[];
                     "heterotypicSynonyms.vernacularName.sv"?: string | string[];
@@ -26068,6 +26235,7 @@ export interface operations {
                     "heterotypicSynonyms.hasBold"?: boolean;
                     "synonyms.id"?: string | string[];
                     "synonyms.scientificName"?: string | string[];
+                    "synonyms.scientificNameLabel"?: string | string[];
                     "synonyms.scientificNameAuthorship"?: string | string[];
                     "synonyms.vernacularName.fi"?: string | string[];
                     "synonyms.vernacularName.sv"?: string | string[];
@@ -26079,6 +26247,7 @@ export interface operations {
                     "synonyms.hasBold"?: boolean;
                     "misspelledNames.id"?: string | string[];
                     "misspelledNames.scientificName"?: string | string[];
+                    "misspelledNames.scientificNameLabel"?: string | string[];
                     "misspelledNames.scientificNameAuthorship"?: string | string[];
                     "misspelledNames.vernacularName.fi"?: string | string[];
                     "misspelledNames.vernacularName.sv"?: string | string[];
@@ -26090,6 +26259,7 @@ export interface operations {
                     "misspelledNames.hasBold"?: boolean;
                     "orthographicVariants.id"?: string | string[];
                     "orthographicVariants.scientificName"?: string | string[];
+                    "orthographicVariants.scientificNameLabel"?: string | string[];
                     "orthographicVariants.scientificNameAuthorship"?: string | string[];
                     "orthographicVariants.vernacularName.fi"?: string | string[];
                     "orthographicVariants.vernacularName.sv"?: string | string[];
@@ -26101,6 +26271,7 @@ export interface operations {
                     "orthographicVariants.hasBold"?: boolean;
                     "uncertainSynonyms.id"?: string | string[];
                     "uncertainSynonyms.scientificName"?: string | string[];
+                    "uncertainSynonyms.scientificNameLabel"?: string | string[];
                     "uncertainSynonyms.scientificNameAuthorship"?: string | string[];
                     "uncertainSynonyms.vernacularName.fi"?: string | string[];
                     "uncertainSynonyms.vernacularName.sv"?: string | string[];
@@ -26112,6 +26283,7 @@ export interface operations {
                     "uncertainSynonyms.hasBold"?: boolean;
                     "misappliedNames.id"?: string | string[];
                     "misappliedNames.scientificName"?: string | string[];
+                    "misappliedNames.scientificNameLabel"?: string | string[];
                     "misappliedNames.scientificNameAuthorship"?: string | string[];
                     "misappliedNames.vernacularName.fi"?: string | string[];
                     "misappliedNames.vernacularName.sv"?: string | string[];
@@ -26123,6 +26295,7 @@ export interface operations {
                     "misappliedNames.hasBold"?: boolean;
                     "alternativeNames.id"?: string | string[];
                     "alternativeNames.scientificName"?: string | string[];
+                    "alternativeNames.scientificNameLabel"?: string | string[];
                     "alternativeNames.scientificNameAuthorship"?: string | string[];
                     "alternativeNames.vernacularName.fi"?: string | string[];
                     "alternativeNames.vernacularName.sv"?: string | string[];
@@ -26192,6 +26365,7 @@ export interface operations {
                     "multimedia.squareThumbnailURL"?: string | string[];
                     "multimedia.taxon.id"?: string | string[];
                     "multimedia.taxon.scientificName"?: string | string[];
+                    "multimedia.taxon.scientificNameLabel"?: string | string[];
                     "multimedia.taxon.scientificNameAuthorship"?: string | string[];
                     "multimedia.taxon.vernacularName.fi"?: string | string[];
                     "multimedia.taxon.vernacularName.sv"?: string | string[];
@@ -26274,8 +26448,10 @@ export interface operations {
                     "referenceSequences.locus"?: string | string[];
                     "referenceSequences.sequenceText"?: string | string[];
                     "referenceSequences.specimenId"?: string | string[];
+                    hasReferenceSequences?: boolean;
                     "parent.domain.id"?: string | string[];
                     "parent.domain.scientificName"?: string | string[];
+                    "parent.domain.scientificNameLabel"?: string | string[];
                     "parent.domain.scientificNameAuthorship"?: string | string[];
                     "parent.domain.vernacularName.fi"?: string | string[];
                     "parent.domain.vernacularName.sv"?: string | string[];
@@ -26287,6 +26463,7 @@ export interface operations {
                     "parent.domain.hasBold"?: boolean;
                     "parent.kingdom.id"?: string | string[];
                     "parent.kingdom.scientificName"?: string | string[];
+                    "parent.kingdom.scientificNameLabel"?: string | string[];
                     "parent.kingdom.scientificNameAuthorship"?: string | string[];
                     "parent.kingdom.vernacularName.fi"?: string | string[];
                     "parent.kingdom.vernacularName.sv"?: string | string[];
@@ -26298,6 +26475,7 @@ export interface operations {
                     "parent.kingdom.hasBold"?: boolean;
                     "parent.phylum.id"?: string | string[];
                     "parent.phylum.scientificName"?: string | string[];
+                    "parent.phylum.scientificNameLabel"?: string | string[];
                     "parent.phylum.scientificNameAuthorship"?: string | string[];
                     "parent.phylum.vernacularName.fi"?: string | string[];
                     "parent.phylum.vernacularName.sv"?: string | string[];
@@ -26309,6 +26487,7 @@ export interface operations {
                     "parent.phylum.hasBold"?: boolean;
                     "parent.subphylum.id"?: string | string[];
                     "parent.subphylum.scientificName"?: string | string[];
+                    "parent.subphylum.scientificNameLabel"?: string | string[];
                     "parent.subphylum.scientificNameAuthorship"?: string | string[];
                     "parent.subphylum.vernacularName.fi"?: string | string[];
                     "parent.subphylum.vernacularName.sv"?: string | string[];
@@ -26320,6 +26499,7 @@ export interface operations {
                     "parent.subphylum.hasBold"?: boolean;
                     "parent.division.id"?: string | string[];
                     "parent.division.scientificName"?: string | string[];
+                    "parent.division.scientificNameLabel"?: string | string[];
                     "parent.division.scientificNameAuthorship"?: string | string[];
                     "parent.division.vernacularName.fi"?: string | string[];
                     "parent.division.vernacularName.sv"?: string | string[];
@@ -26331,6 +26511,7 @@ export interface operations {
                     "parent.division.hasBold"?: boolean;
                     "parent.class.id"?: string | string[];
                     "parent.class.scientificName"?: string | string[];
+                    "parent.class.scientificNameLabel"?: string | string[];
                     "parent.class.scientificNameAuthorship"?: string | string[];
                     "parent.class.vernacularName.fi"?: string | string[];
                     "parent.class.vernacularName.sv"?: string | string[];
@@ -26342,6 +26523,7 @@ export interface operations {
                     "parent.class.hasBold"?: boolean;
                     "parent.subclass.id"?: string | string[];
                     "parent.subclass.scientificName"?: string | string[];
+                    "parent.subclass.scientificNameLabel"?: string | string[];
                     "parent.subclass.scientificNameAuthorship"?: string | string[];
                     "parent.subclass.vernacularName.fi"?: string | string[];
                     "parent.subclass.vernacularName.sv"?: string | string[];
@@ -26353,6 +26535,7 @@ export interface operations {
                     "parent.subclass.hasBold"?: boolean;
                     "parent.order.id"?: string | string[];
                     "parent.order.scientificName"?: string | string[];
+                    "parent.order.scientificNameLabel"?: string | string[];
                     "parent.order.scientificNameAuthorship"?: string | string[];
                     "parent.order.vernacularName.fi"?: string | string[];
                     "parent.order.vernacularName.sv"?: string | string[];
@@ -26364,6 +26547,7 @@ export interface operations {
                     "parent.order.hasBold"?: boolean;
                     "parent.suborder.id"?: string | string[];
                     "parent.suborder.scientificName"?: string | string[];
+                    "parent.suborder.scientificNameLabel"?: string | string[];
                     "parent.suborder.scientificNameAuthorship"?: string | string[];
                     "parent.suborder.vernacularName.fi"?: string | string[];
                     "parent.suborder.vernacularName.sv"?: string | string[];
@@ -26375,6 +26559,7 @@ export interface operations {
                     "parent.suborder.hasBold"?: boolean;
                     "parent.superfamily.id"?: string | string[];
                     "parent.superfamily.scientificName"?: string | string[];
+                    "parent.superfamily.scientificNameLabel"?: string | string[];
                     "parent.superfamily.scientificNameAuthorship"?: string | string[];
                     "parent.superfamily.vernacularName.fi"?: string | string[];
                     "parent.superfamily.vernacularName.sv"?: string | string[];
@@ -26386,6 +26571,7 @@ export interface operations {
                     "parent.superfamily.hasBold"?: boolean;
                     "parent.family.id"?: string | string[];
                     "parent.family.scientificName"?: string | string[];
+                    "parent.family.scientificNameLabel"?: string | string[];
                     "parent.family.scientificNameAuthorship"?: string | string[];
                     "parent.family.vernacularName.fi"?: string | string[];
                     "parent.family.vernacularName.sv"?: string | string[];
@@ -26397,6 +26583,7 @@ export interface operations {
                     "parent.family.hasBold"?: boolean;
                     "parent.subfamily.id"?: string | string[];
                     "parent.subfamily.scientificName"?: string | string[];
+                    "parent.subfamily.scientificNameLabel"?: string | string[];
                     "parent.subfamily.scientificNameAuthorship"?: string | string[];
                     "parent.subfamily.vernacularName.fi"?: string | string[];
                     "parent.subfamily.vernacularName.sv"?: string | string[];
@@ -26408,6 +26595,7 @@ export interface operations {
                     "parent.subfamily.hasBold"?: boolean;
                     "parent.tribe.id"?: string | string[];
                     "parent.tribe.scientificName"?: string | string[];
+                    "parent.tribe.scientificNameLabel"?: string | string[];
                     "parent.tribe.scientificNameAuthorship"?: string | string[];
                     "parent.tribe.vernacularName.fi"?: string | string[];
                     "parent.tribe.vernacularName.sv"?: string | string[];
@@ -26419,6 +26607,7 @@ export interface operations {
                     "parent.tribe.hasBold"?: boolean;
                     "parent.subtribe.id"?: string | string[];
                     "parent.subtribe.scientificName"?: string | string[];
+                    "parent.subtribe.scientificNameLabel"?: string | string[];
                     "parent.subtribe.scientificNameAuthorship"?: string | string[];
                     "parent.subtribe.vernacularName.fi"?: string | string[];
                     "parent.subtribe.vernacularName.sv"?: string | string[];
@@ -26430,6 +26619,7 @@ export interface operations {
                     "parent.subtribe.hasBold"?: boolean;
                     "parent.genus.id"?: string | string[];
                     "parent.genus.scientificName"?: string | string[];
+                    "parent.genus.scientificNameLabel"?: string | string[];
                     "parent.genus.scientificNameAuthorship"?: string | string[];
                     "parent.genus.vernacularName.fi"?: string | string[];
                     "parent.genus.vernacularName.sv"?: string | string[];
@@ -26441,6 +26631,7 @@ export interface operations {
                     "parent.genus.hasBold"?: boolean;
                     "parent.subgenus.id"?: string | string[];
                     "parent.subgenus.scientificName"?: string | string[];
+                    "parent.subgenus.scientificNameLabel"?: string | string[];
                     "parent.subgenus.scientificNameAuthorship"?: string | string[];
                     "parent.subgenus.vernacularName.fi"?: string | string[];
                     "parent.subgenus.vernacularName.sv"?: string | string[];
@@ -26452,6 +26643,7 @@ export interface operations {
                     "parent.subgenus.hasBold"?: boolean;
                     "parent.aggregate.id"?: string | string[];
                     "parent.aggregate.scientificName"?: string | string[];
+                    "parent.aggregate.scientificNameLabel"?: string | string[];
                     "parent.aggregate.scientificNameAuthorship"?: string | string[];
                     "parent.aggregate.vernacularName.fi"?: string | string[];
                     "parent.aggregate.vernacularName.sv"?: string | string[];
@@ -26463,6 +26655,7 @@ export interface operations {
                     "parent.aggregate.hasBold"?: boolean;
                     "parent.species.id"?: string | string[];
                     "parent.species.scientificName"?: string | string[];
+                    "parent.species.scientificNameLabel"?: string | string[];
                     "parent.species.scientificNameAuthorship"?: string | string[];
                     "parent.species.vernacularName.fi"?: string | string[];
                     "parent.species.vernacularName.sv"?: string | string[];
@@ -26474,6 +26667,7 @@ export interface operations {
                     "parent.species.hasBold"?: boolean;
                     "synonymOf.id"?: string | string[];
                     "synonymOf.scientificName"?: string | string[];
+                    "synonymOf.scientificNameLabel"?: string | string[];
                     "synonymOf.scientificNameAuthorship"?: string | string[];
                     "synonymOf.vernacularName.fi"?: string | string[];
                     "synonymOf.vernacularName.sv"?: string | string[];
@@ -27213,16 +27407,19 @@ export interface operations {
                     parentsIncludeSelf?: string | string[];
                     nonHiddenParentsIncludeSelf?: string | string[];
                     hiddenTaxon?: boolean;
+                    darkTaxon?: boolean;
                     nameAccordingTo?: string | string[];
                     taxonRank?: string | string[];
                     scientificName?: string | string[];
                     scientificNameAuthorship?: string | string[];
+                    scientificNameLabel?: string | string[];
                     scientificNameDisplayName?: string | string[];
                     cursiveName?: boolean;
                     typeSpecimenURI?: string | string[];
                     synonymNames?: string | string[];
                     "basionyms.id"?: string | string[];
                     "basionyms.scientificName"?: string | string[];
+                    "basionyms.scientificNameLabel"?: string | string[];
                     "basionyms.scientificNameAuthorship"?: string | string[];
                     "basionyms.vernacularName.fi"?: string | string[];
                     "basionyms.vernacularName.sv"?: string | string[];
@@ -27234,6 +27431,7 @@ export interface operations {
                     "basionyms.hasBold"?: boolean;
                     "objectiveSynonyms.id"?: string | string[];
                     "objectiveSynonyms.scientificName"?: string | string[];
+                    "objectiveSynonyms.scientificNameLabel"?: string | string[];
                     "objectiveSynonyms.scientificNameAuthorship"?: string | string[];
                     "objectiveSynonyms.vernacularName.fi"?: string | string[];
                     "objectiveSynonyms.vernacularName.sv"?: string | string[];
@@ -27245,6 +27443,7 @@ export interface operations {
                     "objectiveSynonyms.hasBold"?: boolean;
                     "subjectiveSynonyms.id"?: string | string[];
                     "subjectiveSynonyms.scientificName"?: string | string[];
+                    "subjectiveSynonyms.scientificNameLabel"?: string | string[];
                     "subjectiveSynonyms.scientificNameAuthorship"?: string | string[];
                     "subjectiveSynonyms.vernacularName.fi"?: string | string[];
                     "subjectiveSynonyms.vernacularName.sv"?: string | string[];
@@ -27256,6 +27455,7 @@ export interface operations {
                     "subjectiveSynonyms.hasBold"?: boolean;
                     "homotypicSynonyms.id"?: string | string[];
                     "homotypicSynonyms.scientificName"?: string | string[];
+                    "homotypicSynonyms.scientificNameLabel"?: string | string[];
                     "homotypicSynonyms.scientificNameAuthorship"?: string | string[];
                     "homotypicSynonyms.vernacularName.fi"?: string | string[];
                     "homotypicSynonyms.vernacularName.sv"?: string | string[];
@@ -27267,6 +27467,7 @@ export interface operations {
                     "homotypicSynonyms.hasBold"?: boolean;
                     "heterotypicSynonyms.id"?: string | string[];
                     "heterotypicSynonyms.scientificName"?: string | string[];
+                    "heterotypicSynonyms.scientificNameLabel"?: string | string[];
                     "heterotypicSynonyms.scientificNameAuthorship"?: string | string[];
                     "heterotypicSynonyms.vernacularName.fi"?: string | string[];
                     "heterotypicSynonyms.vernacularName.sv"?: string | string[];
@@ -27278,6 +27479,7 @@ export interface operations {
                     "heterotypicSynonyms.hasBold"?: boolean;
                     "synonyms.id"?: string | string[];
                     "synonyms.scientificName"?: string | string[];
+                    "synonyms.scientificNameLabel"?: string | string[];
                     "synonyms.scientificNameAuthorship"?: string | string[];
                     "synonyms.vernacularName.fi"?: string | string[];
                     "synonyms.vernacularName.sv"?: string | string[];
@@ -27289,6 +27491,7 @@ export interface operations {
                     "synonyms.hasBold"?: boolean;
                     "misspelledNames.id"?: string | string[];
                     "misspelledNames.scientificName"?: string | string[];
+                    "misspelledNames.scientificNameLabel"?: string | string[];
                     "misspelledNames.scientificNameAuthorship"?: string | string[];
                     "misspelledNames.vernacularName.fi"?: string | string[];
                     "misspelledNames.vernacularName.sv"?: string | string[];
@@ -27300,6 +27503,7 @@ export interface operations {
                     "misspelledNames.hasBold"?: boolean;
                     "orthographicVariants.id"?: string | string[];
                     "orthographicVariants.scientificName"?: string | string[];
+                    "orthographicVariants.scientificNameLabel"?: string | string[];
                     "orthographicVariants.scientificNameAuthorship"?: string | string[];
                     "orthographicVariants.vernacularName.fi"?: string | string[];
                     "orthographicVariants.vernacularName.sv"?: string | string[];
@@ -27311,6 +27515,7 @@ export interface operations {
                     "orthographicVariants.hasBold"?: boolean;
                     "uncertainSynonyms.id"?: string | string[];
                     "uncertainSynonyms.scientificName"?: string | string[];
+                    "uncertainSynonyms.scientificNameLabel"?: string | string[];
                     "uncertainSynonyms.scientificNameAuthorship"?: string | string[];
                     "uncertainSynonyms.vernacularName.fi"?: string | string[];
                     "uncertainSynonyms.vernacularName.sv"?: string | string[];
@@ -27322,6 +27527,7 @@ export interface operations {
                     "uncertainSynonyms.hasBold"?: boolean;
                     "misappliedNames.id"?: string | string[];
                     "misappliedNames.scientificName"?: string | string[];
+                    "misappliedNames.scientificNameLabel"?: string | string[];
                     "misappliedNames.scientificNameAuthorship"?: string | string[];
                     "misappliedNames.vernacularName.fi"?: string | string[];
                     "misappliedNames.vernacularName.sv"?: string | string[];
@@ -27333,6 +27539,7 @@ export interface operations {
                     "misappliedNames.hasBold"?: boolean;
                     "alternativeNames.id"?: string | string[];
                     "alternativeNames.scientificName"?: string | string[];
+                    "alternativeNames.scientificNameLabel"?: string | string[];
                     "alternativeNames.scientificNameAuthorship"?: string | string[];
                     "alternativeNames.vernacularName.fi"?: string | string[];
                     "alternativeNames.vernacularName.sv"?: string | string[];
@@ -27402,6 +27609,7 @@ export interface operations {
                     "multimedia.squareThumbnailURL"?: string | string[];
                     "multimedia.taxon.id"?: string | string[];
                     "multimedia.taxon.scientificName"?: string | string[];
+                    "multimedia.taxon.scientificNameLabel"?: string | string[];
                     "multimedia.taxon.scientificNameAuthorship"?: string | string[];
                     "multimedia.taxon.vernacularName.fi"?: string | string[];
                     "multimedia.taxon.vernacularName.sv"?: string | string[];
@@ -27484,8 +27692,10 @@ export interface operations {
                     "referenceSequences.locus"?: string | string[];
                     "referenceSequences.sequenceText"?: string | string[];
                     "referenceSequences.specimenId"?: string | string[];
+                    hasReferenceSequences?: boolean;
                     "parent.domain.id"?: string | string[];
                     "parent.domain.scientificName"?: string | string[];
+                    "parent.domain.scientificNameLabel"?: string | string[];
                     "parent.domain.scientificNameAuthorship"?: string | string[];
                     "parent.domain.vernacularName.fi"?: string | string[];
                     "parent.domain.vernacularName.sv"?: string | string[];
@@ -27497,6 +27707,7 @@ export interface operations {
                     "parent.domain.hasBold"?: boolean;
                     "parent.kingdom.id"?: string | string[];
                     "parent.kingdom.scientificName"?: string | string[];
+                    "parent.kingdom.scientificNameLabel"?: string | string[];
                     "parent.kingdom.scientificNameAuthorship"?: string | string[];
                     "parent.kingdom.vernacularName.fi"?: string | string[];
                     "parent.kingdom.vernacularName.sv"?: string | string[];
@@ -27508,6 +27719,7 @@ export interface operations {
                     "parent.kingdom.hasBold"?: boolean;
                     "parent.phylum.id"?: string | string[];
                     "parent.phylum.scientificName"?: string | string[];
+                    "parent.phylum.scientificNameLabel"?: string | string[];
                     "parent.phylum.scientificNameAuthorship"?: string | string[];
                     "parent.phylum.vernacularName.fi"?: string | string[];
                     "parent.phylum.vernacularName.sv"?: string | string[];
@@ -27519,6 +27731,7 @@ export interface operations {
                     "parent.phylum.hasBold"?: boolean;
                     "parent.subphylum.id"?: string | string[];
                     "parent.subphylum.scientificName"?: string | string[];
+                    "parent.subphylum.scientificNameLabel"?: string | string[];
                     "parent.subphylum.scientificNameAuthorship"?: string | string[];
                     "parent.subphylum.vernacularName.fi"?: string | string[];
                     "parent.subphylum.vernacularName.sv"?: string | string[];
@@ -27530,6 +27743,7 @@ export interface operations {
                     "parent.subphylum.hasBold"?: boolean;
                     "parent.division.id"?: string | string[];
                     "parent.division.scientificName"?: string | string[];
+                    "parent.division.scientificNameLabel"?: string | string[];
                     "parent.division.scientificNameAuthorship"?: string | string[];
                     "parent.division.vernacularName.fi"?: string | string[];
                     "parent.division.vernacularName.sv"?: string | string[];
@@ -27541,6 +27755,7 @@ export interface operations {
                     "parent.division.hasBold"?: boolean;
                     "parent.class.id"?: string | string[];
                     "parent.class.scientificName"?: string | string[];
+                    "parent.class.scientificNameLabel"?: string | string[];
                     "parent.class.scientificNameAuthorship"?: string | string[];
                     "parent.class.vernacularName.fi"?: string | string[];
                     "parent.class.vernacularName.sv"?: string | string[];
@@ -27552,6 +27767,7 @@ export interface operations {
                     "parent.class.hasBold"?: boolean;
                     "parent.subclass.id"?: string | string[];
                     "parent.subclass.scientificName"?: string | string[];
+                    "parent.subclass.scientificNameLabel"?: string | string[];
                     "parent.subclass.scientificNameAuthorship"?: string | string[];
                     "parent.subclass.vernacularName.fi"?: string | string[];
                     "parent.subclass.vernacularName.sv"?: string | string[];
@@ -27563,6 +27779,7 @@ export interface operations {
                     "parent.subclass.hasBold"?: boolean;
                     "parent.order.id"?: string | string[];
                     "parent.order.scientificName"?: string | string[];
+                    "parent.order.scientificNameLabel"?: string | string[];
                     "parent.order.scientificNameAuthorship"?: string | string[];
                     "parent.order.vernacularName.fi"?: string | string[];
                     "parent.order.vernacularName.sv"?: string | string[];
@@ -27574,6 +27791,7 @@ export interface operations {
                     "parent.order.hasBold"?: boolean;
                     "parent.suborder.id"?: string | string[];
                     "parent.suborder.scientificName"?: string | string[];
+                    "parent.suborder.scientificNameLabel"?: string | string[];
                     "parent.suborder.scientificNameAuthorship"?: string | string[];
                     "parent.suborder.vernacularName.fi"?: string | string[];
                     "parent.suborder.vernacularName.sv"?: string | string[];
@@ -27585,6 +27803,7 @@ export interface operations {
                     "parent.suborder.hasBold"?: boolean;
                     "parent.superfamily.id"?: string | string[];
                     "parent.superfamily.scientificName"?: string | string[];
+                    "parent.superfamily.scientificNameLabel"?: string | string[];
                     "parent.superfamily.scientificNameAuthorship"?: string | string[];
                     "parent.superfamily.vernacularName.fi"?: string | string[];
                     "parent.superfamily.vernacularName.sv"?: string | string[];
@@ -27596,6 +27815,7 @@ export interface operations {
                     "parent.superfamily.hasBold"?: boolean;
                     "parent.family.id"?: string | string[];
                     "parent.family.scientificName"?: string | string[];
+                    "parent.family.scientificNameLabel"?: string | string[];
                     "parent.family.scientificNameAuthorship"?: string | string[];
                     "parent.family.vernacularName.fi"?: string | string[];
                     "parent.family.vernacularName.sv"?: string | string[];
@@ -27607,6 +27827,7 @@ export interface operations {
                     "parent.family.hasBold"?: boolean;
                     "parent.subfamily.id"?: string | string[];
                     "parent.subfamily.scientificName"?: string | string[];
+                    "parent.subfamily.scientificNameLabel"?: string | string[];
                     "parent.subfamily.scientificNameAuthorship"?: string | string[];
                     "parent.subfamily.vernacularName.fi"?: string | string[];
                     "parent.subfamily.vernacularName.sv"?: string | string[];
@@ -27618,6 +27839,7 @@ export interface operations {
                     "parent.subfamily.hasBold"?: boolean;
                     "parent.tribe.id"?: string | string[];
                     "parent.tribe.scientificName"?: string | string[];
+                    "parent.tribe.scientificNameLabel"?: string | string[];
                     "parent.tribe.scientificNameAuthorship"?: string | string[];
                     "parent.tribe.vernacularName.fi"?: string | string[];
                     "parent.tribe.vernacularName.sv"?: string | string[];
@@ -27629,6 +27851,7 @@ export interface operations {
                     "parent.tribe.hasBold"?: boolean;
                     "parent.subtribe.id"?: string | string[];
                     "parent.subtribe.scientificName"?: string | string[];
+                    "parent.subtribe.scientificNameLabel"?: string | string[];
                     "parent.subtribe.scientificNameAuthorship"?: string | string[];
                     "parent.subtribe.vernacularName.fi"?: string | string[];
                     "parent.subtribe.vernacularName.sv"?: string | string[];
@@ -27640,6 +27863,7 @@ export interface operations {
                     "parent.subtribe.hasBold"?: boolean;
                     "parent.genus.id"?: string | string[];
                     "parent.genus.scientificName"?: string | string[];
+                    "parent.genus.scientificNameLabel"?: string | string[];
                     "parent.genus.scientificNameAuthorship"?: string | string[];
                     "parent.genus.vernacularName.fi"?: string | string[];
                     "parent.genus.vernacularName.sv"?: string | string[];
@@ -27651,6 +27875,7 @@ export interface operations {
                     "parent.genus.hasBold"?: boolean;
                     "parent.subgenus.id"?: string | string[];
                     "parent.subgenus.scientificName"?: string | string[];
+                    "parent.subgenus.scientificNameLabel"?: string | string[];
                     "parent.subgenus.scientificNameAuthorship"?: string | string[];
                     "parent.subgenus.vernacularName.fi"?: string | string[];
                     "parent.subgenus.vernacularName.sv"?: string | string[];
@@ -27662,6 +27887,7 @@ export interface operations {
                     "parent.subgenus.hasBold"?: boolean;
                     "parent.aggregate.id"?: string | string[];
                     "parent.aggregate.scientificName"?: string | string[];
+                    "parent.aggregate.scientificNameLabel"?: string | string[];
                     "parent.aggregate.scientificNameAuthorship"?: string | string[];
                     "parent.aggregate.vernacularName.fi"?: string | string[];
                     "parent.aggregate.vernacularName.sv"?: string | string[];
@@ -27673,6 +27899,7 @@ export interface operations {
                     "parent.aggregate.hasBold"?: boolean;
                     "parent.species.id"?: string | string[];
                     "parent.species.scientificName"?: string | string[];
+                    "parent.species.scientificNameLabel"?: string | string[];
                     "parent.species.scientificNameAuthorship"?: string | string[];
                     "parent.species.vernacularName.fi"?: string | string[];
                     "parent.species.vernacularName.sv"?: string | string[];
@@ -27684,6 +27911,7 @@ export interface operations {
                     "parent.species.hasBold"?: boolean;
                     "synonymOf.id"?: string | string[];
                     "synonymOf.scientificName"?: string | string[];
+                    "synonymOf.scientificNameLabel"?: string | string[];
                     "synonymOf.scientificNameAuthorship"?: string | string[];
                     "synonymOf.vernacularName.fi"?: string | string[];
                     "synonymOf.vernacularName.sv"?: string | string[];
@@ -28055,16 +28283,19 @@ export interface operations {
                     parentsIncludeSelf?: string | string[];
                     nonHiddenParentsIncludeSelf?: string | string[];
                     hiddenTaxon?: boolean;
+                    darkTaxon?: boolean;
                     nameAccordingTo?: string | string[];
                     taxonRank?: string | string[];
                     scientificName?: string | string[];
                     scientificNameAuthorship?: string | string[];
+                    scientificNameLabel?: string | string[];
                     scientificNameDisplayName?: string | string[];
                     cursiveName?: boolean;
                     typeSpecimenURI?: string | string[];
                     synonymNames?: string | string[];
                     "basionyms.id"?: string | string[];
                     "basionyms.scientificName"?: string | string[];
+                    "basionyms.scientificNameLabel"?: string | string[];
                     "basionyms.scientificNameAuthorship"?: string | string[];
                     "basionyms.vernacularName.fi"?: string | string[];
                     "basionyms.vernacularName.sv"?: string | string[];
@@ -28076,6 +28307,7 @@ export interface operations {
                     "basionyms.hasBold"?: boolean;
                     "objectiveSynonyms.id"?: string | string[];
                     "objectiveSynonyms.scientificName"?: string | string[];
+                    "objectiveSynonyms.scientificNameLabel"?: string | string[];
                     "objectiveSynonyms.scientificNameAuthorship"?: string | string[];
                     "objectiveSynonyms.vernacularName.fi"?: string | string[];
                     "objectiveSynonyms.vernacularName.sv"?: string | string[];
@@ -28087,6 +28319,7 @@ export interface operations {
                     "objectiveSynonyms.hasBold"?: boolean;
                     "subjectiveSynonyms.id"?: string | string[];
                     "subjectiveSynonyms.scientificName"?: string | string[];
+                    "subjectiveSynonyms.scientificNameLabel"?: string | string[];
                     "subjectiveSynonyms.scientificNameAuthorship"?: string | string[];
                     "subjectiveSynonyms.vernacularName.fi"?: string | string[];
                     "subjectiveSynonyms.vernacularName.sv"?: string | string[];
@@ -28098,6 +28331,7 @@ export interface operations {
                     "subjectiveSynonyms.hasBold"?: boolean;
                     "homotypicSynonyms.id"?: string | string[];
                     "homotypicSynonyms.scientificName"?: string | string[];
+                    "homotypicSynonyms.scientificNameLabel"?: string | string[];
                     "homotypicSynonyms.scientificNameAuthorship"?: string | string[];
                     "homotypicSynonyms.vernacularName.fi"?: string | string[];
                     "homotypicSynonyms.vernacularName.sv"?: string | string[];
@@ -28109,6 +28343,7 @@ export interface operations {
                     "homotypicSynonyms.hasBold"?: boolean;
                     "heterotypicSynonyms.id"?: string | string[];
                     "heterotypicSynonyms.scientificName"?: string | string[];
+                    "heterotypicSynonyms.scientificNameLabel"?: string | string[];
                     "heterotypicSynonyms.scientificNameAuthorship"?: string | string[];
                     "heterotypicSynonyms.vernacularName.fi"?: string | string[];
                     "heterotypicSynonyms.vernacularName.sv"?: string | string[];
@@ -28120,6 +28355,7 @@ export interface operations {
                     "heterotypicSynonyms.hasBold"?: boolean;
                     "synonyms.id"?: string | string[];
                     "synonyms.scientificName"?: string | string[];
+                    "synonyms.scientificNameLabel"?: string | string[];
                     "synonyms.scientificNameAuthorship"?: string | string[];
                     "synonyms.vernacularName.fi"?: string | string[];
                     "synonyms.vernacularName.sv"?: string | string[];
@@ -28131,6 +28367,7 @@ export interface operations {
                     "synonyms.hasBold"?: boolean;
                     "misspelledNames.id"?: string | string[];
                     "misspelledNames.scientificName"?: string | string[];
+                    "misspelledNames.scientificNameLabel"?: string | string[];
                     "misspelledNames.scientificNameAuthorship"?: string | string[];
                     "misspelledNames.vernacularName.fi"?: string | string[];
                     "misspelledNames.vernacularName.sv"?: string | string[];
@@ -28142,6 +28379,7 @@ export interface operations {
                     "misspelledNames.hasBold"?: boolean;
                     "orthographicVariants.id"?: string | string[];
                     "orthographicVariants.scientificName"?: string | string[];
+                    "orthographicVariants.scientificNameLabel"?: string | string[];
                     "orthographicVariants.scientificNameAuthorship"?: string | string[];
                     "orthographicVariants.vernacularName.fi"?: string | string[];
                     "orthographicVariants.vernacularName.sv"?: string | string[];
@@ -28153,6 +28391,7 @@ export interface operations {
                     "orthographicVariants.hasBold"?: boolean;
                     "uncertainSynonyms.id"?: string | string[];
                     "uncertainSynonyms.scientificName"?: string | string[];
+                    "uncertainSynonyms.scientificNameLabel"?: string | string[];
                     "uncertainSynonyms.scientificNameAuthorship"?: string | string[];
                     "uncertainSynonyms.vernacularName.fi"?: string | string[];
                     "uncertainSynonyms.vernacularName.sv"?: string | string[];
@@ -28164,6 +28403,7 @@ export interface operations {
                     "uncertainSynonyms.hasBold"?: boolean;
                     "misappliedNames.id"?: string | string[];
                     "misappliedNames.scientificName"?: string | string[];
+                    "misappliedNames.scientificNameLabel"?: string | string[];
                     "misappliedNames.scientificNameAuthorship"?: string | string[];
                     "misappliedNames.vernacularName.fi"?: string | string[];
                     "misappliedNames.vernacularName.sv"?: string | string[];
@@ -28175,6 +28415,7 @@ export interface operations {
                     "misappliedNames.hasBold"?: boolean;
                     "alternativeNames.id"?: string | string[];
                     "alternativeNames.scientificName"?: string | string[];
+                    "alternativeNames.scientificNameLabel"?: string | string[];
                     "alternativeNames.scientificNameAuthorship"?: string | string[];
                     "alternativeNames.vernacularName.fi"?: string | string[];
                     "alternativeNames.vernacularName.sv"?: string | string[];
@@ -28244,6 +28485,7 @@ export interface operations {
                     "multimedia.squareThumbnailURL"?: string | string[];
                     "multimedia.taxon.id"?: string | string[];
                     "multimedia.taxon.scientificName"?: string | string[];
+                    "multimedia.taxon.scientificNameLabel"?: string | string[];
                     "multimedia.taxon.scientificNameAuthorship"?: string | string[];
                     "multimedia.taxon.vernacularName.fi"?: string | string[];
                     "multimedia.taxon.vernacularName.sv"?: string | string[];
@@ -28326,8 +28568,10 @@ export interface operations {
                     "referenceSequences.locus"?: string | string[];
                     "referenceSequences.sequenceText"?: string | string[];
                     "referenceSequences.specimenId"?: string | string[];
+                    hasReferenceSequences?: boolean;
                     "parent.domain.id"?: string | string[];
                     "parent.domain.scientificName"?: string | string[];
+                    "parent.domain.scientificNameLabel"?: string | string[];
                     "parent.domain.scientificNameAuthorship"?: string | string[];
                     "parent.domain.vernacularName.fi"?: string | string[];
                     "parent.domain.vernacularName.sv"?: string | string[];
@@ -28339,6 +28583,7 @@ export interface operations {
                     "parent.domain.hasBold"?: boolean;
                     "parent.kingdom.id"?: string | string[];
                     "parent.kingdom.scientificName"?: string | string[];
+                    "parent.kingdom.scientificNameLabel"?: string | string[];
                     "parent.kingdom.scientificNameAuthorship"?: string | string[];
                     "parent.kingdom.vernacularName.fi"?: string | string[];
                     "parent.kingdom.vernacularName.sv"?: string | string[];
@@ -28350,6 +28595,7 @@ export interface operations {
                     "parent.kingdom.hasBold"?: boolean;
                     "parent.phylum.id"?: string | string[];
                     "parent.phylum.scientificName"?: string | string[];
+                    "parent.phylum.scientificNameLabel"?: string | string[];
                     "parent.phylum.scientificNameAuthorship"?: string | string[];
                     "parent.phylum.vernacularName.fi"?: string | string[];
                     "parent.phylum.vernacularName.sv"?: string | string[];
@@ -28361,6 +28607,7 @@ export interface operations {
                     "parent.phylum.hasBold"?: boolean;
                     "parent.subphylum.id"?: string | string[];
                     "parent.subphylum.scientificName"?: string | string[];
+                    "parent.subphylum.scientificNameLabel"?: string | string[];
                     "parent.subphylum.scientificNameAuthorship"?: string | string[];
                     "parent.subphylum.vernacularName.fi"?: string | string[];
                     "parent.subphylum.vernacularName.sv"?: string | string[];
@@ -28372,6 +28619,7 @@ export interface operations {
                     "parent.subphylum.hasBold"?: boolean;
                     "parent.division.id"?: string | string[];
                     "parent.division.scientificName"?: string | string[];
+                    "parent.division.scientificNameLabel"?: string | string[];
                     "parent.division.scientificNameAuthorship"?: string | string[];
                     "parent.division.vernacularName.fi"?: string | string[];
                     "parent.division.vernacularName.sv"?: string | string[];
@@ -28383,6 +28631,7 @@ export interface operations {
                     "parent.division.hasBold"?: boolean;
                     "parent.class.id"?: string | string[];
                     "parent.class.scientificName"?: string | string[];
+                    "parent.class.scientificNameLabel"?: string | string[];
                     "parent.class.scientificNameAuthorship"?: string | string[];
                     "parent.class.vernacularName.fi"?: string | string[];
                     "parent.class.vernacularName.sv"?: string | string[];
@@ -28394,6 +28643,7 @@ export interface operations {
                     "parent.class.hasBold"?: boolean;
                     "parent.subclass.id"?: string | string[];
                     "parent.subclass.scientificName"?: string | string[];
+                    "parent.subclass.scientificNameLabel"?: string | string[];
                     "parent.subclass.scientificNameAuthorship"?: string | string[];
                     "parent.subclass.vernacularName.fi"?: string | string[];
                     "parent.subclass.vernacularName.sv"?: string | string[];
@@ -28405,6 +28655,7 @@ export interface operations {
                     "parent.subclass.hasBold"?: boolean;
                     "parent.order.id"?: string | string[];
                     "parent.order.scientificName"?: string | string[];
+                    "parent.order.scientificNameLabel"?: string | string[];
                     "parent.order.scientificNameAuthorship"?: string | string[];
                     "parent.order.vernacularName.fi"?: string | string[];
                     "parent.order.vernacularName.sv"?: string | string[];
@@ -28416,6 +28667,7 @@ export interface operations {
                     "parent.order.hasBold"?: boolean;
                     "parent.suborder.id"?: string | string[];
                     "parent.suborder.scientificName"?: string | string[];
+                    "parent.suborder.scientificNameLabel"?: string | string[];
                     "parent.suborder.scientificNameAuthorship"?: string | string[];
                     "parent.suborder.vernacularName.fi"?: string | string[];
                     "parent.suborder.vernacularName.sv"?: string | string[];
@@ -28427,6 +28679,7 @@ export interface operations {
                     "parent.suborder.hasBold"?: boolean;
                     "parent.superfamily.id"?: string | string[];
                     "parent.superfamily.scientificName"?: string | string[];
+                    "parent.superfamily.scientificNameLabel"?: string | string[];
                     "parent.superfamily.scientificNameAuthorship"?: string | string[];
                     "parent.superfamily.vernacularName.fi"?: string | string[];
                     "parent.superfamily.vernacularName.sv"?: string | string[];
@@ -28438,6 +28691,7 @@ export interface operations {
                     "parent.superfamily.hasBold"?: boolean;
                     "parent.family.id"?: string | string[];
                     "parent.family.scientificName"?: string | string[];
+                    "parent.family.scientificNameLabel"?: string | string[];
                     "parent.family.scientificNameAuthorship"?: string | string[];
                     "parent.family.vernacularName.fi"?: string | string[];
                     "parent.family.vernacularName.sv"?: string | string[];
@@ -28449,6 +28703,7 @@ export interface operations {
                     "parent.family.hasBold"?: boolean;
                     "parent.subfamily.id"?: string | string[];
                     "parent.subfamily.scientificName"?: string | string[];
+                    "parent.subfamily.scientificNameLabel"?: string | string[];
                     "parent.subfamily.scientificNameAuthorship"?: string | string[];
                     "parent.subfamily.vernacularName.fi"?: string | string[];
                     "parent.subfamily.vernacularName.sv"?: string | string[];
@@ -28460,6 +28715,7 @@ export interface operations {
                     "parent.subfamily.hasBold"?: boolean;
                     "parent.tribe.id"?: string | string[];
                     "parent.tribe.scientificName"?: string | string[];
+                    "parent.tribe.scientificNameLabel"?: string | string[];
                     "parent.tribe.scientificNameAuthorship"?: string | string[];
                     "parent.tribe.vernacularName.fi"?: string | string[];
                     "parent.tribe.vernacularName.sv"?: string | string[];
@@ -28471,6 +28727,7 @@ export interface operations {
                     "parent.tribe.hasBold"?: boolean;
                     "parent.subtribe.id"?: string | string[];
                     "parent.subtribe.scientificName"?: string | string[];
+                    "parent.subtribe.scientificNameLabel"?: string | string[];
                     "parent.subtribe.scientificNameAuthorship"?: string | string[];
                     "parent.subtribe.vernacularName.fi"?: string | string[];
                     "parent.subtribe.vernacularName.sv"?: string | string[];
@@ -28482,6 +28739,7 @@ export interface operations {
                     "parent.subtribe.hasBold"?: boolean;
                     "parent.genus.id"?: string | string[];
                     "parent.genus.scientificName"?: string | string[];
+                    "parent.genus.scientificNameLabel"?: string | string[];
                     "parent.genus.scientificNameAuthorship"?: string | string[];
                     "parent.genus.vernacularName.fi"?: string | string[];
                     "parent.genus.vernacularName.sv"?: string | string[];
@@ -28493,6 +28751,7 @@ export interface operations {
                     "parent.genus.hasBold"?: boolean;
                     "parent.subgenus.id"?: string | string[];
                     "parent.subgenus.scientificName"?: string | string[];
+                    "parent.subgenus.scientificNameLabel"?: string | string[];
                     "parent.subgenus.scientificNameAuthorship"?: string | string[];
                     "parent.subgenus.vernacularName.fi"?: string | string[];
                     "parent.subgenus.vernacularName.sv"?: string | string[];
@@ -28504,6 +28763,7 @@ export interface operations {
                     "parent.subgenus.hasBold"?: boolean;
                     "parent.aggregate.id"?: string | string[];
                     "parent.aggregate.scientificName"?: string | string[];
+                    "parent.aggregate.scientificNameLabel"?: string | string[];
                     "parent.aggregate.scientificNameAuthorship"?: string | string[];
                     "parent.aggregate.vernacularName.fi"?: string | string[];
                     "parent.aggregate.vernacularName.sv"?: string | string[];
@@ -28515,6 +28775,7 @@ export interface operations {
                     "parent.aggregate.hasBold"?: boolean;
                     "parent.species.id"?: string | string[];
                     "parent.species.scientificName"?: string | string[];
+                    "parent.species.scientificNameLabel"?: string | string[];
                     "parent.species.scientificNameAuthorship"?: string | string[];
                     "parent.species.vernacularName.fi"?: string | string[];
                     "parent.species.vernacularName.sv"?: string | string[];
@@ -28526,6 +28787,7 @@ export interface operations {
                     "parent.species.hasBold"?: boolean;
                     "synonymOf.id"?: string | string[];
                     "synonymOf.scientificName"?: string | string[];
+                    "synonymOf.scientificNameLabel"?: string | string[];
                     "synonymOf.scientificNameAuthorship"?: string | string[];
                     "synonymOf.vernacularName.fi"?: string | string[];
                     "synonymOf.vernacularName.sv"?: string | string[];
@@ -28853,16 +29115,19 @@ export interface operations {
                     parentsIncludeSelf?: string | string[];
                     nonHiddenParentsIncludeSelf?: string | string[];
                     hiddenTaxon?: boolean;
+                    darkTaxon?: boolean;
                     nameAccordingTo?: string | string[];
                     taxonRank?: string | string[];
                     scientificName?: string | string[];
                     scientificNameAuthorship?: string | string[];
+                    scientificNameLabel?: string | string[];
                     scientificNameDisplayName?: string | string[];
                     cursiveName?: boolean;
                     typeSpecimenURI?: string | string[];
                     synonymNames?: string | string[];
                     "basionyms.id"?: string | string[];
                     "basionyms.scientificName"?: string | string[];
+                    "basionyms.scientificNameLabel"?: string | string[];
                     "basionyms.scientificNameAuthorship"?: string | string[];
                     "basionyms.vernacularName.fi"?: string | string[];
                     "basionyms.vernacularName.sv"?: string | string[];
@@ -28874,6 +29139,7 @@ export interface operations {
                     "basionyms.hasBold"?: boolean;
                     "objectiveSynonyms.id"?: string | string[];
                     "objectiveSynonyms.scientificName"?: string | string[];
+                    "objectiveSynonyms.scientificNameLabel"?: string | string[];
                     "objectiveSynonyms.scientificNameAuthorship"?: string | string[];
                     "objectiveSynonyms.vernacularName.fi"?: string | string[];
                     "objectiveSynonyms.vernacularName.sv"?: string | string[];
@@ -28885,6 +29151,7 @@ export interface operations {
                     "objectiveSynonyms.hasBold"?: boolean;
                     "subjectiveSynonyms.id"?: string | string[];
                     "subjectiveSynonyms.scientificName"?: string | string[];
+                    "subjectiveSynonyms.scientificNameLabel"?: string | string[];
                     "subjectiveSynonyms.scientificNameAuthorship"?: string | string[];
                     "subjectiveSynonyms.vernacularName.fi"?: string | string[];
                     "subjectiveSynonyms.vernacularName.sv"?: string | string[];
@@ -28896,6 +29163,7 @@ export interface operations {
                     "subjectiveSynonyms.hasBold"?: boolean;
                     "homotypicSynonyms.id"?: string | string[];
                     "homotypicSynonyms.scientificName"?: string | string[];
+                    "homotypicSynonyms.scientificNameLabel"?: string | string[];
                     "homotypicSynonyms.scientificNameAuthorship"?: string | string[];
                     "homotypicSynonyms.vernacularName.fi"?: string | string[];
                     "homotypicSynonyms.vernacularName.sv"?: string | string[];
@@ -28907,6 +29175,7 @@ export interface operations {
                     "homotypicSynonyms.hasBold"?: boolean;
                     "heterotypicSynonyms.id"?: string | string[];
                     "heterotypicSynonyms.scientificName"?: string | string[];
+                    "heterotypicSynonyms.scientificNameLabel"?: string | string[];
                     "heterotypicSynonyms.scientificNameAuthorship"?: string | string[];
                     "heterotypicSynonyms.vernacularName.fi"?: string | string[];
                     "heterotypicSynonyms.vernacularName.sv"?: string | string[];
@@ -28918,6 +29187,7 @@ export interface operations {
                     "heterotypicSynonyms.hasBold"?: boolean;
                     "synonyms.id"?: string | string[];
                     "synonyms.scientificName"?: string | string[];
+                    "synonyms.scientificNameLabel"?: string | string[];
                     "synonyms.scientificNameAuthorship"?: string | string[];
                     "synonyms.vernacularName.fi"?: string | string[];
                     "synonyms.vernacularName.sv"?: string | string[];
@@ -28929,6 +29199,7 @@ export interface operations {
                     "synonyms.hasBold"?: boolean;
                     "misspelledNames.id"?: string | string[];
                     "misspelledNames.scientificName"?: string | string[];
+                    "misspelledNames.scientificNameLabel"?: string | string[];
                     "misspelledNames.scientificNameAuthorship"?: string | string[];
                     "misspelledNames.vernacularName.fi"?: string | string[];
                     "misspelledNames.vernacularName.sv"?: string | string[];
@@ -28940,6 +29211,7 @@ export interface operations {
                     "misspelledNames.hasBold"?: boolean;
                     "orthographicVariants.id"?: string | string[];
                     "orthographicVariants.scientificName"?: string | string[];
+                    "orthographicVariants.scientificNameLabel"?: string | string[];
                     "orthographicVariants.scientificNameAuthorship"?: string | string[];
                     "orthographicVariants.vernacularName.fi"?: string | string[];
                     "orthographicVariants.vernacularName.sv"?: string | string[];
@@ -28951,6 +29223,7 @@ export interface operations {
                     "orthographicVariants.hasBold"?: boolean;
                     "uncertainSynonyms.id"?: string | string[];
                     "uncertainSynonyms.scientificName"?: string | string[];
+                    "uncertainSynonyms.scientificNameLabel"?: string | string[];
                     "uncertainSynonyms.scientificNameAuthorship"?: string | string[];
                     "uncertainSynonyms.vernacularName.fi"?: string | string[];
                     "uncertainSynonyms.vernacularName.sv"?: string | string[];
@@ -28962,6 +29235,7 @@ export interface operations {
                     "uncertainSynonyms.hasBold"?: boolean;
                     "misappliedNames.id"?: string | string[];
                     "misappliedNames.scientificName"?: string | string[];
+                    "misappliedNames.scientificNameLabel"?: string | string[];
                     "misappliedNames.scientificNameAuthorship"?: string | string[];
                     "misappliedNames.vernacularName.fi"?: string | string[];
                     "misappliedNames.vernacularName.sv"?: string | string[];
@@ -28973,6 +29247,7 @@ export interface operations {
                     "misappliedNames.hasBold"?: boolean;
                     "alternativeNames.id"?: string | string[];
                     "alternativeNames.scientificName"?: string | string[];
+                    "alternativeNames.scientificNameLabel"?: string | string[];
                     "alternativeNames.scientificNameAuthorship"?: string | string[];
                     "alternativeNames.vernacularName.fi"?: string | string[];
                     "alternativeNames.vernacularName.sv"?: string | string[];
@@ -29042,6 +29317,7 @@ export interface operations {
                     "multimedia.squareThumbnailURL"?: string | string[];
                     "multimedia.taxon.id"?: string | string[];
                     "multimedia.taxon.scientificName"?: string | string[];
+                    "multimedia.taxon.scientificNameLabel"?: string | string[];
                     "multimedia.taxon.scientificNameAuthorship"?: string | string[];
                     "multimedia.taxon.vernacularName.fi"?: string | string[];
                     "multimedia.taxon.vernacularName.sv"?: string | string[];
@@ -29124,8 +29400,10 @@ export interface operations {
                     "referenceSequences.locus"?: string | string[];
                     "referenceSequences.sequenceText"?: string | string[];
                     "referenceSequences.specimenId"?: string | string[];
+                    hasReferenceSequences?: boolean;
                     "parent.domain.id"?: string | string[];
                     "parent.domain.scientificName"?: string | string[];
+                    "parent.domain.scientificNameLabel"?: string | string[];
                     "parent.domain.scientificNameAuthorship"?: string | string[];
                     "parent.domain.vernacularName.fi"?: string | string[];
                     "parent.domain.vernacularName.sv"?: string | string[];
@@ -29137,6 +29415,7 @@ export interface operations {
                     "parent.domain.hasBold"?: boolean;
                     "parent.kingdom.id"?: string | string[];
                     "parent.kingdom.scientificName"?: string | string[];
+                    "parent.kingdom.scientificNameLabel"?: string | string[];
                     "parent.kingdom.scientificNameAuthorship"?: string | string[];
                     "parent.kingdom.vernacularName.fi"?: string | string[];
                     "parent.kingdom.vernacularName.sv"?: string | string[];
@@ -29148,6 +29427,7 @@ export interface operations {
                     "parent.kingdom.hasBold"?: boolean;
                     "parent.phylum.id"?: string | string[];
                     "parent.phylum.scientificName"?: string | string[];
+                    "parent.phylum.scientificNameLabel"?: string | string[];
                     "parent.phylum.scientificNameAuthorship"?: string | string[];
                     "parent.phylum.vernacularName.fi"?: string | string[];
                     "parent.phylum.vernacularName.sv"?: string | string[];
@@ -29159,6 +29439,7 @@ export interface operations {
                     "parent.phylum.hasBold"?: boolean;
                     "parent.subphylum.id"?: string | string[];
                     "parent.subphylum.scientificName"?: string | string[];
+                    "parent.subphylum.scientificNameLabel"?: string | string[];
                     "parent.subphylum.scientificNameAuthorship"?: string | string[];
                     "parent.subphylum.vernacularName.fi"?: string | string[];
                     "parent.subphylum.vernacularName.sv"?: string | string[];
@@ -29170,6 +29451,7 @@ export interface operations {
                     "parent.subphylum.hasBold"?: boolean;
                     "parent.division.id"?: string | string[];
                     "parent.division.scientificName"?: string | string[];
+                    "parent.division.scientificNameLabel"?: string | string[];
                     "parent.division.scientificNameAuthorship"?: string | string[];
                     "parent.division.vernacularName.fi"?: string | string[];
                     "parent.division.vernacularName.sv"?: string | string[];
@@ -29181,6 +29463,7 @@ export interface operations {
                     "parent.division.hasBold"?: boolean;
                     "parent.class.id"?: string | string[];
                     "parent.class.scientificName"?: string | string[];
+                    "parent.class.scientificNameLabel"?: string | string[];
                     "parent.class.scientificNameAuthorship"?: string | string[];
                     "parent.class.vernacularName.fi"?: string | string[];
                     "parent.class.vernacularName.sv"?: string | string[];
@@ -29192,6 +29475,7 @@ export interface operations {
                     "parent.class.hasBold"?: boolean;
                     "parent.subclass.id"?: string | string[];
                     "parent.subclass.scientificName"?: string | string[];
+                    "parent.subclass.scientificNameLabel"?: string | string[];
                     "parent.subclass.scientificNameAuthorship"?: string | string[];
                     "parent.subclass.vernacularName.fi"?: string | string[];
                     "parent.subclass.vernacularName.sv"?: string | string[];
@@ -29203,6 +29487,7 @@ export interface operations {
                     "parent.subclass.hasBold"?: boolean;
                     "parent.order.id"?: string | string[];
                     "parent.order.scientificName"?: string | string[];
+                    "parent.order.scientificNameLabel"?: string | string[];
                     "parent.order.scientificNameAuthorship"?: string | string[];
                     "parent.order.vernacularName.fi"?: string | string[];
                     "parent.order.vernacularName.sv"?: string | string[];
@@ -29214,6 +29499,7 @@ export interface operations {
                     "parent.order.hasBold"?: boolean;
                     "parent.suborder.id"?: string | string[];
                     "parent.suborder.scientificName"?: string | string[];
+                    "parent.suborder.scientificNameLabel"?: string | string[];
                     "parent.suborder.scientificNameAuthorship"?: string | string[];
                     "parent.suborder.vernacularName.fi"?: string | string[];
                     "parent.suborder.vernacularName.sv"?: string | string[];
@@ -29225,6 +29511,7 @@ export interface operations {
                     "parent.suborder.hasBold"?: boolean;
                     "parent.superfamily.id"?: string | string[];
                     "parent.superfamily.scientificName"?: string | string[];
+                    "parent.superfamily.scientificNameLabel"?: string | string[];
                     "parent.superfamily.scientificNameAuthorship"?: string | string[];
                     "parent.superfamily.vernacularName.fi"?: string | string[];
                     "parent.superfamily.vernacularName.sv"?: string | string[];
@@ -29236,6 +29523,7 @@ export interface operations {
                     "parent.superfamily.hasBold"?: boolean;
                     "parent.family.id"?: string | string[];
                     "parent.family.scientificName"?: string | string[];
+                    "parent.family.scientificNameLabel"?: string | string[];
                     "parent.family.scientificNameAuthorship"?: string | string[];
                     "parent.family.vernacularName.fi"?: string | string[];
                     "parent.family.vernacularName.sv"?: string | string[];
@@ -29247,6 +29535,7 @@ export interface operations {
                     "parent.family.hasBold"?: boolean;
                     "parent.subfamily.id"?: string | string[];
                     "parent.subfamily.scientificName"?: string | string[];
+                    "parent.subfamily.scientificNameLabel"?: string | string[];
                     "parent.subfamily.scientificNameAuthorship"?: string | string[];
                     "parent.subfamily.vernacularName.fi"?: string | string[];
                     "parent.subfamily.vernacularName.sv"?: string | string[];
@@ -29258,6 +29547,7 @@ export interface operations {
                     "parent.subfamily.hasBold"?: boolean;
                     "parent.tribe.id"?: string | string[];
                     "parent.tribe.scientificName"?: string | string[];
+                    "parent.tribe.scientificNameLabel"?: string | string[];
                     "parent.tribe.scientificNameAuthorship"?: string | string[];
                     "parent.tribe.vernacularName.fi"?: string | string[];
                     "parent.tribe.vernacularName.sv"?: string | string[];
@@ -29269,6 +29559,7 @@ export interface operations {
                     "parent.tribe.hasBold"?: boolean;
                     "parent.subtribe.id"?: string | string[];
                     "parent.subtribe.scientificName"?: string | string[];
+                    "parent.subtribe.scientificNameLabel"?: string | string[];
                     "parent.subtribe.scientificNameAuthorship"?: string | string[];
                     "parent.subtribe.vernacularName.fi"?: string | string[];
                     "parent.subtribe.vernacularName.sv"?: string | string[];
@@ -29280,6 +29571,7 @@ export interface operations {
                     "parent.subtribe.hasBold"?: boolean;
                     "parent.genus.id"?: string | string[];
                     "parent.genus.scientificName"?: string | string[];
+                    "parent.genus.scientificNameLabel"?: string | string[];
                     "parent.genus.scientificNameAuthorship"?: string | string[];
                     "parent.genus.vernacularName.fi"?: string | string[];
                     "parent.genus.vernacularName.sv"?: string | string[];
@@ -29291,6 +29583,7 @@ export interface operations {
                     "parent.genus.hasBold"?: boolean;
                     "parent.subgenus.id"?: string | string[];
                     "parent.subgenus.scientificName"?: string | string[];
+                    "parent.subgenus.scientificNameLabel"?: string | string[];
                     "parent.subgenus.scientificNameAuthorship"?: string | string[];
                     "parent.subgenus.vernacularName.fi"?: string | string[];
                     "parent.subgenus.vernacularName.sv"?: string | string[];
@@ -29302,6 +29595,7 @@ export interface operations {
                     "parent.subgenus.hasBold"?: boolean;
                     "parent.aggregate.id"?: string | string[];
                     "parent.aggregate.scientificName"?: string | string[];
+                    "parent.aggregate.scientificNameLabel"?: string | string[];
                     "parent.aggregate.scientificNameAuthorship"?: string | string[];
                     "parent.aggregate.vernacularName.fi"?: string | string[];
                     "parent.aggregate.vernacularName.sv"?: string | string[];
@@ -29313,6 +29607,7 @@ export interface operations {
                     "parent.aggregate.hasBold"?: boolean;
                     "parent.species.id"?: string | string[];
                     "parent.species.scientificName"?: string | string[];
+                    "parent.species.scientificNameLabel"?: string | string[];
                     "parent.species.scientificNameAuthorship"?: string | string[];
                     "parent.species.vernacularName.fi"?: string | string[];
                     "parent.species.vernacularName.sv"?: string | string[];
@@ -29324,6 +29619,7 @@ export interface operations {
                     "parent.species.hasBold"?: boolean;
                     "synonymOf.id"?: string | string[];
                     "synonymOf.scientificName"?: string | string[];
+                    "synonymOf.scientificNameLabel"?: string | string[];
                     "synonymOf.scientificNameAuthorship"?: string | string[];
                     "synonymOf.vernacularName.fi"?: string | string[];
                     "synonymOf.vernacularName.sv"?: string | string[];
