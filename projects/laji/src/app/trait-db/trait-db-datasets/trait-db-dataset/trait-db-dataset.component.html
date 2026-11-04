@@ -80,40 +80,34 @@
       </tr>
     </table>
 
-    @if (data.perms !== undefined && data.perms !== null) {
-      <h3>Permissions</h3>
-      <ul>
-        @for (userId of data.perms.userIds; track userId) {
-          <li>{{ userId }}</li>
-        }
-      </ul>
-      <button class="btn btn-default">Edit permissions</button>
+    @if (data.perms !== undefined) {
+      @if (data.perms !== null && data.hasPerms) {
+        <laji-dataset-permissions-editor [perms]="data.perms" (permsChanged)="onPermsChanged($event)"></laji-dataset-permissions-editor>
+      }
     } @else {
       <laji-spinner class="d-block m-6"></laji-spinner>
     }
 
-    @if (data.dataset?.published) {
-      <div class="d-flex justify-between mt-8 mb-4">
-        <h3 class="mb-0">Trait data</h3>
-        @if (data.perms !== undefined) {
-          <div>
-            @if (data.perms !== null && data.hasPerms) {
-              <a [routerLink]="['data-entry']" class="btn btn-default mr-3">
-                <i class="glyphicon glyphicon-upload"></i>
-                Upload trait data
-              </a>
-              <a [routerLink]="['data-editor']" class="btn btn-default">
-                <i class="glyphicon glyphicon-edit"></i>
-                Modify existing trait data
-              </a>
-              }
-          </div>
-        } @else {
-          <laji-spinner class="d-block m-6"></laji-spinner>
-        }
-      </div>
-      <laji-trait-search [datasetId]="data.dataset?.id"></laji-trait-search>
-    }
+    <div class="d-flex justify-between mt-8 mb-4">
+      <h3 class="mb-0">Trait data</h3>
+      @if (data.perms !== undefined) {
+        <div>
+          @if (data.perms !== null && data.hasPerms) {
+            <a [routerLink]="['data-entry']" class="btn btn-default mr-3">
+              <i class="glyphicon glyphicon-upload"></i>
+              Upload trait data
+            </a>
+            <a [routerLink]="['data-editor']" class="btn btn-default">
+              <i class="glyphicon glyphicon-edit"></i>
+              Modify existing trait data
+            </a>
+            }
+        </div>
+      } @else {
+        <laji-spinner class="d-block m-6"></laji-spinner>
+      }
+    </div>
+    <laji-trait-search [datasetId]="data.dataset?.id"></laji-trait-search>
   } @else {
     The dataset could not be found.
   }

@@ -1,42 +1,9 @@
-@use '../vars' as *;
+@use '../mixins/checkbox' as *;
 
 :host {
   display: inline-block;
 }
 
 label {
-  font-weight: unset;
-  color: $neutral-6;
-  white-space: nowrap;
-}
-
-.checked {
-  color: $neutral-8;
-}
-
-.disabled {
-  opacity: 0.65;
-}
-
-input {
-  position: relative;
-  margin: unset;
-  margin-right: 5px;
-  padding: 0.5em;
-  appearance: none;
-  background: $neutral-1;
-  box-shadow:
-    0 0 1px 1px rgba($neutral-7, 0.4),
-    inset 1px 2px 4px 0 rgba($neutral-7, 0.1);
-  border-radius: 1px;
-  &:checked::after {
-    position: absolute;
-    left: 0.15em;
-    top: -0.15em;
-    content: "✓";
-    color: $neutral-7;
-  }
-  &:focus:not(:focus-visible) {
-    outline: none;
-  }
+  @include checkbox();
 }

@@ -1,0 +1,29 @@
+<h3>Edit rights</h3>
+@if (validationErrors.length) {
+  <ul class="text-danger">
+    @for (error of validationErrors; track error) {
+      <li>{{ error }}</li>
+    }
+  </ul>
+}
+<ul>
+  @for (person of (persons$ | async); track person.id) {
+    <li>
+      @if (person._tag === 'has-person' && person.fullName) {
+        {{ person.fullName }} ({{ person.id }})
+      } @else {
+        {{ person.id }}
+      }
+      <button class="btn btn-default ml-3" (click)="onRevokePerms(person.id)">Revoke</button>
+    </li>
+  }
+</ul>
+<div class="d-flex flex-gap-3">
+  <laji-find-person [showUserID]="true" (selectChange)="selectedPerson = $event"></laji-find-person>
+  <div>
+    @if (selectedPerson) {
+      {{ selectedPerson.fullName }} ({{ selectedPerson.id }})
+      <button class="btn btn-default" [disabled]="!selectedPerson" (click)="onGrantPerms(selectedPerson!.id)">Grant</button>
+    }
+  </div>
+</div>

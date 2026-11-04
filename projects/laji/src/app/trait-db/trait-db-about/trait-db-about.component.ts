@@ -1,10 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
-import { of } from 'rxjs';
 import { map, startWith, switchMap } from 'rxjs';
 
-const cmsIds = { fi: '6491', sv: '6491', en: '6491' };
+const cmsIds = { fi: '9468', sv: '9468', en: '9468' };
 
 @Component({
     template: `
@@ -19,7 +18,7 @@ export class TraitDbAboutComponent {
   content$ = this.translate.onLangChange.pipe(
     startWith({lang: this.translate.getCurrentLang()}),
     map(event => cmsIds[event.lang as 'fi' | 'sv' | 'en']),
-    switchMap(cmsId => of({ content: 'todo: ' + cmsId }))
+    switchMap(cmsId => this.api.get('/information/{id}', { path: { id: cmsId } }))
   );
 
   constructor(private api: LajiApiClientService, private translate: TranslateService) {}
