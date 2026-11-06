@@ -2321,5 +2321,12 @@
   "whatsNew.acknowledge": "Sulje",
   "whatsNew.message": "laji.fi on Suomen Lajitietokeskuksen testikäytössä oleva portaali. Tietoja täydennetään ja ominaisuuksia parannetaan jatkuvasti. Palaute on tervetullutta - sitä voi lähettää palautelomakkeella tai osoitteeseen info@laji.fi. Kiitos!<p>Voit katsoa tuoreimmat muutokset <a href=\"https://laji.fi\">etusivun</a> ajankohtaista osiosta.</p",
   "wholeYear": "Koko vuosi {{year}}",
-  "yes": "Kyllä"
+  "yes": "Kyllä",
+  "taxonomy.referenceSequences.title": "Referenssisekvenssit",
+  "taxonomy.referenceSequences.sequenceText": "Sekvenssi",
+  "taxonomy.referenceSequences.externalSequenceId": "Ulkoinen sekvenssi ID",
+  "taxonomy.referenceSequences.specimenId": "Näyte ID",
+  "taxonomy.referenceSequences.locus": "Lokus",
+  "taxonomy.referenceSequences.download": "Lataa referenssisekvenssit",
+  "taxonomy.referenceSequences.download.fileName": "referenssisekvenssit"
 }

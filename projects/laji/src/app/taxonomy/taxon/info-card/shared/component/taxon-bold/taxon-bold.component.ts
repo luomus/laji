@@ -1,6 +1,9 @@
-import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { components } from 'projects/laji-api-client/generated/api.d';
+import { ModalComponent } from 'projects/laji-ui/src/lib/modal/modal/modal.component';
+import { DownloadParams, FORMAT } from 'projects/laji/src/app/shared-modules/download-modal/download.component';
+import { ExportService } from 'projects/laji/src/app/shared/service/export.service';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
@@ -20,10 +23,22 @@ export class TaxonBoldComponent implements OnChanges {
 
   @Input() taxon!: Taxon;
 
+  @Input() displayReferenceSequences = true;
+
+  @ViewChild('chooseFileTypeModal', { static: true }) public modal!: ModalComponent;
+
   boldEntries: BoldEntry[] = [];
 
+  referenceSequenceColumns: { prop: keyof Taxon['referenceSequences'][number]; label: string; cellTemplate?: any }[] = [
+    { prop: 'sequenceText', label: 'taxonomy.referenceSequences.sequenceText' },
+    { prop: 'locus', label: 'taxonomy.referenceSequences.locus', cellTemplate: 'label' },
+    { prop: 'specimenId', label: 'taxonomy.referenceSequences.specimenId' },
+    { prop: 'externalSequenceId', label: 'taxonomy.referenceSequences.externalSequenceId' }
+  ];
+
   constructor(
-    public translate: TranslateService
+    public translate: TranslateService,
+    private exportService: ExportService
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -74,5 +89,25 @@ export class TaxonBoldComponent implements OnChanges {
         bins
       });
     }
+  }
+
+  openChooseFileTypeModal() {
+    this.modal.show();
+  }
+
+  downloadReferenceSequences({ fileType }: DownloadParams) {
+    const aoa = [
+      this.referenceSequenceColumns.map(col => this.translate.instant(col.label)),
+      ...this.taxon.referenceSequences.map(refSeq =>
+        this.referenceSequenceColumns.map(col => refSeq[col.prop])
+      )
+    ];
+
+    this.exportService.export(
+      aoa,
+      fileType as Exclude<FORMAT, 'gpkg'>,
+      `${this.translate.instant('taxonomy.referenceSequences.download.fileName')}-${this.taxon.id})`,
+      { forceQuotes: true }
+    ).subscribe();
   }
 }

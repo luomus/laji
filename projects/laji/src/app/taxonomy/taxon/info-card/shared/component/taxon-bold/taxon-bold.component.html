@@ -15,3 +15,14 @@
     </div>
   }
 }
+@if (displayReferenceSequences && taxon.hasReferenceSequences) {
+  <h5>{{ 'taxonomy.referenceSequences.title' | translate }}</h5>
+  <laji-datatable [rows]="taxon.referenceSequences" [columns]="referenceSequenceColumns"></laji-datatable>
+  <laji-download
+    (download)="downloadReferenceSequences($event)"
+    [formats]="['csv', 'tsv', 'ods', 'xlsx']"
+    >
+    <i class="glyphicon glyphicon-download-alt"></i>
+    {{ 'taxonomy.referenceSequences.download' | translate }}
+  </laji-download>
+}

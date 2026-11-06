@@ -31,9 +31,9 @@ export class ExportService {
     );
   }
 
-  export(aoa: string[][], type: ExportFileType, filename: string): Observable<void> {
+  export(aoa: (string | number)[][], type: ExportFileType, filename: string, options?: XLSX.Sheet2CSVOpts): Observable<void> {
     return of(aoa).pipe(
-      map(data => this.getBufferFromAoa(data, type)),
+      map(data => this.getBufferFromAoa(data, type, options)),
       map(buffer => this.exportArrayBuffer(buffer, filename, type))
     );
   }
@@ -43,15 +43,15 @@ export class ExportService {
     this.saveBlob(data, fileName, fileExtension);
   }
 
-  getBlobFromData(data: any[], cols: DatatableColumn[], type: ExportFileType, filename: string, firstRow?: string[]): Observable<Blob> {
+  getBlobFromData(data: any[], cols: DatatableColumn[], type: ExportFileType, filename: string, firstRow?: string[], options?: XLSX.Sheet2CSVOpts): Observable<Blob> {
     return this.getAoa<any>(cols, data, type, firstRow).pipe(
-      map(aoa => this.getBufferFromAoa(aoa, type)),
+      map(aoa => this.getBufferFromAoa(aoa, type, options)),
       map(buffer => this.createBlob(buffer, type))
     );
   }
 
-  private getBufferFromAoa(aoa: string[][], fileType: any): any {
-    const sheet = XLSX.utils.aoa_to_sheet(aoa);
+  private getBufferFromAoa(aoa: (string | number)[][], fileType: any, options?: XLSX.Sheet2CSVOpts): any {
+    const sheet = XLSX.utils.aoa_to_sheet(aoa, options);
 
     if (fileType === 'csv') {
       return XLSXUtils.sheet_to_csv(sheet);

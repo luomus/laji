@@ -129,7 +129,7 @@
 }
 @if (taxon.hasBold) {
   <laji-taxon-info-row [label]="'taxonomy.bold' | translate">
-    <laji-taxon-bold [taxon]="taxon"></laji-taxon-bold>
+    <laji-taxon-bold [taxon]="taxon" [displayReferenceSequences]="false"></laji-taxon-bold>
   </laji-taxon-info-row>
 }
 @if (taxon.informalTaxonGroups && taxon.informalTaxonGroups.length > 0) {
