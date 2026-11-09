@@ -12,7 +12,7 @@ node {
       if (currentBuild.result == 'SUCCESS' || currentBuild.result == 'UNSTABLE') {
         milestone()
         sh 'rm -rf dist'
-        sh 'npm run --silent build:dev'
+        sh 'npm run --silent build:csr'
         sh 'pre-compress-web-assets dist/browser'
       }
     }
