@@ -2327,6 +2327,7 @@
   "taxonomy.referenceSequences.externalSequenceId": "Ulkoinen sekvenssi ID",
   "taxonomy.referenceSequences.specimenId": "Näyte ID",
   "taxonomy.referenceSequences.locus": "Lokus",
+  "taxonomy.referenceSequences.taxonId": "Taksoni ID",
   "taxonomy.referenceSequences.download": "Lataa referenssisekvenssit",
   "taxonomy.referenceSequences.download.fileName": "referenssisekvenssit"
 }

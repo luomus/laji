@@ -37,7 +37,18 @@
       [showBrowseObservationsButton]="showDownloadAndBrowse"
       [browseObservationsText]="'species.header.browse' | translate"
       (browseObservations)="browseObservations()"
-    ></laji-datatable-header>
+    >
+      @if (referenceSequencesCount) {
+        <laji-download
+          class="ml-3"
+          (download)="downloadReferenceSequences($event)"
+          [formats]="['csv', 'tsv', 'ods', 'xlsx']"
+          [disabled]="referenceSequencesDownloading"
+        >
+          {{ 'taxonomy.referenceSequences.download' | translate }} ({{ referenceSequencesCount }})
+        </laji-download>
+      }
+    </laji-datatable-header>
     <laji-datatable
       #dataTable
       (rowSelect)="onRowSelect($event)"

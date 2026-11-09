@@ -28,7 +28,10 @@ import { DatatableHeaderComponent } from '../../../shared-modules/datatable/data
 import { ToFullUriPipe } from 'projects/laji/src/app/shared/pipe/to-full-uri';
 import { ToQNamePipe } from 'projects/laji/src/app/shared/pipe/to-qname.pipe';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
-import { components } from 'projects/laji-api-client/generated/api.d';
+import { components, paths } from 'projects/laji-api-client/generated/api.d';
+import { DownloadParams, FORMAT } from '../../../shared-modules/download-modal/download.component';
+import { TranslateService } from '@ngx-translate/core';
+import { ExportService } from '../../../shared/service/export.service';
 
 type Taxon = components['schemas']['LajiBackendTaxon'];
 
@@ -53,6 +56,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
 
   loading = false;
   downloadLoading = false;
+  referenceSequencesDownloading = false;
 
   columns: DatatableColumn[] = [];
   speciesPage: PagedResult<Taxon> = {
@@ -62,6 +66,8 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     total: 0,
     pageSize: 0
   };
+  referenceSequencesCount = 0;
+  referenceSequencesCacheKey!: string;
 
   private lastQuery: string | undefined;
   private subQueryUpdate: Subscription | undefined;
@@ -78,7 +84,9 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     private taxonExportService: TaxonExportService,
     private columnService: TaxonomyColumns,
     private toQname: ToQNamePipe,
-    private api: LajiApiClientService
+    private api: LajiApiClientService,
+    private translate: TranslateService,
+    private exportService: ExportService
   ) { }
 
   ngOnInit() {
@@ -88,6 +96,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       () => {
         this.search.listOptions.page = 1;
         this.refreshSpeciesList();
+        this.updateReferenceSequencesCount();
       }
     );
 
@@ -188,6 +197,27 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
       );
   }
 
+  updateReferenceSequencesCount() {
+    const cacheKey = JSON.stringify({
+          taxon: this.search.taxonId,
+          query: this.search.query,
+          filters: this.search.filters
+        });
+    if (this.referenceSequencesCacheKey === cacheKey) {
+      return;
+    }
+    this.referenceSequencesCacheKey = cacheKey;
+
+    this.api.post(
+      '/taxa/{id}/species',
+      { path: { id: this.search.taxonId || 'MX.37600' }, query: { pageSize: 0 } },
+      { hasReferenceSequences: true }
+    ).subscribe(({ total }) => {
+      this.referenceSequencesCount = total;
+    });
+  }
+
+
   download(fileType: string) {
     this.downloadLoading = true;
 
@@ -199,6 +229,37 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
           this.speciesDownload?.downloadComponent?.closeModal();
           this.cd.markForCheck();
       });
+  }
+
+  downloadReferenceSequences({ fileType }: DownloadParams) {
+    this.downloadLoading = true;
+
+    const columns: { prop: keyof Taxon['referenceSequences'][number]; label: string; cellTemplate?: any }[] = [
+      { prop: 'id', label: 'taxonomy.referenceSequences.taxonId'  },
+      { prop: 'sequenceText', label: 'taxonomy.referenceSequences.sequenceText' },
+      { prop: 'locus', label: 'taxonomy.referenceSequences.locus', cellTemplate: 'label' },
+      { prop: 'specimenId', label: 'taxonomy.referenceSequences.specimenId' },
+      { prop: 'externalSequenceId', label: 'taxonomy.referenceSequences.externalSequenceId' }
+    ];
+
+    this.api.post(
+      '/taxa/{id}/species',
+      { path: { id: this.search.taxonId || 'MX.37600' }, query: { selectedFields: 'id,referenceSequences' } },
+      { hasReferenceSequences: true }
+    ).pipe(switchMap(({ results }) => {
+      const aoa = results.reduce((combined, { id, referenceSequences }) => {
+        referenceSequences?.forEach(refSeq => {
+          combined.push([id, ...columns.map(col => refSeq[col.prop])]);
+        });
+        return combined;
+      }, [columns.map(col => this.translate.instant(col.label))]);
+      return this.exportService.export(
+        aoa,
+        fileType as Exclude<FORMAT, 'gpkg'>,
+        this.translate.instant('taxonomy.referenceSequences.download.fileName'),
+        { forceQuotes: true }
+      );
+    })).subscribe();
   }
 
   openModal() {
