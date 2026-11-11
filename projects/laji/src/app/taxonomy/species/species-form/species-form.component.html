@@ -187,3 +187,21 @@
     [multiple]="false"
   ></laji-select>
 </section>
+
+<section laji-panel
+  [title]="'observation.form.darkTaxon' | translate"
+  [autoToggle]="true"
+  [open]="initialOpen.dark"
+>
+  <laji-select
+    [open]="true"
+    [(ngModel)]="search.filters.darkTaxon"
+    (ngModelChange)="onSearchChange()"
+    [options]="[
+      {id: true, value: 'observation.form.onlyDarkTaxon' | translate},
+      {id: false, value: 'observation.form.onlyNononlyDarkTaxon' | translate}
+    ]"
+    [useFilter]="false"
+    [multiple]="false"
+  ></laji-select>
+</section>

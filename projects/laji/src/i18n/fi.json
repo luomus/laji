@@ -2331,5 +2331,8 @@
   "taxonomy.referenceSequences.download": "Lataa referenssisekvenssit",
   "taxonomy.referenceSequences.download.fileName": "referenssisekvenssit",
   "observation.form.onlyHasReferenceSequences": "On referenssisekvenssejä",
-  "observation.form.onlyNotHasReferenceSequences": "Ei ole referenssisekvenssejä"
+  "observation.form.onlyNotHasReferenceSequences": "Ei ole referenssisekvenssejä",
+  "observation.form.darkTaxon": "Nimettömät taksonit",
+  "observation.form.onlyDarkTaxon": "Ainoastaan nimettömät taksonit",
+  "observation.form.onlyNononlyDarkTaxon": "Ei nimettömiä taksoneita"
 }

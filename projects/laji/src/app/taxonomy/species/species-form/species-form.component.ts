@@ -47,7 +47,8 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
     administrativeStatuses: false,
     typeOfOccurrenceInFinland: false,
     invasive: false,
-    bold: false
+    bold: false,
+    dark: false,
   };
 
   constructor(
@@ -84,6 +85,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
           administrativeStatuses: !!this.search.filters['administrativeStatuses']?.length,
           invasive: !!this.invasiveSelected.length,
           bold: this.search.filters.hasBold !== undefined || this.search.filters.hasReferenceSequences !== undefined,
+          dark: this.search.filters.darkTaxon !== undefined,
         };
         firstUpdate = false;
       });
