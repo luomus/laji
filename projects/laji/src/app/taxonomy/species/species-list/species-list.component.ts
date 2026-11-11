@@ -28,7 +28,7 @@ import { DatatableHeaderComponent } from '../../../shared-modules/datatable/data
 import { ToFullUriPipe } from 'projects/laji/src/app/shared/pipe/to-full-uri';
 import { ToQNamePipe } from 'projects/laji/src/app/shared/pipe/to-qname.pipe';
 import { LajiApiClientService } from 'projects/laji-api-client/src/laji-api-client.service';
-import { components, paths } from 'projects/laji-api-client/generated/api.d';
+import { components } from 'projects/laji-api-client/generated/api.d';
 import { DownloadParams, FORMAT } from '../../../shared-modules/download-modal/download.component';
 import { TranslateService } from '@ngx-translate/core';
 import { ExportService } from '../../../shared/service/export.service';
@@ -211,7 +211,7 @@ export class SpeciesListComponent implements OnInit, OnChanges, OnDestroy {
     this.api.post(
       '/taxa/{id}/species',
       { path: { id: this.search.taxonId || 'MX.37600' }, query: { pageSize: 0 } },
-      { hasReferenceSequences: true }
+      { ...this.search.filters, hasReferenceSequences: true }
     ).subscribe(({ total }) => {
       this.referenceSequencesCount = total;
     });
