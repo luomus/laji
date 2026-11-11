@@ -19,6 +19,7 @@ export class TaxonNameComponent {
     alternativeVernacularName?: any;
     obsoleteVernacularName?: any;
     colloquialVernacularName?: any;
+    darkTaxon?: boolean;
   } = {};
   @Input() taxonID?: string;
   @Input() addLink = true;

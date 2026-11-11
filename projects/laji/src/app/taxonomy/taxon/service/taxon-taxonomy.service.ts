@@ -168,7 +168,8 @@ export class TaxonTaxonomyService {
       'finnish',
       'countOfFinnishSpecies',
       'observationCountFinland',
-      'nameAccordingTo'
+      'nameAccordingTo',
+      'darkTaxon',
     ].join(',');
   }
 }

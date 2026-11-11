@@ -29,6 +29,9 @@
 @if (((taxon.id || taxon.qname || taxonID) | toQName)?.startsWith('gbif:')) {
   <img class="gbif-icon" src="/static/images/icons/gbif.svg" [luTooltip]="'species.tree.gbif.help' | translate" />
 }
+@if (taxon.darkTaxon) {
+  <span class="dark-taxon">{{ 'taxon.darkTaxon' | translate }}</span>
+}
 @if (!hideObsoleteVernacularName && taxon?.obsoleteVernacularName | values; as obsoleteVernacularName) {
   <div class="alternative-names mt-2">
     {{ obsoleteVernacularName }}
