@@ -3,7 +3,7 @@
   [placement]="placement"
   [mode]="useModal ? 'disabled' : showOnHover ? 'hover' : 'click'"
   [rootElement]="'body'"
-  (click)="toggleModal()"
+  (click)="toggleModal($event)"
   tabindex="0"
   luKeyboardClickable
   [class]="'no-propagation label label-' + labelType + (glyphicon ? '' : ' laji-form-help-glyph') + ' ' + (showOnHover ? 'hover-info' : 'link')"

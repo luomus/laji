@@ -23,7 +23,7 @@ type InvasiveStatus = typeof invasiveStatuses[number];
 @Component({
     selector: 'laji-species-form[search]',
     templateUrl: './species-form.component.html',
-    styleUrls: ['./species-form.component.css'],
+    styleUrls: ['./species-form.component.scss'],
     standalone: false
 })
 export class SpeciesFormComponent implements OnInit, OnDestroy {
@@ -40,6 +40,16 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
   finnishCheckboxValue!: boolean;
 
+  initialOpen = {
+    taxonRank: false,
+    latestRedListStatusFinland: false,
+    habitat: false,
+    administrativeStatuses: false,
+    typeOfOccurrenceInFinland: false,
+    invasive: false,
+    bold: false
+  };
+
   constructor(
     public translate: TranslateService
   ) { }
@@ -52,6 +62,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
     this.finnishCheckboxValue = this.search.filters.finnish !== undefined;
 
+    let firstUpdate = true;
     this.subUpdate = this.search.searchUpdated$.pipe(startWith(undefined)).subscribe(
       () => {
         this.taxonSelectFilters = {
@@ -60,6 +71,21 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
         };
         this.syncTypeOfOccurenceInFinland();
         this.syncInvasiveStatusesFromSearch();
+        if (!firstUpdate) {
+          return;
+        }
+
+        this.initialOpen = {
+          typeOfOccurrenceInFinland: !!this.search.filters.typeOfOccurrenceInFinland?.length,
+          taxonRank: !!this.search.filters.taxonRank?.length,
+          latestRedListStatusFinland: !!this.search.filters['latestRedListStatusFinland.status']?.length,
+          habitat: !!this.search.filters['primaryHabitatSearchStrings']?.length
+          || !!this.search.filters['anyHabitatSearchStrings']?.length,
+          administrativeStatuses: !!this.search.filters['administrativeStatuses']?.length,
+          invasive: !!this.invasiveSelected.length,
+          bold: this.search.filters.hasBold !== undefined || this.search.filters.hasReferenceSequences !== undefined,
+        };
+        firstUpdate = false;
       });
   }
 

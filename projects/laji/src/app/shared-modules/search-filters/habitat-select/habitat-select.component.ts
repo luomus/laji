@@ -12,6 +12,8 @@ interface Signature { primaryHabitat?: string[]; anyHabitat?: string[] };
 export class HabitatSelectComponent implements OnChanges, OnDestroy {
   @Input({ required: true }) query!: Signature;
   @Input() info: string | undefined;
+  @Input() asSection = false;
+  @Input() open = false; // Applies only when `asSection = true`.
 
   habitat?: string[];
   habitatSpecific?: string[];

@@ -2,7 +2,12 @@
   @if (headingTemplate) {
     <ng-template [ngTemplateOutlet]="headingTemplate"></ng-template>
   } @else {
-    <strong class="panel-title" [innerHtml]="title"></strong>
+    <strong class="panel-title">
+      <span [innerHTML]="title"></span>
+      @if (info) {
+        <laji-info [html]="info"></laji-info>
+      }
+    </strong>
   }
 </div>
 <div class="panel-collapse" [ngStyle]="{display: open ? 'block' : 'none' }" role="tabpanel">

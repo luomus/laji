@@ -1,21 +1,33 @@
-<laji-metadata-select
-  [(ngModel)]="habitat"
-  (ngModelChange)="onSelect()"
-  [multiple]="true"
-  [placeholder]="'iucn.filter.habitat' | translate"
-  name="adminStatusFilters"
-  [info]="info"
-  [alt]="'MKV.habitatEnum'"></laji-metadata-select>
-<laji-metadata-select
-  [(ngModel)]="habitatSpecific"
-  (ngModelChange)="onSelect()"
-  [disabled]="!habitat || habitat.length === 0"
-  [multiple]="true"
-  [useFilter]="false"
-  [placeholder]="'iucn.filter.habitatSpecific' | translate"
-  name="adminStatusFilters"
-  [alt]="'MKV.habitatSpecificTypeEnum'"></laji-metadata-select>
-<label class="small-label">
-  <laji-checkbox [value]="onlyPrimary" (valueChange)="onOnlyPrimaryChange()"></laji-checkbox>
-  {{ 'species.form.onlyPrimaryHabitat' | translate }}
-</label>
+<section *ngIf="asSection" laji-panel [title]="'iucn.filter.habitat' | translate" [autoToggle]="true"
+  [info]="'species.info.administrative' | translate" [open]="open">
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</section>
+<ng-container *ngIf="!asSection">
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</ng-container>
+
+<ng-template #content>
+  <laji-metadata-select
+    [(ngModel)]="habitat"
+    (ngModelChange)="onSelect()"
+    [multiple]="true"
+    [placeholder]="asSection ? '' : ('iucn.filter.habitat' | translate)"
+    name="adminStatusFilters"
+    [info]="info"
+    [alt]="'MKV.habitatEnum'"
+    [open]="true" ></laji-metadata-select>
+  <laji-metadata-select
+    [(ngModel)]="habitatSpecific"
+    (ngModelChange)="onSelect()"
+    [disabled]="!habitat || habitat.length === 0"
+    [multiple]="true"
+    [useFilter]="false"
+    [placeholder]="'iucn.filter.habitatSpecific' | translate"
+    name="adminStatusFilters"
+    [alt]="'MKV.habitatSpecificTypeEnum'"
+    ></laji-metadata-select>
+  <label class="small-label">
+    <laji-checkbox [value]="onlyPrimary" (valueChange)="onOnlyPrimaryChange()"></laji-checkbox>
+    {{ 'species.form.onlyPrimaryHabitat' | translate }}
+  </label>
+</ng-template>

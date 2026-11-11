@@ -38,16 +38,16 @@
       [browseObservationsText]="'species.header.browse' | translate"
       (browseObservations)="browseObservations()"
     >
-      @if (referenceSequencesCount) {
-        <laji-download
-          class="ml-3"
-          (download)="downloadReferenceSequences($event)"
-          [formats]="['csv', 'tsv', 'ods', 'xlsx']"
-          [disabled]="referenceSequencesDownloading"
-        >
-          {{ 'taxonomy.referenceSequences.download' | translate }} ({{ referenceSequencesCount }})
-        </laji-download>
-      }
+    @if (referenceSequencesCount) {
+      <laji-download
+        class="ml-3"
+        (download)="downloadReferenceSequences($event)"
+        [formats]="['csv', 'tsv', 'ods', 'xlsx']"
+        [disabled]="referenceSequencesDownloading"
+      >
+        {{ 'taxonomy.referenceSequences.download' | translate }} ({{ referenceSequencesCount }})
+      </laji-download>
+    }
     </laji-datatable-header>
     <laji-datatable
       #dataTable

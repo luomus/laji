@@ -16,13 +16,13 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
   @Input() info?: string;
   @Input() trueValue?: string[];
   @Input() falseValue?: string[];
+  @Input() open? = false;
 
   @Output() update = new EventEmitter<{true: string[]; false: string[]}>();
 
 
   lang!: string;
   options$?: Observable<{ id: string; value: string }[]>;
-  open? = false;
 
   constructor(
     private metadataService: MetadataService,
@@ -30,7 +30,7 @@ export class ThreeStateMultiSwitchComponent implements OnInit {
 
   ngOnInit() {
     this.lang = this.translate.getCurrentLang();
-    this.open =  (this.trueValue?.length as any) > 0 || (this.falseValue?.length as any) > 0 ? true : false;
+    this.open = (this.trueValue?.length as any) > 0 || (this.falseValue?.length as any) > 0 ? true : this.open;
   }
 
   @Input()

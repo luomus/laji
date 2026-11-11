@@ -26,7 +26,8 @@ export class InfoComponent {
     private platformService: PlatformService
   ) {}
 
-  toggleModal() {
+  toggleModal(event: Event) {
+    event.stopPropagation();
     if (!this.useModal) { return; }
     if (this.modal.isShown) { this.modal.hide(); } else { this.modal.show(); }
   }

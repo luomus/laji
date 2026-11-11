@@ -25,6 +25,8 @@
 ></laji-taxon-select>
 
 <bSwitch
+  style="display: block"
+  class="mb-3 mt-3"
   name="finnish"
   [switch-off-text]="'species.form.all' | translate"
   [switch-on-text]="'species.form.finnish' | translate"
@@ -35,93 +37,153 @@
   (changeState)="onFinnishCheckboxValueChange($event.currentValue)">
 </bSwitch>
 
-<laji-select
-  [(ngModel)]="search.filters.typeOfOccurrenceInFinland"
-  (selectedChange)="onSearchChange()"
-  [multiple]="true"
-  [useFilter]="false"
+<section laji-panel
   [title]="'observation.commonness' | translate"
+  [autoToggle]="true"
   [info]="'observation.info.commonness' | translate"
-  [options]="[
-    {id: 'MX.typeOfOccurrenceCommon', value: ('MX.typeOfOccurrenceCommon' | label)},
-    {id: 'MX.typeOfOccurrenceRare', value: ('MX.typeOfOccurrenceRare' | label)},
-    {id: 'MX.typeOfOccurrenceVeryRare', value: ('MX.typeOfOccurrenceVeryRare' | label)}
-  ]"
-></laji-select>
+  [open]="initialOpen.typeOfOccurrenceInFinland"
+>
+  <laji-select
+    [(ngModel)]="search.filters.typeOfOccurrenceInFinland"
+    (selectedChange)="onSearchChange()"
+    [multiple]="true"
+    [useFilter]="false"
+    [options]="[
+      {id: 'MX.typeOfOccurrenceCommon', value: ('MX.typeOfOccurrenceCommon' | label)},
+      {id: 'MX.typeOfOccurrenceRare', value: ('MX.typeOfOccurrenceRare' | label)},
+      {id: 'MX.typeOfOccurrenceVeryRare', value: ('MX.typeOfOccurrenceVeryRare' | label)}
+    ]"
+    [open]="true"
+  ></laji-select>
+</section>
 
-<laji-metadata-select
-  [(ngModel)]="search.filters.taxonRank"
-  (ngModelChange)="onSearchChange()"
-  [multiple]="true"
-  [useFilter]="false"
-  name="taxonRanks"
-  [placeholder]="'taxonomy.active.taxonRank'"
-  [alt]="'MX.taxonRankEnum'"
-  [skipBefore]="'MX.species'"
-></laji-metadata-select>
+<section laji-panel
+  [title]="'taxonomy.active.taxonRank' | translate"
+  [autoToggle]="true"
+  [open]="initialOpen.taxonRank"
+>
+  <laji-metadata-select
+    [(ngModel)]="search.filters.taxonRank"
+    (ngModelChange)="onSearchChange()"
+    [multiple]="true"
+    placeholder=""
+    [useFilter]="false"
+    name="taxonRanks"
+    [alt]="'MX.taxonRankEnum'"
+    [skipBefore]="'MX.species'"
+    [open]="true"
+  ></laji-metadata-select>
+</section>
 
-<laji-metadata-select
-  [(ngModel)]="search.filters['latestRedListStatusFinland.status']"
-  (ngModelChange)="onSearchChange()"
-  [multiple]="true"
-  [useFilter]="false"
-  name="redListStatusFilters"
-  [placeholder]="'observation.form.redListStatusId'"
+<section laji-panel
+  [title]="'observation.form.redListStatusId' | translate"
+  [autoToggle]="true"
   [info]="'species.info.redlist' | translate"
-  [alt]="'MX.iucnStatuses'"
-></laji-metadata-select>
+  [open]="initialOpen.latestRedListStatusFinland"
+>
+  <laji-metadata-select
+    [(ngModel)]="search.filters['latestRedListStatusFinland.status']"
+    (ngModelChange)="onSearchChange()"
+    [multiple]="true"
+    placeholder=""
+    [useFilter]="false"
+    name="redListStatusFilters"
+    [alt]="'MX.iucnStatuses'"
+    [open]="true"
+  ></laji-metadata-select>
+</section>
 
 <laji-habitat-select
+  [asSection]="true"
   [query]="{ primaryHabitat: search.filters['primaryHabitatSearchStrings'], anyHabitat: search.filters['anyHabitatSearchStrings'] }"
   [info]="'species.info.habitat' | translate"
   (habitatSelect)="onHabitatChange($event)"
+  [open]="initialOpen.habitat"
 ></laji-habitat-select>
 
-<laji-metadata-select
-  [(ngModel)]="search.filters['administrativeStatuses']"
-  (ngModelChange)="onSearchChange()"
-  [multiple]="true"
-  [placeholder]="'MX.hasAdminStatus' | label"
-  name="adminStatusFilters"
+<section laji-panel
+  [title]="'MX.hasAdminStatus' | label"
+  [autoToggle]="true"
   [info]="'species.info.administrative' | translate"
-  [alt]="'MX.adminStatusEnum'"
-></laji-metadata-select>
+  [open]="initialOpen.administrativeStatuses"
+>
+  <laji-metadata-select
+    [(ngModel)]="search.filters['administrativeStatuses']"
+    (ngModelChange)="onSearchChange()"
+    [multiple]="true"
+    placeholder=""
+    name="adminStatusFilters"
+    [alt]="'MX.adminStatusEnum'"
+    [open]="true"
+  ></laji-metadata-select>
+</section>
 
-<laji-three-state-multi-switch
+<section laji-panel
   [title]="'observation.form.typeOfOccurrenceId' | translate"
-  [trueValue]="typeOfOccurrenceInFinlandInclusions"
-  [falseValue]="typeOfOccurrenceInFinlandExclusions"
-  [alt]="'MX.typeOfOccurrenceEnum'"
-  (update)="updateTypesOfOccurrence($event)"
-></laji-three-state-multi-switch>
+  [autoToggle]="true"
+  [open]="initialOpen.typeOfOccurrenceInFinland"
+>
+  <laji-three-state-multi-switch
+    [trueValue]="typeOfOccurrenceInFinlandInclusions"
+    [falseValue]="typeOfOccurrenceInFinlandExclusions"
+    [alt]="'MX.typeOfOccurrenceEnum'"
+    [open]="true"
+    (update)="updateTypesOfOccurrence($event)"
+  ></laji-three-state-multi-switch>
+</section>
 
-<laji-select
-  [options]="[
-    {id: 'onlyInvasive', value: 'observation.form.invasive' | translate},
-    {id: 'onlyNonInvasive', value: 'observation.form.nonInvasive' | translate},
-    {id: 'MX.euInvasiveSpeciesList', value: 'MX.euInvasiveSpeciesList' | label},
-    {id: 'MX.controllingRisksOfInvasiveAlienSpecies', value: 'MX.controllingRisksOfInvasiveAlienSpecies' | label},
-    {id: 'MX.quarantinePlantPest', value: 'MX.quarantinePlantPest' | label},
-    {id: 'MX.qualityPlantPest', value: 'MX.qualityPlantPest' | label},
-    {id: 'MX.otherPlantPest', value: 'MX.otherPlantPest' | label},
-    {id: 'MX.nationalInvasiveSpeciesStrategy', value: 'MX.nationalInvasiveSpeciesStrategy' | label},
-    {id: 'MX.otherInvasiveSpeciesList', value: 'MX.otherInvasiveSpeciesList' | label},
-    {id: 'allInvasiveSpecies', value: 'observation.form.allInvasive' | translate}
-  ]"
-  [ngModel]="invasiveSelected"
+<section laji-panel
   [title]="'observation.form.invasive' | translate"
-  [useFilter]="false"
-  (selectedChange)="onInvasiveChange($event)"
-></laji-select>
+  [autoToggle]="true"
+  [open]="initialOpen.invasive"
+>
+  <laji-select
+    [options]="[
+      {id: 'onlyInvasive', value: 'observation.form.invasive' | translate},
+      {id: 'onlyNonInvasive', value: 'observation.form.nonInvasive' | translate},
+      {id: 'MX.euInvasiveSpeciesList', value: 'MX.euInvasiveSpeciesList' | label},
+      {id: 'MX.controllingRisksOfInvasiveAlienSpecies', value: 'MX.controllingRisksOfInvasiveAlienSpecies' | label},
+      {id: 'MX.quarantinePlantPest', value: 'MX.quarantinePlantPest' | label},
+      {id: 'MX.qualityPlantPest', value: 'MX.qualityPlantPest' | label},
+      {id: 'MX.otherPlantPest', value: 'MX.otherPlantPest' | label},
+      {id: 'MX.nationalInvasiveSpeciesStrategy', value: 'MX.nationalInvasiveSpeciesStrategy' | label},
+      {id: 'MX.otherInvasiveSpeciesList', value: 'MX.otherInvasiveSpeciesList' | label},
+      {id: 'allInvasiveSpecies', value: 'observation.form.allInvasive' | translate}
+    ]"
+    [ngModel]="invasiveSelected"
+    
+    [useFilter]="false"
+    [open]="true"
+    (selectedChange)="onInvasiveChange($event)"
+  ></laji-select>
+</section>
 
-<laji-select
-  [(ngModel)]="search.filters.hasBold"
-  (ngModelChange)="onSearchChange()"
-  [options]="[
-    {id: true, value: 'observation.form.onlyBold' | translate},
-    {id: false, value: 'observation.form.onlyNonBold' | translate}
-  ]"
+<section laji-panel
   [title]="'observation.form.bold' | translate"
-  [useFilter]="false"
-  [multiple]="false"
-></laji-select>
+  [autoToggle]="true"
+  [open]="initialOpen.bold"
+>
+  <laji-select
+    [open]="true"
+    [(ngModel)]="search.filters.hasBold"
+    (ngModelChange)="onSearchChange()"
+    [options]="[
+      {id: true, value: 'observation.form.onlyBold' | translate},
+      {id: false, value: 'observation.form.onlyNonBold' | translate}
+    ]"
+    [useFilter]="false"
+    [multiple]="false"
+  ></laji-select>
+  <hr/>
+  <laji-select
+    [open]="true"
+    [(ngModel)]="search.filters.hasReferenceSequences"
+    (ngModelChange)="onSearchChange()"
+    [options]="[
+      {id: true, value: 'observation.form.onlyHasReferenceSequences' | translate},
+      {id: false, value: 'observation.form.onlyNotHasReferenceSequences' | translate}
+    ]"
+    [useFilter]="false"
+    [multiple]="false"
+  ></laji-select>
+</section>

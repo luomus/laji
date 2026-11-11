@@ -2329,5 +2329,7 @@
   "taxonomy.referenceSequences.locus": "Lokus",
   "taxonomy.referenceSequences.taxonId": "Taksoni ID",
   "taxonomy.referenceSequences.download": "Lataa referenssisekvenssit",
-  "taxonomy.referenceSequences.download.fileName": "referenssisekvenssit"
+  "taxonomy.referenceSequences.download.fileName": "referenssisekvenssit",
+  "observation.form.onlyHasReferenceSequences": "On referenssisekvenssejä",
+  "observation.form.onlyNotHasReferenceSequences": "Ei ole referenssisekvenssejä"
 }

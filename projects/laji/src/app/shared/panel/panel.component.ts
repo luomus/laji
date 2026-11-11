@@ -14,6 +14,7 @@ export class PanelComponent {
   @Input() open = false;
   @Input() autoToggle = false;
   @Input() headerLink = true;
+  @Input() info?: string;
   @Output() activate = new EventEmitter();
 
   activateCurrent() {

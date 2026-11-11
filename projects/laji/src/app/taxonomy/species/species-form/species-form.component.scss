@@ -1,3 +1,5 @@
+@use 'vars' as *;
+
 :host ::ng-deep .bootstrap-switch {
   display: block;
   margin-right: auto;
@@ -22,4 +24,13 @@
   justify-content: flex-end;
 }
 
+:host ::ng-deep [laji-panel] {
+  background-color: $neutral-2;
+  box-shadow: 0 1px 3px 0 $neutral-4;
+  margin-bottom: 10px;
+}
 
+:host ::ng-deep .lj-item-container {
+  border-bottom: none !important;
+  padding: 0px 20px !important;
+}
