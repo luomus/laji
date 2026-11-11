@@ -36,6 +36,7 @@
     "build:vir-local": "npm run ng-high-memory -- build vir --configuration=local --watch",
     "build:vir-local:watch": "npm run ng-high-memory -- build vir --configuration=local --watch",
     "build:dev": "npm run ng-high-memory -- build laji --source-map --configuration=dev --base-href https://dev.laji.fi",
+    "build:csr": "npm run ng-high-memory -- build laji --source-map --configuration=csr --base-href https://dev.laji.fi",
     "build:beta": "npm run ng-high-memory -- build laji --configuration=beta --base-href https://beta.laji.fi && npm run generate:build-id",
     "build:dev:embedded": "npm run ng-high-memory -- build laji --configuration=dev-embedded --base-href https://dev-embedded.laji.fi",
     "build:exhibition-screen:prod": "npm run ng-high-memory -- build exhibition-screen --configuration=production",

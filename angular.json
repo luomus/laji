@@ -71,6 +71,12 @@
             }
           },
           "configurations": {
+            "csr": {
+              "outputMode": "static",
+              "server": false,
+              "ssr": false,
+              "prerender": false
+            },
             "production": {
               "index": {
                 "input": "projects/laji/src/index.prod.html",
@@ -239,7 +245,7 @@
         "serve": {
           "builder": "@angular/build:dev-server",
           "options": {
-            "buildTarget": "laji:build"
+            "buildTarget": "laji:build:csr"
           },
           "configurations": {
             "production": {
@@ -257,7 +263,7 @@
             "local": {
               "proxyConfig": "proxy.conf.js",
               "port": 3000,
-              "buildTarget": "laji:build:local"
+              "buildTarget": "laji:build:local,csr"
             },
             "local-beta": {
               "port": 3000,

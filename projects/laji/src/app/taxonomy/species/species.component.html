@@ -5,7 +5,7 @@
       <ng-container *lajiForTypes="['vir']; exclude: true">
         <h1>{{ 'species.search' | translate }}</h1>
         <h2>{{ 'species.title.short' | translate }}</h2>
-        <p>{{ 'species.title.long' | translate }}</p>
+        <p [innerHtml]="'species.title.long' | translate"></p>
       </ng-container>
     </div>
     <lu-tabs [selectedIndex]="selectedIndex" (selectedChange)="onSelect($event)">
