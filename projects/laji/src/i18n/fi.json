@@ -2334,5 +2334,6 @@
   "observation.form.onlyNotHasReferenceSequences": "Ei ole referenssisekvenssejä",
   "observation.form.darkTaxon": "Nimettömät taksonit",
   "observation.form.onlyDarkTaxon": "Ainoastaan nimettömät taksonit",
-  "observation.form.onlyNononlyDarkTaxon": "Ei nimettömiä taksoneita"
+  "observation.form.onlyNonDarkTaxon": "Ei nimettömiä taksoneita",
+  "observation.form.includeDarkTaxon": "Sisällytä nimettömät taksonit"
 }

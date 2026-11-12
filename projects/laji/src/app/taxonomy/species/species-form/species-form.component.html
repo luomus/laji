@@ -151,7 +151,6 @@
       {id: 'allInvasiveSpecies', value: 'observation.form.allInvasive' | translate}
     ]"
     [ngModel]="invasiveSelected"
-    
     [useFilter]="false"
     [open]="true"
     (selectedChange)="onInvasiveChange($event)"
@@ -195,11 +194,12 @@
 >
   <laji-select
     [open]="true"
-    [(ngModel)]="search.filters.darkTaxon"
-    (ngModelChange)="onSearchChange()"
+    [(ngModel)]="darkTaxon"
+    (ngModelChange)="onDarkTaxonChange($event)"
     [options]="[
-      {id: true, value: 'observation.form.onlyDarkTaxon' | translate},
-      {id: false, value: 'observation.form.onlyNononlyDarkTaxon' | translate}
+      {id: 'true,false', value: 'observation.form.includeDarkTaxon' | translate},
+      {id: 'true', value: 'observation.form.onlyDarkTaxon' | translate},
+      {id: 'false', value: 'observation.form.onlyNonDarkTaxon' | translate}
     ]"
     [useFilter]="false"
     [multiple]="false"

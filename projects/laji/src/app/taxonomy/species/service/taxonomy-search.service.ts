@@ -102,6 +102,10 @@ export class TaxonomySearch {
         : param;
     }
 
+    if (queryParams.darkTaxon === false) {
+      delete queryParams.darkTaxon;
+    }
+
     if (this.taxonId) {
       queryParams.taxonId = this.taxonId;
     }

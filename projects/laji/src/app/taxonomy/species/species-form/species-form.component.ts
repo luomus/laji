@@ -40,6 +40,8 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
   finnishCheckboxValue!: boolean;
 
+  darkTaxon!: 'true' | 'false' | 'true,false';
+
   initialOpen = {
     taxonRank: false,
     latestRedListStatusFinland: false,
@@ -63,6 +65,13 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
 
     this.finnishCheckboxValue = this.search.filters.finnish !== undefined;
 
+    const { darkTaxon } = this.search.filters;
+    this.darkTaxon = (darkTaxon === false || darkTaxon === undefined)
+      ? 'false'
+      : darkTaxon === true
+        ? 'true'
+        : 'true,false';
+
     let firstUpdate = true;
     this.subUpdate = this.search.searchUpdated$.pipe(startWith(undefined)).subscribe(
       () => {
@@ -85,7 +94,7 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
           administrativeStatuses: !!this.search.filters['administrativeStatuses']?.length,
           invasive: !!this.invasiveSelected.length,
           bold: this.search.filters.hasBold !== undefined || this.search.filters.hasReferenceSequences !== undefined,
-          dark: this.search.filters.darkTaxon !== undefined,
+          dark: this.search.filters.darkTaxon !== undefined && this.search.filters.darkTaxon !== false
         };
         firstUpdate = false;
       });
@@ -177,6 +186,18 @@ export class SpeciesFormComponent implements OnInit, OnDestroy {
       ...administrativeStatuses
     ])];
 
+    this.onSearchChange();
+  }
+
+  onDarkTaxonChange(value: 'true' | 'false' | 'true,false') {
+    if (value === 'true,false') {
+      this.search.filters.darkTaxon = [true, false];
+    } else if (value === 'true') {
+      this.search.filters.darkTaxon = true;
+    } else if (value === 'false') {
+      this.search.filters.darkTaxon = false;
+    }
+    this.darkTaxon = value;
     this.onSearchChange();
   }
 
