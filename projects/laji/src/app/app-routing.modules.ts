@@ -124,6 +124,7 @@ const routesWithLang: Routes = [
     {path: 'laadunvalvonta', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.dataQuality'}, pathMatch: 'full'},
     {path: 'sensitiiviset', component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.sensitiveData'}, pathMatch: 'full'},
     {path: 'mobiilivihko',  component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.notebook.mobileNotebook'}, pathMatch: 'full'},
+    {path: 'sirkku',  component: ExternalRedirectComponent, data: {linkKey: 'infoLinks.sirkku'}, pathMatch: 'full'},
     {path: 'ilmoita', redirectTo: '/save-observations', pathMatch: 'full'},
     {path: 'selaa', redirectTo: '/observation/list', pathMatch: 'full'},
     {path: 'rengaslomake', redirectTo: '/project/rengasloyto', pathMatch: 'full'},
