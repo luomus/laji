@@ -44,6 +44,7 @@ interface ISections {
   image: Array<keyof WarehouseQueryInterface>;
   dna: Array<keyof WarehouseQueryInterface>;
   secure: Array<keyof WarehouseQueryInterface>;
+  taxonLinking: Array<keyof WarehouseQueryInterface>;
 }
 
 @Component({
@@ -102,6 +103,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
     image: ['hasUnitMedia', 'hasGatheringMedia', 'hasDocumentMedia', 'hasUnitImages', 'hasUnitAudio', 'hasUnitModel'],
     dna: ['hasSequenceText'],
     secure: ['secured', 'secureLevel'],
+    taxonLinking: ['checklist', 'taxonLinking'],
   };
 
   delayedSearch = new Subject<void>();

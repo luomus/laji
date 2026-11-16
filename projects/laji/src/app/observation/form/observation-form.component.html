@@ -836,6 +836,35 @@
                  ]"></laji-select>
 </section>
 
+<!-- Taxon linking -->
+<section class="laji-panel" laji-panel [title]="'observation.form.taxonLinkingPanel' | translate" [autoToggle]="true" [open]="visible['taxonLinking']!">
+  <laji-select
+      [selected]="query.checklist"
+      (selectedChange)="indirectQueryChange('checklist', $any($event))"
+      [multiple]="true"
+      [open]="true"
+      [useFilter]="false"
+      [title]="'observation.form.checklist' | translate"
+      [info]="'observation.info.checklist' | translate"
+      [options]="[
+                 {id: 'MR.1', value: ('observation.form.checklist.MR.1' | translate)},
+                 {id: 'MR.2', value: ('observation.form.checklist.MR.2' | translate)},
+                 ]"></laji-select>
+  <laji-select
+      [selected]="query.taxonLinking"
+      (selectedChange)="indirectQueryChange('taxonLinking', $any($event))"
+      [multiple]="true"
+      [open]="true"
+      [useFilter]="false"
+      [title]="'observation.form.taxonLinking' | translate"
+      [info]="'observation.info.taxonLinking' | translate"
+      [options]="[
+                 {id: 'EXACT', value: ('observation.form.taxonLinking.exact' | translate)},
+                 {id: 'PARTIAL', value: ('observation.form.taxonLinking.partial' | translate)},
+                 {id: 'NO_LINKING', value: ('observation.form.taxonLinking.noLinking' | translate)},
+                 ]"></laji-select>
+</section>
+
 <section class="laji-panel" laji-panel [title]="'observation.form.presetPanel' | translate" [autoToggle]="true">
   <div>
     <a class="btn btn-default btn-sm"

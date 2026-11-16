@@ -258,6 +258,8 @@ export interface WarehouseQueryInterface {
   primarySpecimen?: boolean;
   hasValue?: string;
   hasSequenceText?: boolean;
+  taxonLinking?: string;
+  checklist?: string;
 }
 
 
