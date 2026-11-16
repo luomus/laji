@@ -108,7 +108,6 @@ export class SearchQueryService implements SearchQueryInterface {
     'pairCounts',
     'onlyCount',
     'geoJSON',
-    'includeNonValidTaxa',
     'invasiveControlled',
     'finnish',
     'invasive',
@@ -139,7 +138,8 @@ export class SearchQueryService implements SearchQueryInterface {
     'alive',
     'higherTaxon',
     'sensitive',
-    'hasSequenceText'
+    'hasSequenceText',
+    'hasTaxon',
   ];
 
   // noinspection JSUnusedLocalSymbols

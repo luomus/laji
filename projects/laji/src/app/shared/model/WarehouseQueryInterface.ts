@@ -1,7 +1,6 @@
 /**
  * Query interface for warehouse
  *
- * @property includeNonValidTaxa By default, query results include also entries where target name does not match taxonomy.
  * To getList only entries where one and only one taxon matches given target name, set this parameter to false.
  * @property taxonId Filter based on URI or Qname identifier of a taxon. Use Taxonomy-API to find identifiers.
  * Will only return entries where reported target name matches one of the names given to this and only this taxon.
@@ -113,7 +112,6 @@
  * @property atlasClass filter using unit atlas class
  */
 export interface WarehouseQueryInterface {
-  includeNonValidTaxa?: boolean;
   taxonId?: string | Array<string>;
   target?: Array<string>;
   includeSubTaxa?: boolean;
@@ -258,6 +256,7 @@ export interface WarehouseQueryInterface {
   primarySpecimen?: boolean;
   hasValue?: string;
   hasSequenceText?: boolean;
+  hasTaxon?: boolean;
 }
 
 

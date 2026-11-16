@@ -31,7 +31,7 @@ export class InfoCardQueryService {
       coordinateAccuracyMax: mapQuery ? 10000 : undefined,
       recordQuality: ['EXPERT_VERIFIED', 'COMMUNITY_VERIFIED', 'NEUTRAL'],
       needsCheck: false,
-      includeNonValidTaxa: false,
+      hasTaxon: true,
       cache: true
     };
   }

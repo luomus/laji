@@ -195,7 +195,7 @@ export class ObservationDownloadComponent implements OnDestroy {
   updateCsvLink() {
     const queryParams = this.searchQuery.prepareDownloadApiQueryObject(this.query);
     queryParams['aggregateBy'] = this.taxaDownloadAggregateBy[this.translate.getCurrentLang() as keyof { en: string; fi: string; sv: string }];
-    queryParams['includeNonValidTaxa'] = 'false';
+    queryParams['hasTaxon'] = 'true';
     queryParams['pageSize'] = '' + this.taxaLimit;
     queryParams['format'] = 'csv';
     const params = new HttpParams({fromObject: <any>queryParams});

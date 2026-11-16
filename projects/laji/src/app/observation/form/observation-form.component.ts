@@ -447,7 +447,7 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
         query.informalTaxonGroupId : undefined,
       informalTaxonGroupIdNot: query.informalTaxonGroupIdNot ?
         query.informalTaxonGroupIdNot : undefined,
-      includeOnlyValid: query.includeNonValidTaxa === false ? true : undefined,
+      includeOnlyValid: query.hasTaxon === true ? true : undefined,
       euInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.euInvasiveSpeciesList'),
       quarantinePlantPest: this.hasInMulti(query.administrativeStatusId, 'MX.quarantinePlantPest'),
       otherInvasiveSpeciesList: this.hasInMulti(query.administrativeStatusId, 'MX.otherInvasiveSpeciesList'),
@@ -490,9 +490,9 @@ export class ObservationFormComponent implements OnInit, OnDestroy {
 
     query.informalTaxonGroupId = formQuery.informalTaxonGroupId ? formQuery.informalTaxonGroupId : undefined;
     query.informalTaxonGroupIdNot = formQuery.informalTaxonGroupIdNot ? formQuery.informalTaxonGroupIdNot : undefined;
-    query.includeNonValidTaxa = formQuery.includeOnlyValid ? false : query.includeNonValidTaxa;
+    query.hasTaxon = formQuery.includeOnlyValid ? true : query.hasTaxon;
     if (formQuery.allInvasiveSpecies) {
-      query.administrativeStatusId = this.invasiveStatuses.map(val => 'MX.' + val);
+     query.administrativeStatusId = this.invasiveStatuses.map(val => 'MX.' + val);
     }
     if (formQuery.onlyFromCollectionSystems) {
       query.sourceId = ['KE.167', 'KE.3'];

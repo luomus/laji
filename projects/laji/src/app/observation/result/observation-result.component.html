@@ -51,7 +51,7 @@
             @if (visible.countTaxa) {
               <laji-observation-count
                 [dataMode]="dataMode"
-                [overrideInQuery]="{countryId: ['ML.206'], includeNonValidTaxa: false}"
+                [overrideInQuery]="{countryId: ['ML.206'], hasTaxon: true}"
                 [query]="activeQuery"
               [field]="'unit.linkings.taxon.speciesId'"></laji-observation-count>
             }
