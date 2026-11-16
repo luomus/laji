@@ -90,6 +90,12 @@ export class DocumentViewerFacade {
     private userService: UserService
   ) {}
 
+  isCreatorOrEditor(document: StoreDocument): Observable<boolean> {
+    return this.userService.getProfile().pipe(
+      map(({ userID }) => !!userID && (userID === document.creator || userID === document.editor || !!document.editors?.includes(userID)))
+    );
+  }
+
   showRemoteDocument(param: IDocumentIdParameters): void {
     this.updateState({..._state, showModal: true});
     this.api.get('/documents/{id}', { path: { id: param.document } }).subscribe(document => {
@@ -114,11 +120,15 @@ export class DocumentViewerFacade {
     if (!param.document || !param.document.id) {
       return;
     }
-    this.updateState({
-      ..._state,
-      ...defaultParams,
-      ...param,
-      showModal: true
+    this.isCreatorOrEditor(param.document).subscribe(isCreatorOrEditor => {
+      console.log('isCreatorOrEditor:', isCreatorOrEditor);
+      this.updateState({
+        ..._state,
+        ...defaultParams,
+        ...param,
+        own: isCreatorOrEditor,
+        showModal: true
+      });
     });
   }
 
