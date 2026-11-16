@@ -86,7 +86,8 @@ const HOME_QUERY = gql`
     species: warehouse_query_unit_aggregate(
       cache: true
       aggregateBy: unit_linkings_taxon_id
-      taxonRankId: "MX.species"
+      taxonRankId: "MX.species",
+      finnish: true
     ) {
       total
     }
