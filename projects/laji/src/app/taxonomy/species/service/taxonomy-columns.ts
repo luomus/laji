@@ -23,7 +23,7 @@ export class TaxonomyColumns {
     },
     {
       name: 'scientificName',
-      selectField: 'scientificName,cursiveName',
+      selectField: 'scientificName,scientificNameLabel',
       label: 'taxonomy.scientific.name',
       cellTemplate: 'taxonScientificNameLink',
       width: 200

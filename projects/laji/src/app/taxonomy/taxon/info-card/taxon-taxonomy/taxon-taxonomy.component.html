@@ -3,7 +3,7 @@
     <div class="panel panel-default">
       <div class="panel-body">
         <p>
-          <span class="scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}</span>
+          <span class="scientificName" [innerHtml]="taxon.scientificNameLabel"></span>
           @if (taxon.scientificNameAuthorship) {
             <span class="author">{{ taxon.scientificNameAuthorship }}</span>
           }

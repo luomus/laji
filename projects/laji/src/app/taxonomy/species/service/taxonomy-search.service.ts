@@ -12,7 +12,7 @@ export type TaxaSearchFilters = Filters;
 @Injectable()
 export class TaxonomySearch {
   private static readonly defaultFields: string[] = [
-    'vernacularName', 'scientificName', 'typeOfOccurrenceInFinland',
+    'vernacularName', 'scientificName', 'scientificNameLabel',  'typeOfOccurrenceInFinland',
     'latestRedListStatusFinland', 'administrativeStatuses',
     'synonymNames'
   ];

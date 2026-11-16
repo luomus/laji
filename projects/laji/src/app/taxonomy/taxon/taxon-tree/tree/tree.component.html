@@ -37,7 +37,6 @@
 
 <ng-template #treeNodeContent let-node="node">
   <li>
-    <!--<span style="display:block; line-height:0.5">{{ node.value.taxonRank | label }}</span>-->
     @if (node.state.loadingCount === 0) {
       <i class="glyphicon link toggle-triangle"
         [ngClass]="{'glyphicon-triangle-right': !node.state.isExpanded, 'glyphicon-triangle-bottom': node.state.isExpanded}"

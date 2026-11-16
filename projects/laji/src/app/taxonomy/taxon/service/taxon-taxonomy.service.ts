@@ -163,6 +163,7 @@ export class TaxonTaxonomyService {
       'hiddenTaxon',
       'vernacularName',
       'scientificName',
+      'scientificNameLabel',
       'cursiveName',
       'taxonRank',
       'finnish',

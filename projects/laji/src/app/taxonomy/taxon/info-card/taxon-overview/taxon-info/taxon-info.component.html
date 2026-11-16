@@ -4,7 +4,7 @@
   </laji-taxon-info-row>
 }
 <laji-taxon-info-row [label]="'taxonomy.scientific.name' | translate">
-  <span class="scientificName" [class.cursive]="taxon.cursiveName">{{ taxon.scientificName }}</span>
+  <span class="scientificName" [innerHtml]="taxon.scientificNameLabel"></span>
 </laji-taxon-info-row>
 @if (taxon.scientificNameAuthorship) {
   <laji-taxon-info-row [label]="'taxonomy.author' | translate">

@@ -189,9 +189,9 @@
 </ng-template>
 <ng-template let-row="row" #taxonScientificNameLink>
   <span class="inline">
-    @if (row.scientificName) {
+    @if (row.scientificNameLabel) {
       <a title="{{row.scientificName}}" [routerLink]="['/taxon/' + row.id] | localize">
-        <span [class.cursive]="row.cursiveName">{{ row.scientificName }}</span>
+        <span [innerHtml]="row.scientificNameLabel"></span>
       </a>
     }
     @if (row.id.startsWith('gbif:')) {
@@ -201,10 +201,8 @@
 
 </ng-template>
 <ng-template let-value="value" #scientificName>
-  @if (value.scientificName) {
-    <span title="{{value.scientificName}}" [class.cursive]="value.cursiveName">
-      {{ value.scientificName }}
-    </span>
+  @if (value.scientificNameLabel) {
+    <span title="{{value.scientificNameLabel}}" [innerHTML]="value.scientificNameLabel"></span>
   }
 </ng-template>
 <ng-template let-value="value" #cursive>

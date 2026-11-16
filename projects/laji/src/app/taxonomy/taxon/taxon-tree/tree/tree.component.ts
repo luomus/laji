@@ -2,7 +2,6 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ContentChild,
   Input,
   OnChanges,
   OnDestroy,
@@ -63,6 +62,7 @@ export class TreeComponent implements OnChanges, OnDestroy {
   }
 
   toggle(node: TreeNode) {
+    console.log(this.tree);
     if (!node.value.hasChildren) {
       return;
     }

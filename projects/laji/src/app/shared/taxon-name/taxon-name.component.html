@@ -34,11 +34,15 @@
     {{ obsoleteVernacularName }}
   </div>
 }
-<ng-template #scientificName>@if (taxon.cursiveName) {
-  <em class="scientific-name">{{ taxon.scientificName }}</em>
-} @else {
-  <span class="scientific-name">{{ taxon.scientificName }}</span>
-}</ng-template>
+<ng-template #scientificName>
+  @if (taxon.scientificNameLabel) {
+    <span [innerHtml]="taxon.scientificNameLabel"></span>
+  } @else if (taxon.cursiveName) {
+    <em class="scientific-name">{{ taxon.scientificName }}</em>
+  } @else {
+    <span class="scientific-name">{{ taxon.scientificName }}</span>
+  }
+</ng-template>
 <ng-template #vernacularName>
   <span class="vernacular-name">
     {{ capitalizeName ? (taxon.vernacularName | multiLang:false | capitalize) : (taxon.vernacularName | multiLang:false) }}

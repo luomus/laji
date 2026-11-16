@@ -14,6 +14,7 @@ export class TaxonNameComponent {
     qname?: string;
     cursiveName?: boolean;
     scientificName?: string;
+    scientificNameLabel?: string;
     vernacularName?: string | {[lang: string]: string};
     scientificNameAuthorship?: string;
     alternativeVernacularName?: any;
