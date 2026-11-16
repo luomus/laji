@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable, zip, of } from 'rxjs';
 import { SelectedOption, TreeOptionsChangeEvent } from '../tree-select/tree-select.component';
 import * as Util from '../../shared/utils';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
+import { SearchQueryService } from '../../observation/search-query.service';
 
 @Component({
     selector: 'laji-collections-select',
@@ -42,6 +43,7 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
 
   constructor(
     private collectionService: CollectionService,
+    private queryService: SearchQueryService,
     private translate: TranslateService
   ) {
     this.filterQuery$ = this.filterQuerySubject.asObservable().pipe(
@@ -69,7 +71,9 @@ export class CollectionsSelectComponent implements OnInit, OnChanges {
       this.collections$ = this.initCollections(this.translate.getCurrentLang(), this.includedOptions, this.excludedOptions);
     }
 
-    const { collectionId, collectionIdNot, ...query } = this.query;
+    const normalizedQuery = this.query ? this.queryService.getNormalizedApiQuery(this.query) : {};
+
+    const { collectionId, collectionIdNot, ...query } = normalizedQuery;
     this.filterQuerySubject.next(query);
   }
 
