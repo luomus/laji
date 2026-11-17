@@ -35,16 +35,17 @@ export class ExcelToolService {
     .pipe(map(({ results }) => results.map(namedPlace => `${namedPlace.name} (${namedPlace.id})`)));
 
     const formPlaces$ = (form: Form) => {
-      const selected = form.options?.namedPlaceOptions?.listColumns || [];
+      const listColumns = form.options?.namedPlaceOptions?.listColumns || [];
+      const selected = listColumns.includes('$.id') ? listColumns : listColumns.concat(['$.id']);
 
       return this.api.get('/named-places', { query: {
         collectionID: form.collectionID,
         selectedFields: selected.map(field => field.replace('$.', '')).join(','),
         pageSize: 100000
       } }).pipe(
-        switchMap(nps => from(nps.results).pipe(mergeMap(np => this.openNamedPlaceNamedPlaceKeyValues(np, selected)), toArray())),
+        switchMap(nps => from(nps.results).pipe(mergeMap(np => this.openNamedPlaceNamedPlaceKeyValues(np, listColumns)), toArray())),
         map(namedPlaces => namedPlaces.map(np => {
-          const values = selected.reduce<string[]>((cumulative, current) => {
+          const values = listColumns.reduce<string[]>((cumulative, current) => {
             const value = JSONPath({json: np, path: current, wrap: false, flatten: true});
             if (typeof value !== 'undefined') {
               cumulative.push(Array.isArray(value) ? value.join(', ') : value);

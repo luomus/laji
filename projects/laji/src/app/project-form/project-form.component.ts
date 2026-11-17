@@ -12,7 +12,6 @@ import { Title } from '@angular/platform-browser';
 import { TriplestoreLabelService } from '../shared/service/triplestore-label.service';
 import { Breadcrumb } from '../shared-modules/breadcrumb/theme-breadcrumb/theme-breadcrumb.component';
 import { formOptionToClassName } from '../shared/directive/project-form-option.directive';
-import { NavbarService } from '../shared/service/navbar.service';
 import { components } from 'projects/laji-api-client/generated/api.d';
 
 type Form = components['schemas']['Form'];
@@ -88,7 +87,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
     private browserService: BrowserService,
     private title: Title,
     private labelService: TriplestoreLabelService,
-    private navbarService: NavbarService
   ) {}
 
   private static getResultServiceRoutes(resultServiceType: ResultServiceType, queryParams: Params): NavLink[] {
@@ -165,11 +163,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
       switchMap(notFound => notFound
         ? formID$.pipe(map(formID => (<NotFoundViewModel>{formID})))
         : combineLatest([projectForm$, rights$, this.route.queryParams]).pipe(
-          map(([projectForm, rights, queryParams]) => {
-            if (projectForm.form.options?.openForm) {
-              this.navbarService.navbarVisible = false;
-            }
-            return <ViewModel>{
+          map(([projectForm, rights, queryParams]) => <ViewModel>{
               form: projectForm.form,
               navLinks: (!projectForm.form.options?.simple && !projectForm.form.options?.mobile)
                 ? this.getNavLinks(projectForm, rights, queryParams)
@@ -177,8 +171,7 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
               disabled: projectForm.form.options?.disabled && !rights?.ictAdmin,
               datasetsBreadcrumb: this.getDatasetsBreadcrumb(projectForm.form),
               rights
-            };
-          })
+            })
         )
       )
     );
@@ -240,7 +233,6 @@ export class ProjectFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.navbarService.navbarVisible === false) { this.navbarService.navbarVisible = true; };
     this.redirectionSubscription.unsubscribe();
     this.titleSubscription?.unsubscribe();
   }

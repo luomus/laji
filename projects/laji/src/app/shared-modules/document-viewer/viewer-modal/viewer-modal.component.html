@@ -1,5 +1,5 @@
 @if (vm$ | async; as vm) {
-  <lu-modal #documentModal [size]="vm.openAnnotation ? 'xl' : 'lg'">
+  <lu-modal #documentModal [size]="vm.openAnnotation ? 'xl' : 'lg'" contentClass="viewer-modal-content">
     @if (vm.document) {
       @if (!vm.forceLocal && vm.openAnnotation) {
         <laji-document-annotation

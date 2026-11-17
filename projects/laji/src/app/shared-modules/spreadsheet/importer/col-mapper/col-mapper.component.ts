@@ -90,7 +90,10 @@ export class ColMapperComponent implements OnChanges {
     if (fields.includes(DELETE_FIELD)) {
       return [];
     }
-    const requiredFields = this.allFields.filter(key => this.fields[key].required);
+    let requiredFields = this.allFields.filter(key => this.fields[key].required);
+    if (requiredFields.includes('gatherings[*].geometry') && (fields.includes('namedPlaceID') || fields.includes('gatherings[*].namedPlaceID'))) {
+      requiredFields = requiredFields.filter(field => field !== 'gatherings[*].geometry');
+    }
     return requiredFields.filter(field => !fields.includes(field)).map(key => this.fields[key].fullLabel);
   }
 

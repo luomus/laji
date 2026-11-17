@@ -6,19 +6,16 @@ import {
   Component, ElementRef, HostListener, NgZone,
   OnDestroy,
   OnInit,
-  ViewChild
 } from '@angular/core';
 import { UserService } from '../service/user.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
-import { LocalizeRouterService } from '../../locale/localize-router.service';
 import { TranslateService } from '@ngx-translate/core';
 import { timer, Subject, Observable, fromEvent } from 'rxjs';
 import { Global } from '../../../environments/global';
 import { NotificationsFacade } from './notifications/notifications.facade';
 import { BrowserService } from '../service/browser.service';
 import { PlatformService } from '../../root/platform.service';
-import { NavbarService } from '../service/navbar.service';
 
 @Component({
     selector: 'laji-navbar',
@@ -47,9 +44,7 @@ export class NavbarComponent implements AfterViewInit, OnInit, OnDestroy {
     private platformService: PlatformService,
     public userService: UserService,
     private router: Router,
-    private localizeRouterService: LocalizeRouterService,
     protected changeDetector: ChangeDetectorRef,
-    public navbarService: NavbarService,
     public translate: TranslateService,
     private notificationsFacade: NotificationsFacade,
     private browserService: BrowserService,

@@ -144,7 +144,7 @@ export class ResultsComponent implements OnChanges {
     });
     this.baseFilters = Util.removeFromObject({
       redListEvaluationGroups: this.query.redListGroup,
-      'latestRedListEvaluation.redListStatus': this.query.status?.map(status => this.statusMap[status] || status).join(',') as any,
+      'latestRedListEvaluation.redListStatus': this.query.status?.map(status => this.statusMap[status] || status) as any,
       [this.query.onlyPrimaryReason ?
         'latestRedListEvaluation.primaryEndangermentReason' : 'latestRedListEvaluation.endangermentReasons']: this.query.reasons,
       [this.query.onlyPrimaryHabitat ?

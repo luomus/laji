@@ -1,0 +1,10 @@
+$mdBreakpoint: 992px;
+
+::ng-deep .viewer-modal-content {
+  max-height: calc(100% - 30px);
+  overflow-y: auto;
+
+  @media only screen and (max-width: $mdBreakpoint) {
+    max-height: none;
+  }
+}

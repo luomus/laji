@@ -231,6 +231,8 @@ export const Global = { // eslint-disable-line @typescript-eslint/naming-convent
   lajiMapSupportedLanguages: ['fi', 'en', 'sv'],
   lajiAuthSupportedLanguages: ['fi', 'en', 'sv'],
   formAliasMap: {
-    pyoriaiset: 'MHL.1156'
+    pyoriaiset: 'MHL.1156',
+    ilmoita: 'MHL.1222',
+    rengasloyto: 'MHL.1234',
   } as { [key: string]: string }
 };

@@ -3,7 +3,7 @@
     <ng-container *lajiForTypes="['vir']; exclude: true">
       <h1 translate>species.search</h1>
       <h2 translate>species.title.short</h2>
-      <p translate>species.title.long</p>
+      <p [innerHtml]="'species.title.long' | translate"></p>
     </ng-container>
     <laji-technical-news></laji-technical-news>
     <laji-omni-search [placeholder]="'species.search' | translate"></laji-omni-search>
