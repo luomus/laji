@@ -90,6 +90,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       }
     }
 
+    this.broadcastChannel = new BroadcastChannel(this.formID);
     this.vm$ = this.documentFormFacade.getViewModel(this.formID, this.documentID, this.namedPlaceID, this.template);
     this.vmSub = this.vm$.pipe(
       tap(() => {
@@ -99,7 +100,6 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
       })
     ).subscribe(vm => {
       this.vm = vm;
-      this.broadcastChannel = new BroadcastChannel(vm.formData.id);
       this.broadcastChannel.onmessage = (event) => {
         this.documentFormFacade.onChange(event.data);
       };
@@ -189,7 +189,7 @@ export class DocumentFormComponent implements OnInit, OnDestroy {
 
   onChange(formData: Document) {
     this.documentFormFacade.onChange(formData);
-    this.broadcastChannel.postMessage(formData)
+    this.broadcastChannel.postMessage(formData);
     this.touched$.next();
   }
 
