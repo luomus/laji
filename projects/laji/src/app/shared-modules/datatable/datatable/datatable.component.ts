@@ -180,6 +180,9 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
         this.sortTemplates[column.prop!] = column.cellTemplate as DatatableTemplate;
         column.cellTemplate = this.datatableTemplates[column.cellTemplate as DatatableTemplate];
       }
+      if (!column.cellTemplate) {
+        column.cellTemplate = this.datatableTemplates.defaultCellTpl;
+      }
       if (column.sortTemplate) {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         this.sortTemplates[column.prop!] = column.sortTemplate as DatatableTemplate;

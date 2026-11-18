@@ -16,6 +16,7 @@ import { OwnSubmissionsModule } from '../own-submissions/own-submissions.module'
 import { IucnStatusPipe } from './pipes/iucn-status.pipe';
 import { CopyToClipboardModule } from '../copy-to-clipboard/copy-to-clipboard.module';
 import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
+import { DefaultCellTemplateComponent } from './datatable-templates/default-cell-template.component';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
     LajiUiModule,
     OwnSubmissionsModule,
     CopyToClipboardModule,
-    TooltipModule
+    TooltipModule,
+    DefaultCellTemplateComponent
   ],
   declarations: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent, DatatableOwnSubmissionsComponent, IucnStatusPipe],
   exports: [DatatableComponent, DatatableTemplatesComponent, DataTableFooterComponent, DatatableHeaderComponent,
