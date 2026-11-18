@@ -15,7 +15,6 @@ import {
 import { DatatableColumn } from '../model/datatable-column';
 import { DatatableComponent as NgxDatatableComponent, SelectionType, SortType } from '@achimha/ngx-datatable';
 import { Subject, Subscription } from 'rxjs';
-import { DatatableTemplatesComponent } from '../datatable-templates/datatable-templates.component';
 import { Logger } from '../../../shared/logger/logger.service';
 import { FilterByType, FilterService } from '../../../shared/service/filter.service';
 import { LocalStorage } from 'ngx-webstorage';
@@ -38,7 +37,6 @@ interface Settings {[key: string]: DatatableColumn }
 export class DatatableOwnSubmissionsComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('dataTable') public datatable?: NgxDatatableComponent;
-  @ViewChild('dataTableTemplates', { static: true }) public datatableTemplates!: DatatableTemplatesComponent;
 
   @Input() loading = false;
   @Input({ required: true }) pageSize!: number;

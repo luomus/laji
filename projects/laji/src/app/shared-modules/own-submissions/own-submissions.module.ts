@@ -11,6 +11,7 @@ import { LajiUiModule } from '../../../../../laji-ui/src/lib/laji-ui.module';
 import { YearSliderModule } from '../year-slider/year-slider.module';
 import { ModalModule } from 'projects/laji-ui/src/lib/modal/modal.module';
 import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
+import { DefaultCellTemplateComponent } from '../datatable/datatable-templates/default-cell-template.component';
 
 @NgModule({
   imports: [
@@ -22,7 +23,8 @@ import { TooltipModule } from 'projects/laji-ui/src/lib/tooltip/tooltip.module';
     LajiUiModule,
     YearSliderModule,
     ModalModule,
-    TooltipModule
+    TooltipModule,
+    DefaultCellTemplateComponent
   ],
   declarations: [
     OwnSubmissionsComponent,

@@ -15,6 +15,7 @@ type Annotation = components['schemas']['store-annotation'];
 export class DatatableTemplatesComponent {
   @ViewChild('defaultHeaderTpl', { static: true }) dafaultHeader!: TemplateRef<any>;
   @ViewChild('labelHeaderTpl', { static: true }) labelHeader!: TemplateRef<any>;
+  @ViewChild('defaultCellTpl', { static: true }) defaultCellTpl!: TemplateRef<any>;
   @ViewChild('taxon', { static: true }) taxon!: TemplateRef<any>;
   @ViewChild('originalTaxon', { static: true }) originalTaxon!: TemplateRef<any>;
   @ViewChild('species', { static: true }) species!: TemplateRef<any>;

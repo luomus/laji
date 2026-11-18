@@ -175,6 +175,9 @@
                 </span>
               </span>
             </ng-template>
+            <ng-template let-value="value" ngx-datatable-cell-template>
+              <laji-default-cell-template [value]="value"></laji-default-cell-template>
+            </ng-template>
           </ngx-datatable-column>
         }
         @if (actions | includes:['download', 'stats', 'delete']) {

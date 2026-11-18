@@ -16,6 +16,10 @@
   <ng-container *ngTemplateOutlet="headerTpl; context: {label: column.label | label | capitalize | values, info: column.info | translate, sort: sort}"></ng-container>
 </ng-template>
 
+<ng-template let-value="value" #defaultCellTpl>
+  <laji-default-cell-template [value]="value"></laji-default-cell-template>
+</ng-template>
+
 <ng-template let-value="value" let-column="column" #taxon>
   @if (value) {
     <span>
