@@ -159,7 +159,7 @@
 <ng-template let-value="value" #numeric>
   @if ('' + value) {
     <span title="{{value | formattedNumber:' '}}">
-      <span [innerHtml]="value | formattedNumber:'&nbsp;'"></span>
+      {{ value | formattedNumber:' ' }}
     </span>
   }
 </ng-template>
