@@ -37,7 +37,7 @@
     </ngx-datatable-row-detail>
 
     @if (displayMode !== 'large') {
-      <ngx-datatable-column [resizeable]="false"
+      <ngx-datatable-column [width]="40" [canAutoResize]="false" [resizeable]="false"
         [draggable]="false" [headerClass]="'empty-header'">
         <ng-template ngx-datatable-header-template><span></span></ng-template>
         <ng-template let-row="row" let-expanded="expanded" ngx-datatable-cell-template>
