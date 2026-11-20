@@ -335,7 +335,8 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
   //This changes the sorting so that the last column added to sorting gets priority, but probably only as long as the
   //underlying ngx-datatable uses external sorting
   private updateSorts(event: any) {
-    if (!event.newValue) {
+    const removeSort = !event.newValue || (this.sortType === SortType.single && event.prevValue === 'desc');
+    if (removeSort) {
       return this.sorts.filter(sort => sort.prop !== event.column.prop);
     }
 
