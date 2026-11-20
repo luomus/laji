@@ -1,6 +1,6 @@
 import { filter, map, switchMap } from 'rxjs';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges,
-OnInit, ChangeDetectorRef} from '@angular/core';
+OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { WarehouseQueryInterface } from '../../shared/model/WarehouseQueryInterface';
 import { ChartDataset, ChartOptions, Tooltip } from 'chart.js';
@@ -18,7 +18,7 @@ import { SearchQueryService } from '../search-query.service';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
-export class HorizontalChartComponent implements OnInit, OnChanges {
+export class HorizontalChartComponent implements OnInit, OnChanges, OnDestroy {
   @Input({ required: true }) query!: WarehouseQueryInterface;
   @Input() height = 150;
   @Input() showLegend = false;
@@ -79,6 +79,10 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
     };
   }
 
+  ngOnDestroy() {
+    this.dataClasses?.unsubscribe();
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['query']) {
       this.updateClasses();
@@ -106,7 +110,7 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
 
     this.loading = true;
     const apiQuery = this.searchQuery.getNormalizedApiQuery(this.query);
-    this.api.get(
+    this.dataClasses = this.api.get(
       '/warehouse/query/unit/aggregate',
       {
         query: {
@@ -127,15 +131,15 @@ export class HorizontalChartComponent implements OnInit, OnChanges {
           ...r,
           label: labels[this.toQname.transform(r.aggregateBy['unit.linkings.taxon.' + this.classificationValue ])]
         }))));
-      }),
-      map(res => res.map((r: any) => {
+      })
+    )
+    .subscribe((res: any[]) => {
+      res.forEach(r => {
         this.resultList.push(r);
         this.subDataBarChart.push(this.onlyCount ? r.count : r.individualCountSum);
         this.subBackgroundColors.push('#3498db');
         this.subLabelBarChart.push(r.label ? (r.label.vernacularName || r.label.scientificName) : '');
-      }))
-    )
-    .subscribe(() => {
+      });
       this.createSubArrayChart();
       this.hasData.emit(this.allDataBarChart.length > 0);
     });
