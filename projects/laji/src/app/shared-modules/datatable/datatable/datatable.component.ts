@@ -339,6 +339,10 @@ export class DatatableComponent implements AfterViewInit, OnInit, OnChanges, OnD
       return this.sorts.filter(sort => sort.prop !== event.column.prop);
     }
 
+    if (this.sortType === SortType.single) {
+      return [{ prop: event.column.prop, dir: event.newValue }];
+    }
+
     const idx = this.sorts.findIndex(sort => sort.prop === event.column.prop);
     if (idx > -1) {
       return this.sorts.map(sort => {

@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, NgZone, OnChanges, Output, TemplateRef, 
 import { DatatableColumn } from '../../../../../shared-modules/datatable/model/datatable-column';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IdService } from '../../../../../shared/service/id.service';
-import { ColumnMode } from '@achimha/ngx-datatable';
+import { ColumnMode, SortType } from '@achimha/ngx-datatable';
 
 @Component({
     selector: 'laji-wbc-routes-list',
@@ -60,7 +60,7 @@ export class WbcRoutesListComponent implements OnChanges {
     }
   ];
   columns: DatatableColumn[] = [];
-
+  sortType = SortType.single;
   filterBy = '';
 
   @Output() rowSelect = new EventEmitter<any>();
