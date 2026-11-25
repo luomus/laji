@@ -57,7 +57,9 @@ const BASE_QUERY = gql`
      id
       options {
         id
-        label: value
+        label: value,
+        description: administrativeStatusDescription,
+        link: administrativeStatusLink
       }
     }
   }
