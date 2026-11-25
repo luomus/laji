@@ -22,7 +22,8 @@
 
       <div class="button">
         <a class="btn herbButton btn-primary center-block"
-        [href]="'http://loydos.luomus.fi/forms/sammakot-ja-matelijat?language=' + translate.getCurrentLang()" role="button">{{ 'herpetology.form' | translate }}</a>
+        [routerLink]="['/project', 'ilmoita'] | localize"
+        role="button">{{ 'herpetology.form' | translate }}</a>
       </div>
 
       <h2>{{ 'herpetology.search' | translate }}</h2>
