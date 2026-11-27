@@ -52,6 +52,7 @@ export class GeoConvertService {
 
   static readonly validTypes = [
     'application/geopackage+sqlite3',
+    'application/vnd.sqlite3',
     'application/geo+json',
     'application/json',
     'application/vnd.google-earth.kmz',
