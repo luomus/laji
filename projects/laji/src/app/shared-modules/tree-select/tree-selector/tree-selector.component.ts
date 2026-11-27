@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { ITreeOptions, ITreeState, KEYS, TreeComponent, TreeModel, TreeNode, TREE_ACTIONS } from '@ali-hm/angular-tree-component';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs';
@@ -13,9 +13,10 @@ import { SelectedOption, TreeOptionsNode } from '../tree-select.component';
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
-export class TreeSelectorComponent implements OnInit {
+export class TreeSelectorComponent implements OnInit, OnChanges, OnDestroy {
   @Input() selectedOptions: SelectedOption[] = [];
   @Input() optionsTree!: TreeOptionsNode[];
+  @Input() hiddenNodes: string[] = [];
   @Input() multiselect = false;
   @Input() tristate = false;
   @Input() includeCheckbox = false;
@@ -82,6 +83,16 @@ export class TreeSelectorComponent implements OnInit {
     this.options.useVirtualScroll = this.useVirtualScroll;
   }
 
+  ngOnChanges() {
+    if (this.treeModel) {
+      this.setHiddenNodes(this.treeModel);
+    }
+  }
+
+  ngOnDestroy() {
+    this.filterDebounce$.unsubscribe();
+  }
+
   constructor(
   ) {
     this.filterDebounce$.pipe(
@@ -98,10 +109,16 @@ export class TreeSelectorComponent implements OnInit {
       this.nodeSelected(this.treeModel, node, 'initializing');
       this.expandParents(this.treeModel, node, null);
     });
+
+    this.setHiddenNodes(this.treeModel);
   }
 
   onFilterChange(query: any) {
     this.filterDebounce$.next(query);
+  }
+
+  setHiddenNodes(treeModel: TreeModel) {
+    treeModel.setHiddenNodeIds(this.hiddenNodes || []);
   }
 
   filterTree(query: any) {

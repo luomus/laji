@@ -9,13 +9,14 @@
     <div>
       <label>
         {{ 'theme.collection-metadata.collectionsCount' | translate }}
-        {{ collectionsCount }}
+        {{ showEmpty ? collectionsCount : collectionsCount - emptyCollectionsCount }}
       </label>
     </div>
     <laji-tree-selector
       [ngClass]="!isMobile ? 'selector' : 'mobile-selector'"
       [selectedOptions]="selectedOption"
       [optionsTree]="optionsTree"
+      [hiddenNodes]="showEmpty ? [] : hiddenOptions"
       [includeCheckbox]="false"
       [multiselect]="false"
       [includeCount]="true"

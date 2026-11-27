@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnChanges, Output, Input, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Output, Input, EventEmitter, ChangeDetectorRef, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { zip } from 'rxjs';
 import { map } from 'rxjs';
@@ -12,12 +12,14 @@ import { CollectionService, CollectionTreeOptionsNode, ICollectionAggregate, ICo
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: false
 })
-export class DatasetMetadataBrowserComponent implements OnChanges {
+export class DatasetMetadataBrowserComponent implements OnInit {
   @Input() selected?: string;
   @Input() isMobile?: boolean;
   @Output() selectedChange = new EventEmitter<string>();
 
   collectionsCount = 0;
+  emptyCollectionsCount = 0;
+  hiddenOptions: string[] = [];
   _selected?: string;
   selectedOption: SelectedOption[] = [];
   optionsTree: CollectionTreeOptionsNode[] = [];
@@ -39,17 +41,16 @@ export class DatasetMetadataBrowserComponent implements OnChanges {
     this.lang = this.translate.getCurrentLang();
   }
 
-  ngOnChanges() {
-    if (!this._selected || this.selected !== this._selected) {
-      this.setupTree();
-      this._selected = this.selected;
-    }
+  ngOnInit() {
+    this.setupTree();
   }
 
   toggleShowEmpty() {
-    this.collectionsCount = 0;
-    this.showEmpty = !this.showEmpty;
-    this.setupTree();
+    if (!this.showEmpty) {
+      this.showEmpty = true;
+    } else if (!this.hiddenOptions.includes(this.selected || '')) {
+      this.showEmpty = false;
+    }
   }
 
   setupTree() {
@@ -73,14 +74,6 @@ export class DatasetMetadataBrowserComponent implements OnChanges {
 
   buildCollectionTree(trees: ICollectionsTreeNode[], aggregates: ICollectionAggregate[]) {
     const collectionsWithChildren: CollectionTreeOptionsNode[] = [];
-
-    if (this.selected) {
-      const aggregate = aggregates.find(elem => elem.id === this.selected);
-
-      if (!aggregate || aggregate.count === 0) {
-        this.showEmpty = true;
-      }
-    }
 
     trees.forEach(tree => {
       const prunedTree = this.buildTree(tree, aggregates);
@@ -110,13 +103,7 @@ export class DatasetMetadataBrowserComponent implements OnChanges {
       return undefined;
     }
 
-    if ((this.selected && tree.id === this.selected) && (tree.hasChildren || aggregate || this.showEmpty)) {
-      this.selectedOption = [{
-        id: this.selected,
-        value: tree.longName,
-        type: 'included',
-      }];
-    }
+    let treeNode: CollectionTreeOptionsNode|undefined;
 
     if (tree.hasChildren) {
       const children: CollectionTreeOptionsNode[] = [];
@@ -141,9 +128,7 @@ export class DatasetMetadataBrowserComponent implements OnChanges {
           return a.name > b.name ? 1 : -1;
         });
 
-        this.collectionsCount++;
-
-        return {
+        treeNode = {
           id: tree.id,
           name: tree.longName,
           children,
@@ -151,9 +136,7 @@ export class DatasetMetadataBrowserComponent implements OnChanges {
           count: aggregate ? aggregate.count + childCount : childCount
         };
       } else if (aggregate) {
-        this.collectionsCount++;
-
-        return {
+        treeNode = {
           id: tree.id,
           name: tree.longName,
           quality: tree.collectionQuality,
@@ -161,26 +144,43 @@ export class DatasetMetadataBrowserComponent implements OnChanges {
         };
       }
     } else if (aggregate) {
-      this.collectionsCount++;
-
-      return {
+      treeNode = {
         id: tree.id,
         name: tree.longName,
         quality: tree.collectionQuality,
         count: aggregate.count
       };
-    } else if (this.showEmpty) {
-      this.collectionsCount++;
-
-      return {
+    } else {
+      treeNode = {
         id: tree.id,
-        name: tree.longName,
+        name: tree.longName || tree.id,
         quality: tree.collectionQuality,
         count: 0
       };
     }
 
-    return undefined;
+    if (tree.id === this.selected) {
+      if (treeNode && treeNode.count === 0) {
+        this.showEmpty = true;
+      }
+    }
+
+    this.collectionsCount++;
+
+    if (treeNode && treeNode.count === 0) {
+      this.hiddenOptions.push(treeNode.id);
+      this.emptyCollectionsCount++;
+    }
+
+    if (treeNode && (this.selected && treeNode.id === this.selected) && (treeNode.count || this.showEmpty)) {
+      this.selectedOption = [{
+        id: this.selected,
+        value: treeNode?.name,
+        type: 'included',
+      }];
+    }
+
+    return treeNode;
   }
 
   changeSelected(value: SelectedOption[]) {
