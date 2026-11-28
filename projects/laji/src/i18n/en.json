@@ -1608,7 +1608,7 @@
   "result.document.notes": "Notes",
   "result.document.secureLevel": "Coarsening level",
   "result.document.secureReasons": "Reason for coarsening",
-  "result.document.siteStatus": "Lajinseurantakohteen tila",
+  "result.document.siteStatus": "Species monitoring site status",
   "result.document.siteType": "Kartoituksen tarkoitus + Kohteen taso",
   "result.document.sourceId": "Source systems identifier",
   "result.editDocument": "Edit",
